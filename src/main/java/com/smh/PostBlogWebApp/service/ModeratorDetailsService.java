@@ -3,7 +3,6 @@ package com.smh.PostBlogWebApp.service;
 import com.smh.PostBlogWebApp.entity.Moderator;
 import com.smh.PostBlogWebApp.repository.ModeratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Service
 public class ModeratorDetailsService implements UserDetailsService {

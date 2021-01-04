@@ -1,5 +1,6 @@
 package com.smh.PostBlogWebApp.entity;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,18 +9,19 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Table(name="permissions")
+@Table(name="subjects")
 @Entity
-public class Permission {
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(name = "name",nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "permissionList")
-    private List<Moderator> moderatorList;
+    @OneToMany(mappedBy = "subject")
+    private List<Post> postList;
+
 
 }

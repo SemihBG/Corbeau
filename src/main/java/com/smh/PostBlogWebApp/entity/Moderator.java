@@ -25,7 +25,7 @@ public class Moderator {
     @Column
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "moderator_permission_join",
             joinColumns = @JoinColumn(name = "moderator_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
