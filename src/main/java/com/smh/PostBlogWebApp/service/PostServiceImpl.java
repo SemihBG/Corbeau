@@ -4,9 +4,12 @@ import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+
+@Service
 public class PostServiceImpl implements PostService {
 
     @Autowired

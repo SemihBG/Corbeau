@@ -4,10 +4,12 @@ import com.smh.PostBlogWebApp.entity.Subject;
 import com.smh.PostBlogWebApp.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-public class SubjectRepositoryImpl implements SubjectService {
+@Service
+public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectRepository subjectRepository;
