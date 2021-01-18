@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MenuController {
 
     @GetMapping
-    public String getMenu(){
-        return "index";
+    public String index(){
+        return "home";
     }
 
 }
