@@ -27,6 +27,10 @@ public class Post {
     @Column(name = "title",nullable = false)
     private String title;
 
+    @Lob
+    @Column(name="content",nullable = false)
+    private String content;
+
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private long createdDate;
