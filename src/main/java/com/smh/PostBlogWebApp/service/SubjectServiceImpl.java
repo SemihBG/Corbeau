@@ -30,6 +30,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public Subject findByName(String name) {
+        return subjectRepository.findByName(name);
+    }
+
+    @Override
     public Subject save(Subject subject) {
         return subjectRepository.save(Objects.requireNonNull(subject));
     }

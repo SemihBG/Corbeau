@@ -2,10 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
     <head>
-
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>AppName</title>
 
         <style type="text/css">
@@ -85,15 +83,9 @@
                 font-size: 60px;
             }
 
-            span.subject {
-                display: inline-block;
-                width: 15%;
-                font-size: 40px;
-            }
-
             span.title {
                 display: inline-block;
-                width:65%;
+                width:80%;
                 font-size: 30px;
             }
 
@@ -103,7 +95,6 @@
                 font-size: 20px;
             }
 
-
         </style>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -112,7 +103,7 @@
 
     <body>
 
-        <h1>AppName</h1>
+        <h1 th:text="${subject.name}"></h1>
 
         <div id="navbar">
             <ul>
@@ -121,13 +112,11 @@
             </ul>
         </div>
 
-
         <div id="post">
             <ul>
                 <li th:each="post:${posts}">
                     <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
                         <div>
-                            <span class="subject" th:text="${post.subject.name}"></span>
                             <span class="title" th:text="${post.title}"></span>
                             <span class="date" th:text="${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></span>
                         </div>

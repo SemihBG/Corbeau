@@ -24,7 +24,7 @@ public class Post {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title",nullable = false, unique = true)
     private String title;
 
     @Lob
