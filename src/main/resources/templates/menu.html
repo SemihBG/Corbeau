@@ -1,13 +1,119 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:fragment="headerfiles">
+
+    <head>
+
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <title>AppName</title>
+
+        <style type="text/css">
+
+            #navbar ul {
+                margin: 20px;
+                padding: 5px;
+                list-style-type: none;
+                text-align: center;
+                background-color: #000;
+            }
+
+            #navbar ul li {
+                display: inline;
+            }
+
+            #navbar ul li a {
+                text-decoration: none;
+                padding: .2em 1em;
+                color: #fff;
+                background-color: #000;
+            }
+
+            #navbar ul li a:hover {
+                color: #000;
+                background-color: #fff;
+            }
+
+            h1{
+                text-align:center;
+                font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+                margin: 10px;
+                padding: 0;
+            }
+
+            #post ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #post li {
+                font: 200 40px/1.5 Helvetica, Verdana, sans-serif;
+                border-bottom: 1px solid #ccc;
+                margin: 20px;
+            }
+
+            #post li:last-child {
+                border: none;
+            }
+
+            #post li a {
+                text-decoration: none;
+                color: #000;
+
+                -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+                -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+                -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+                -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+                transition: font-size 0.3s ease, background-color 0.3s ease;
+                display: block;
+                width:100%;
+            }
+
+            #post li a:hover {
+                font-size: 70px;
+                background: #f6f6f6;
+            }
+
+            span.subject {
+                display: inline-block;
+                width: 150px;
+            }
+            span.title {
+                display: inline-block;
+                width:75%;
+            }
+
+
+
+        </style>
+
     </head>
+
     <body>
-        <nav th:replace="/navbar::navbar"/>
+
+        <h1>AppName</h1>
+
+        <div id="navbar">
+            <ul>
+                <li th:each="subject:${subjects}"><a th:href="${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
+            </ul>
+        </div>
+
+
+        <div id="post">
+            <ul>
+                <li th:each="post:${posts}">
+                    <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
+                        <div>
+                            <span class="subject" th:text="${post.subject.name}"></span>
+                            <span clas="title" th:text="${post.title}"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
     </body>
+
 </html>

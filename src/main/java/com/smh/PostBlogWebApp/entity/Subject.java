@@ -20,6 +20,9 @@ public class Subject {
     @Column(name = "name",nullable = false)
     private String name;
 
+    @Column(name="url_endpoint",nullable = false)
+    private String urlEndpoint;
+
     @OneToMany(mappedBy = "subject")
     private List<Post> postList;
 

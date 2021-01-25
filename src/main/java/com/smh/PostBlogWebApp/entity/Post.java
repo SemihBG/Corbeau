@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-@Table(name="entities")
+@Table(name="posts")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
@@ -30,6 +30,9 @@ public class Post {
     @Lob
     @Column(name="content",nullable = false)
     private String content;
+
+    @Column(name="url_endpoint",nullable = false)
+    private String urlEndpoint;
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
