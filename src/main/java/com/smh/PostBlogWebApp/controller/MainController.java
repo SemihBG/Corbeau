@@ -30,7 +30,8 @@ public class MainController {
     }
 
     @GetMapping("{subjectName}")
-    public String subject(@PathVariable("subjectName")String subjectName,Model model){
+    public String subject(@PathVariable("subjectName")String subjectName,
+                          Model model){
         Subject subject=subjectService.findByName(subjectName);
         if(subject==null){
             return "redirect:/";
@@ -42,6 +43,25 @@ public class MainController {
         model.addAttribute("count",postList.size());
         return "subject";
     }
+
+    @GetMapping("{subjectName}/{postTitle}")
+    public String post(@PathVariable("subjectName")String subjectName,
+                       @PathVariable("postTitle")String postTitle,
+                       Model model){
+        Subject subject=subjectService.findByName(subjectName);
+        if(subject==null){
+            return "redirect:/";
+        }
+        Post post=postService.findByTitle(postTitle);
+        if(post==null){
+            return "redirect:/"+subjectName;
+        }
+        model.addAttribute("subjects",subjectService.findAll());
+        model.addAttribute("post",post);
+        return "post";
+    }
+
+
 
 
 }

@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post,Integer> {
-    Post findAllByTitle(String title);
     List<Post> findAllBySubject(Subject subject);
+    Post findByTitle(String title);
 }

@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService {
     @Nullable
     @Override
     public Post findByTitle(String title) {
-        return postRepository.findAllByTitle(title);
+        return postRepository.findByTitle(title);
     }
 
     @Override

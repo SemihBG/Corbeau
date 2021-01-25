@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AppName</title>
+
+        <style type="text/css">
+
+                #navbar ul {
+                    margin: 0px 0px 75px 0px;
+                    padding: 10px;
+                    list-style-type: none;
+                    text-align: center;
+                    background-color: #000;
+                }
+
+                #navbar ul li {
+                    display: inline;
+                    font-size: 20px;
+                }
+
+                #navbar ul li a {
+                    text-decoration: none;
+                    padding: .2em 1em;
+                    color: #fff;
+                    background-color: #000;
+                }
+
+                #navbar li a i{
+                    style="font-size:24px;
+                    color:white"
+                }
+
+                #navbar ul li a:hover {
+                    color: #000;
+                    background-color: #fff;
+                }
+
+                #navbar li a i:hover{
+                    style="font-size:24px;
+                    color:black"
+                }
+
+                h1{
+                    text-align:center;
+                    font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+                }
+
+                #post ul {
+                    list-style-type: none;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                #post li {
+                    font: 200 40px/1.5 Helvetica, Verdana, sans-serif;
+                    border-bottom: 3px solid #ccc;
+                    margin: 0px 5% 0px 5%;
+                }
+
+                #post li:last-child {
+                    border: none;
+                }
+
+                #post li a {
+                    text-decoration: none;
+                    color: #000;
+
+                    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+                    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+                    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+                    -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+                    transition: font-size 0.3s ease, background-color 0.3s ease;
+                    display: block;
+                    width:100%;
+                }
+
+                #post li a:hover {
+                    font-size: 50px;
+                    background: #f6f6f6;
+                    font-size: 60px;
+                }
+
+                span.title {
+                    display: inline-block;
+                    width:80%;
+                    font-size: 30px;
+                }
+
+                span.date {
+                    display: inline-block;
+                    width:10%;
+                    font-size: 20px;
+                }
+
+            </style>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    </head>
+    <body>
+
+        <h1 th:text="${post.title}"></h1>
+
+        <div id="navbar">
+            <ul>
+                <li><a th:href="@{/}"><i class="fa fa-home"></i></a></li>
+                <li th:each="subject:${subjects}"><a th:href="${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
+            </ul>
+        </div>
+
+
+    </body>
+</html>
