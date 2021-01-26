@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,19 +31,10 @@ public class PostServiceImpl implements PostService {
 
     @Nullable
     @Override
-    public Post findById(int id) {
-        return postRepository.findById(id).orElse(null);
+    public Post findBySubjectAndUrl(Subject subject, String url) {
+        return postRepository.findBySubjectAndUrl(subject.getName(),url);
     }
 
-    @Nullable
-    @Override
-    public Post findByTitle(String title) {
-        return postRepository.findByTitle(title);
-    }
 
-    @Override
-    public Post save(Post post) {
-        return postRepository.save(Objects.requireNonNull(post));
-    }
 
 }

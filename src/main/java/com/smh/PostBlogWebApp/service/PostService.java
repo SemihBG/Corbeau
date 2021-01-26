@@ -9,8 +9,6 @@ public interface PostService {
 
     List<Post> findAll();
     List<Post> findAllBySubject(Subject subject);
-    Post findById(int id);
-    Post findByTitle(String title);
-    Post save(Post post);
+    Post findBySubjectAndUrl(Subject subject,String url);
 
 }

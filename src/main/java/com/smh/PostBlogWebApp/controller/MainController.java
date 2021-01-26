@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @Controller
@@ -29,10 +28,10 @@ public class MainController {
         return "menu";
     }
 
-    @GetMapping("{subjectName}")
-    public String subject(@PathVariable("subjectName")String subjectName,
+    @GetMapping("{subjectUrl}")
+    public String subject(@PathVariable("subjectUrl")String subjectUrl,
                           Model model){
-        Subject subject=subjectService.findByName(subjectName);
+        Subject subject=subjectService.findByUrl(subjectUrl);
         if(subject==null){
             return "redirect:/";
         }
@@ -44,17 +43,17 @@ public class MainController {
         return "subject";
     }
 
-    @GetMapping("{subjectName}/{postTitle}")
-    public String post(@PathVariable("subjectName")String subjectName,
-                       @PathVariable("postTitle")String postTitle,
+    @GetMapping("{subjectUrl}/{postUrl}")
+    public String post(@PathVariable("subjectUrl")String subjectUrl,
+                       @PathVariable("postUrl")String postUrl,
                        Model model){
-        Subject subject=subjectService.findByName(subjectName);
+        Subject subject=subjectService.findByUrl(subjectUrl);
         if(subject==null){
             return "redirect:/";
         }
-        Post post=postService.findByTitle(postTitle);
+        Post post=postService.findBySubjectAndUrl(subject,postUrl);
         if(post==null){
-            return "redirect:/"+subjectName;
+            return "redirect:/"+subjectUrl;
         }
         model.addAttribute("subjects",subjectService.findAll());
         model.addAttribute("post",post);

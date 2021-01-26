@@ -20,7 +20,7 @@ public class Subject {
     @Column(name = "name",nullable = false, unique = true)
     private String name;
 
-    @Column(name="url_endpoint",nullable = false)
+    @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 
     @OneToMany(mappedBy = "subject")

@@ -7,8 +7,6 @@ import java.util.List;
 public interface SubjectService {
 
     List<Subject> findAll();
-    Subject findById(int id);
-    Subject findByName(String name);
-    Subject save(Subject subject);
+    Subject findByUrl(String url);
 
 }

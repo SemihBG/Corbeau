@@ -24,14 +24,14 @@ public class Post {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
-    @Column(name = "title",nullable = false, unique = true)
+    @Column(name = "title",nullable = false)
     private String title;
 
     @Lob
     @Column(name="content",nullable = false)
     private String content;
 
-    @Column(name="url_endpoint",nullable = false)
+    @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 
     @Column(name = "created_date", nullable = false, updatable = false)
