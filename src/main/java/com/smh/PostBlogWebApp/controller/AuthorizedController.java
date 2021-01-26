@@ -125,4 +125,30 @@ public class AuthorizedController {
         subjectService.deleteByName(name);
     }
 
+    @PostMapping("/post/change/{currentTitle}/{newTitle}")
+    public String changePostTitle(@PathVariable("currentTitle") String currentTitle,
+                                  @PathVariable("newTitle") String newTitle){
+        Post post=postService.findByTitle(currentTitle);
+        if(post==null){
+            throw new NullPointerException("title:"+currentTitle+" is not exists");
+        }
+        post.setTitle(newTitle);
+        postService.save(post);
+        return "changed";
+    }
+
+    @PostMapping("/post/change/{currentName}/{newName}")
+    public String changeSubjectName(@PathVariable("currentName")String currentName,
+                                    @PathVariable("newName")String newName){
+
+        Subject subject=subjectService.findByName(currentName);
+        if(subject==null){
+            throw new NullPointerException("name:"+currentName+" is not exists");
+        }
+        subject.setName(newName);
+        subjectService.save(subject);
+        return "changed";
+    }
+
+
 }
