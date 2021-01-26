@@ -14,8 +14,7 @@ public class GeneralControllerAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public String handleDataIntegrityViolationException(Exception e){
-        return "Duplication is occurred for restricted column";
+        return "JPA query exception, duplication or cascade type can be cause the exception";
     }
-
 
 }

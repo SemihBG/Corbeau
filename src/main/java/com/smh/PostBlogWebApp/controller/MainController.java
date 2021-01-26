@@ -39,7 +39,7 @@ public class MainController {
     @GetMapping("{subjectUrl}")
     public String subject(@PathVariable("subjectUrl")String subjectUrl,
                           Model model){
-        Subject subject=subjectService.findByUrl(subjectUrl);
+        Subject subject=subjectService.findByUrlEndpoint(subjectUrl);
         if(subject==null){
             return "redirect:/";
         }
@@ -55,7 +55,7 @@ public class MainController {
     public String post(@PathVariable("subjectUrl")String subjectUrl,
                        @PathVariable("postUrl")String postUrl,
                        Model model){
-        Subject subject=subjectService.findByUrl(subjectUrl);
+        Subject subject=subjectService.findByUrlEndpoint(subjectUrl);
         if(subject==null){
             return "redirect:/";
         }
@@ -76,6 +76,12 @@ public class MainController {
             return image.getContent();
         }
         return Images.getImageNotFoundImageContent();
+    }
+
+    @GetMapping(value="image/logo",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getLogo(){
+        return Images.getLogoImageContent();
     }
 
     @GetMapping(value="/image/icon",produces = MediaType.IMAGE_JPEG_VALUE)

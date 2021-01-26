@@ -23,7 +23,7 @@ public class Subject {
     @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "subject",fetch = FetchType.LAZY)
     private List<Post> postList;
 
 
