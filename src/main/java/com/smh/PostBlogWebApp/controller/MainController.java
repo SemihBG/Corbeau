@@ -1,14 +1,19 @@
 package com.smh.PostBlogWebApp.controller;
 
+import com.smh.PostBlogWebApp.entity.Image;
 import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
+import com.smh.PostBlogWebApp.service.ImageService;
 import com.smh.PostBlogWebApp.service.PostService;
 import com.smh.PostBlogWebApp.service.SubjectService;
+import com.smh.PostBlogWebApp.util.Images;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,6 +25,9 @@ public class MainController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping
     public String menu(Model model){
@@ -60,7 +68,20 @@ public class MainController {
         return "post";
     }
 
+    @GetMapping(value="/image/{urlEndpoint}",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getImage(@PathVariable("urlEndpoint") String urlEndpoint){
+        Image image=imageService.getByEndPoint(urlEndpoint);
+        if(image!=null){
+            return image.getContent();
+        }
+        return Images.getImageNotFoundImageContent();
+    }
 
-
+    @GetMapping(value="/image/icon",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getIcon(){
+        return Images.getIconImageContent();
+    }
 
 }

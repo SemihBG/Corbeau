@@ -99,7 +99,7 @@
         <div id="navbar">
             <ul>
                 <li><a th:href="@{/}"><i class="fa fa-home"></i></a></li>
-                <li th:each="subject:${subjects}"><a th:href="${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
+                <li th:each="subject:${subjects}"><a th:href="@{/}+${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
             </ul>
         </div>
 
