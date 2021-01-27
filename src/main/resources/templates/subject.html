@@ -157,7 +157,7 @@
                     <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
                         <div>
                             <span class="title" th:text="${post.title}"></span>
-                            <span class="date" th:text="${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></span>
+                            <span class="date" th:text="${#dates.format(post.modifiedName, 'dd-MM-yyyy')}"></span>
                         </div>
                     </a>
                 </li>

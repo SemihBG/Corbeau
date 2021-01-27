@@ -172,7 +172,7 @@
                         <div>
                             <span class="subject" th:text="${post.subject.name}"></span>
                             <span class="title" th:text="${post.title}"></span>
-                            <span class="date" th:text="${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></span>
+                            <span class="date" th:text="${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></span>
                         </div>
                     </a>
                 </li>

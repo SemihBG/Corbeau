@@ -10,13 +10,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @Table(name="posts")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

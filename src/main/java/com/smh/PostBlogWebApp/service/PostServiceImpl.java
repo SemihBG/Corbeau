@@ -30,11 +30,10 @@ public class PostServiceImpl implements PostService {
 
     @Caching(put = {
             @CachePut(cacheNames = CACHE_NAME,key="#post.urlEndpoint"),
-            @CachePut(cacheNames = CACHE_NAME,key="#post.title"),
-            @CachePut(cacheNames = CACHE_ALL_NAME,key = "#post.subject + #post.urlEndpoint")
+            @CachePut(cacheNames = CACHE_NAME,key="#post.title")
     },      evict = {
             @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
-            @CacheEvict(cacheNames = CACHE_COUNT_NAME)
+            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true)
     })
     @Override
     public Post save(@NonNull Post post) {
@@ -56,8 +55,8 @@ public class PostServiceImpl implements PostService {
     @Cacheable(cacheNames = CACHE_NAME)
     @Nullable
     @Override
-    public Post findBySubjectAndUrl(@NonNull Subject subject,@NonNull String url) {
-        return postRepository.findBySubjectAndUrl(subject.getName(),url);
+    public Post findBySubjectAndUrl(@NonNull Subject subject,@NonNull String urlEndpoint) {
+        return postRepository.findBySubjectAndUrl(subject.getName(),urlEndpoint);
     }
 
     @Cacheable(cacheNames = CACHE_NAME)

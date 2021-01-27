@@ -3,11 +3,12 @@ package com.smh.PostBlogWebApp.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name="images")
-public class Image {
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

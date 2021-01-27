@@ -31,7 +31,7 @@ public class SubjectServiceImpl implements SubjectService {
             },
             put = {
                     @CachePut(cacheNames = CACHE_NAME,key = "#subject.name"),
-                    @CachePut(cacheNames = CACHE_NAME,key = "#subject.endPoint")
+                    @CachePut(cacheNames = CACHE_NAME,key = "#subject.urlEndpoint")
             }
     )
     @Override

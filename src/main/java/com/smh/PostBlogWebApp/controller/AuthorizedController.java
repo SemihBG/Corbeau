@@ -137,7 +137,7 @@ public class AuthorizedController {
         return "changed";
     }
 
-    @PostMapping("/post/change/{currentName}/{newName}")
+    @PostMapping("/subject/change/{currentName}/{newName}")
     public String changeSubjectName(@PathVariable("currentName")String currentName,
                                     @PathVariable("newName")String newName){
 

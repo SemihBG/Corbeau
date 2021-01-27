@@ -15,7 +15,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post,Integer>
     Post findByTitle(String title);
 
     @Query("SELECT p FROM Post p WHERE p.subject.name= ?1 AND p.urlEndpoint= ?2")
-    Post findBySubjectAndUrl(String subjectName, String url);
+    Post findBySubjectAndUrl(String subjectName, String urlEndpoint);
 
     void deleteByTitle(String title);
 

@@ -44,7 +44,7 @@ public class MainController {
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
             Page<Post> postPage=postService.findAll(pageRequest);
             //Control if exceed total page count.Redirect to last page count if exceeded
-            if(postPage.getNumberOfElements()==0){
+            if(pageCountIndex!=0 && postPage.getNumberOfElements()==0){
                 return "redirect:/?page="+postPage.getTotalPages();
             }
             model.addAttribute("subjects",subjectService.findAll());
@@ -74,7 +74,7 @@ public class MainController {
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
             Page<Post> postPage=postService.findAllBySubject(subject,pageRequest);
             //Control if exceed total page count.Redirect to last page count if exceeded
-            if(postPage.getNumberOfElements()==0){
+            if(pageCountIndex!=0 && postPage.getNumberOfElements()==0){
                 return "redirect:/"+subjectUrl+"?page="+postPage.getTotalPages();
             }
             model.addAttribute("subject",subject);

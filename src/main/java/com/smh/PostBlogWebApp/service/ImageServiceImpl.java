@@ -21,7 +21,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    @CachePut(cacheNames = CACHE_NAME,key = "#image.endpoint")
+    @CachePut(cacheNames = CACHE_NAME,key = "#image.urlEndpoint")
     @Override
     public Image save(Image image) {
         return imageRepository.save(Objects.requireNonNull(image,"Image cannot be null"));
