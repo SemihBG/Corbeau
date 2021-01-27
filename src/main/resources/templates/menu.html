@@ -5,7 +5,6 @@
 
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
         <title>Corbeau</title>
         <link rel="icon" th:href="@{/image/icon}">
         <style type="text/css">
@@ -75,7 +74,6 @@
             #post li a {
                 text-decoration: none;
                 color: #000;
-
                 -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
                 -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
                 -o-transition: font-size 0.3s ease, background-color 0.3s ease;
@@ -138,12 +136,17 @@
             span.page{
                 font-family: Arial, Helvetica, sans-serif;
                 font-size:25px;
-                opacity:0.80
+                opacity:0.80;
             }
 
+            div.info{
+                margin: 0 5%;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:20px;
+                opacity:0.80;
+            }
 
         </style>
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     </head>
@@ -174,6 +177,10 @@
                     </a>
                 </li>
             </ul>
+        </div>
+
+        <div class="info">
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+@{-}+${lastPost}+@{' in '}+${allPost}"></span>
         </div>
 
         <div class="page">

@@ -120,10 +120,18 @@
                 pointer-events: none;
                 opacity: 0.40;
             }
+
             span.page{
                 font-family: Arial, Helvetica, sans-serif;
                 font-size:25px;
                 opacity:0.80
+            }
+
+            div.info{
+                margin: 0 5%;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:20px;
+                opacity:0.80;
             }
 
         </style>
@@ -156,11 +164,15 @@
             </ul>
         </div>
 
+        <div class="info">
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+@{-}+${lastPost}+@{' in '}+${allPost}"></span>
+        </div>
+
         <div class="page">
-            <a th:if="${pageCount}>1" th:href="@{/?page=1}" class="pageActive">
+            <a th:if="${pageCount}>1" th:href="@{/}+${subject.urlEndpoint}+@{?page=1}" class="pageActive">
                 <i class="fa fa-angle-double-left" aria-hidden="true" ></i>
             </a>
-            <a th:if="${pageCount}>1" th:href="@{/?page=}+${pageCount-1}"  class="pageActive">
+            <a th:if="${pageCount}>1" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${pageCount-1}"  class="pageActive">
                 <i class="fa fa-angle-left" aria-hidden="true" ></i>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
@@ -170,10 +182,10 @@
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
             <span th:text="${pageCount}+@{/}+${totalPages}" style="font-size:30px;" class="page"></span>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/?page=}+${pageCount+1}"  class="pageActive">
+            <a th:if="${pageCount}<${totalPages}" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${pageCount+1}"  class="pageActive">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/?page=}+${totalPages}"  class="pageActive">
+            <a th:if="${pageCount}<${totalPages}" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${totalPages}"  class="pageActive">
                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">

@@ -19,4 +19,10 @@ public interface PostRepository extends PagingAndSortingRepository<Post,Integer>
 
     void deleteByTitle(String title);
 
+    @Query("SELECT COUNT(p) FROM Post p")
+    int getAllCount();
+
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.subject.name=?1")
+    int  getCountBySubject(String subjectName);
+
 }

@@ -43,10 +43,17 @@ public class MainController {
             int pageCountIndex=Parameters.parsePageCountIndex(page);
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
             Page<Post> postPage=postService.findAll(pageRequest);
+            //Control if exceed total page count.Redirect to last page count if exceeded
+            if(postPage.getNumberOfElements()==0){
+                return "redirect:/?page="+postPage.getTotalPages();
+            }
             model.addAttribute("subjects",subjectService.findAll());
             model.addAttribute("posts",postPage.toList());
             model.addAttribute("pageCount",pageCountIndex+1);
             model.addAttribute("totalPages",postPage.getTotalPages());
+            model.addAttribute("allPost",postService.getAllCount());
+            model.addAttribute("firstPost",pageCountIndex*ONE_PAGE_POST_COUNT+1);
+            model.addAttribute("lastPost",pageCountIndex*ONE_PAGE_POST_COUNT+postPage.getNumberOfElements());
             return "menu";
         } catch (ParsePageCountException e) {
             return "redirect:/";
@@ -66,14 +73,21 @@ public class MainController {
             }
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
             Page<Post> postPage=postService.findAllBySubject(subject,pageRequest);
+            //Control if exceed total page count.Redirect to last page count if exceeded
+            if(postPage.getNumberOfElements()==0){
+                return "redirect:/"+subjectUrl+"?page="+postPage.getTotalPages();
+            }
             model.addAttribute("subject",subject);
             model.addAttribute("subjects",subjectService.findAll());
-            List<Post> postList=postPage.toList();
+            model.addAttribute("posts",postPage.toList());
             model.addAttribute("pageCount",pageCountIndex+1);
             model.addAttribute("totalPages",postPage.getTotalPages());
+            model.addAttribute("allPost",postService.getCountBySubject(subject));
+            model.addAttribute("firstPost",pageCountIndex*ONE_PAGE_POST_COUNT+1);
+            model.addAttribute("lastPost",pageCountIndex*ONE_PAGE_POST_COUNT+postPage.getNumberOfElements());
             return "subject";
         } catch (ParsePageCountException e) {
-            return "redirect:/";
+            return "redirect:/"+subjectUrl;
         }
     }
 

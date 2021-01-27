@@ -56,4 +56,14 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteByTitle(title);
     }
 
+    @Override
+    public int getAllCount() {
+        return postRepository.getAllCount();
+    }
+
+    @Override
+    public int getCountBySubject(@NonNull Subject subject) {
+        return postRepository.getCountBySubject(Objects.requireNonNull(subject.getName()));
+    }
+
 }

@@ -15,5 +15,7 @@ public interface PostService {
     Post findBySubjectAndUrl(Subject subject,String url);
     Post findByTitle(String title);
     void deleteByTitle(String title);
+    int getAllCount();
+    int getCountBySubject(Subject subject);
 
 }
