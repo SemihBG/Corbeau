@@ -13,7 +13,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 

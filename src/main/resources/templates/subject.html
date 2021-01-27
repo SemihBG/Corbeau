@@ -166,6 +166,7 @@
 
         <div class="info">
             <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+@{-}+${lastPost}+@{' in '}+${allPost}"></span>
+            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+@{'. in '}+${allPost}"></span>
         </div>
 
         <div class="page">

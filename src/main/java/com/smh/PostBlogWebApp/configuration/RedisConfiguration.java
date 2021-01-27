@@ -14,8 +14,8 @@ public class RedisConfiguration {
     private final String hostname;
     private final int port;
 
-    public RedisConfiguration(@Value("${redis.hostname:localhost}") String hostname,
-                              @Value("${redis.port:6379}") int port) {
+    public RedisConfiguration(@Value("${spring.redis.host}") String hostname,
+                              @Value("${spring.redis.port}") int port) {
         this.hostname = hostname;
         this.port = port;
     }
