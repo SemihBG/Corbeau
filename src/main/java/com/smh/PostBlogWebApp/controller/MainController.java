@@ -7,12 +7,17 @@ import com.smh.PostBlogWebApp.service.ImageService;
 import com.smh.PostBlogWebApp.service.PostService;
 import com.smh.PostBlogWebApp.service.SubjectService;
 import com.smh.PostBlogWebApp.util.Images;
+import com.smh.PostBlogWebApp.util.Parameters;
+import com.smh.PostBlogWebApp.util.ParsePageCountException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -30,29 +35,43 @@ public class MainController {
     private ImageService imageService;
 
     @GetMapping
-    public String menu(Model model){
-        model.addAttribute("subjects",subjectService.findAll());
-        model.addAttribute("posts",postService.findAll());
-        return "menu";
+    public String menu(@RequestParam(value = "page",required = false,defaultValue = "1") String page, Model model){
+        try {
+            int pageCountIndex=Parameters.parsePageCountIndex(page);
+            PageRequest pageRequest=PageRequest.of(pageCountIndex, 10, Sort.by("modifiedDate").descending());
+            model.addAttribute("subjects",subjectService.findAll());
+            model.addAttribute("posts",postService.findAll(pageRequest).toList());
+            return "menu";
+        } catch (ParsePageCountException e) {
+            return "redirect:/";
+        }
     }
 
     @GetMapping("{subjectUrl}")
-    public String subject(@PathVariable("subjectUrl")String subjectUrl,
+    public String subject(@RequestParam(value = "page",required = false,defaultValue = "1") String page,
+                          @PathVariable("subjectUrl")String subjectUrl,
                           Model model){
-        Subject subject=subjectService.findByUrlEndpoint(subjectUrl);
-        if(subject==null){
+        try {
+            int pageCountIndex=Parameters.parsePageCountIndex(page);
+            Subject subject=subjectService.findByUrlEndpoint(subjectUrl);
+            //Redirect to menu, if there is no subject with given PathVariable
+            if(subject==null){
+                return "redirect:/";
+            }
+            PageRequest pageRequest=PageRequest.of(pageCountIndex, 7, Sort.by("modifiedDate").descending());
+            model.addAttribute("subject",subject);
+            model.addAttribute("subjects",subjectService.findAll());
+            List<Post> postList=postService.findAllBySubject(subject,pageRequest).toList();
+            model.addAttribute("posts",postList);
+            model.addAttribute("count",postList.size());
+            return "subject";
+        } catch (ParsePageCountException e) {
             return "redirect:/";
         }
-        model.addAttribute("subject",subject);
-        model.addAttribute("subjects",subjectService.findAll());
-        List<Post> postList=postService.findAllBySubject(subject);
-        model.addAttribute("posts",postList);
-        model.addAttribute("count",postList.size());
-        return "subject";
     }
 
     @GetMapping("{subjectUrl}/{postUrl}")
-    public String post(@PathVariable("subjectUrl")String subjectUrl,
+    public String post(@PathVariable("subjectUrl") String subjectUrl,
                        @PathVariable("postUrl")String postUrl,
                        Model model){
         Subject subject=subjectService.findByUrlEndpoint(subjectUrl);
@@ -89,5 +108,8 @@ public class MainController {
     public byte[] getIcon(){
         return Images.getIconImageContent();
     }
+
+
+
 
 }

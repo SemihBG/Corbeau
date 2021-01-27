@@ -9,7 +9,7 @@ public class GeneralControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e){
-        return e.getMessage();
+        return e.getClass()+" - "+e.getMessage();
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

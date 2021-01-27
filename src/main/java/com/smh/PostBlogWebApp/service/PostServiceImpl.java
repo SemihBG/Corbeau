@@ -5,6 +5,8 @@ import com.smh.PostBlogWebApp.entity.Subject;
 import com.smh.PostBlogWebApp.repository.PostRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +24,18 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Override
-    public Post save(Post post) {
-        return postRepository.save(Objects.requireNonNull(post));
+    public Post save(@NonNull Post post) {
+        return postRepository.save(post);
     }
 
     @Override
-    public List<Post> findAll() {
-        return StreamSupport.stream(postRepository.findAll().spliterator(),false).collect(Collectors.toList());
+    public Page<Post> findAll(@NonNull Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     @Override
-    public List<Post> findAllBySubject(Subject subject) {
-        return postRepository.findAllBySubject(Objects.requireNonNull(subject));
+    public Page<Post> findAllBySubject(@NonNull Subject subject,@NonNull Pageable pageable) {
+        return postRepository.findAllBySubject(subject,pageable);
     }
 
     @Nullable
@@ -44,14 +46,14 @@ public class PostServiceImpl implements PostService {
 
     @Nullable
     @Override
-    public Post findByTitle(String title) {
-        return postRepository.findByTitle(Objects.requireNonNull(title));
+    public Post findByTitle(@NonNull String title) {
+        return postRepository.findByTitle(title);
     }
 
     @Transactional
     @Override
-    public void deleteByTitle(String title) {
-        postRepository.deleteByTitle(Objects.requireNonNull(title));
+    public void deleteByTitle(@NonNull String title) {
+        postRepository.deleteByTitle(title);
     }
 
 }
