@@ -10,6 +10,7 @@ import com.smh.PostBlogWebApp.util.Images;
 import com.smh.PostBlogWebApp.util.Parameters;
 import com.smh.PostBlogWebApp.util.ParsePageCountException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
@@ -25,6 +26,8 @@ import java.util.List;
 @Controller
 public class MainController {
 
+    public static final int ONE_PAGE_POST_COUNT=7;
+
     @Autowired
     private SubjectService subjectService;
 
@@ -38,9 +41,12 @@ public class MainController {
     public String menu(@RequestParam(value = "page",required = false,defaultValue = "1") String page, Model model){
         try {
             int pageCountIndex=Parameters.parsePageCountIndex(page);
-            PageRequest pageRequest=PageRequest.of(pageCountIndex, 10, Sort.by("modifiedDate").descending());
+            PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
+            Page<Post> postPage=postService.findAll(pageRequest);
             model.addAttribute("subjects",subjectService.findAll());
-            model.addAttribute("posts",postService.findAll(pageRequest).toList());
+            model.addAttribute("posts",postPage.toList());
+            model.addAttribute("pageCount",pageCountIndex+1);
+            model.addAttribute("totalPages",postPage.getTotalPages());
             return "menu";
         } catch (ParsePageCountException e) {
             return "redirect:/";
@@ -58,12 +64,13 @@ public class MainController {
             if(subject==null){
                 return "redirect:/";
             }
-            PageRequest pageRequest=PageRequest.of(pageCountIndex, 7, Sort.by("modifiedDate").descending());
+            PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
+            Page<Post> postPage=postService.findAllBySubject(subject,pageRequest);
             model.addAttribute("subject",subject);
             model.addAttribute("subjects",subjectService.findAll());
-            List<Post> postList=postService.findAllBySubject(subject,pageRequest).toList();
-            model.addAttribute("posts",postList);
-            model.addAttribute("count",postList.size());
+            List<Post> postList=postPage.toList();
+            model.addAttribute("pageCount",pageCountIndex+1);
+            model.addAttribute("totalPages",postPage.getTotalPages());
             return "subject";
         } catch (ParsePageCountException e) {
             return "redirect:/";
