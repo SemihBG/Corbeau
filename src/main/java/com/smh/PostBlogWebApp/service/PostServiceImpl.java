@@ -33,7 +33,8 @@ public class PostServiceImpl implements PostService {
             @CachePut(cacheNames = CACHE_NAME,key="#post.title")
     },      evict = {
             @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
-            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true)
+            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_NAME,allEntries = true)
     })
     @Override
     public Post save(@NonNull Post post) {

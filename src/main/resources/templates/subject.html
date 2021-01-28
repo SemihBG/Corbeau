@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AppName</title>
+        <title th:text="${subject.name}"></title>
         <link rel="icon" th:href="@{/image/icon}">
         <style type="text/css">
 
@@ -157,7 +157,7 @@
                     <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
                         <div>
                             <span class="title" th:text="${post.title}"></span>
-                            <span class="date" th:text="${#dates.format(post.modifiedName, 'dd-MM-yyyy')}"></span>
+                            <span class="date" th:text="${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></span>
                         </div>
                     </a>
                 </li>
