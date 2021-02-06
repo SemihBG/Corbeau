@@ -44,6 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .httpBasic().and()
             .authorizeRequests()
                 .antMatchers("/authorized/**").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll().and()
             .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
