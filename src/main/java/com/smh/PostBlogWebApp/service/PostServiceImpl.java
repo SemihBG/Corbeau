@@ -19,6 +19,7 @@ import java.util.stream.StreamSupport;
 
 
 @Service
+
 public class PostServiceImpl implements PostService {
 
     private static final String CACHE_NAME="post";

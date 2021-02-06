@@ -1,5 +1,6 @@
 package com.smh.PostBlogWebApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Image implements Serializable {
     @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 
+    @JsonIgnore
     @Lob
     @Column(name="content",nullable = false)
     private byte[] content;

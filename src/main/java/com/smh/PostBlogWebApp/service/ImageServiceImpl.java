@@ -11,6 +11,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -20,6 +21,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Cacheable(cacheNames = CACHE_NAME)
+    @Override
+    public List<Image> findAll() {
+        return null;
+    }
 
     @CachePut(cacheNames = CACHE_NAME,key = "#image.urlEndpoint")
     @Override

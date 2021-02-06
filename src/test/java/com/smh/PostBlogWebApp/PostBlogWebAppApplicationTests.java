@@ -3,10 +3,10 @@ package com.smh.PostBlogWebApp;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class PostBlogWebAppApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
