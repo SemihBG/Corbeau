@@ -10,6 +10,7 @@ import com.smh.PostBlogWebApp.util.Images;
 import com.smh.PostBlogWebApp.util.Parameters;
 import com.smh.PostBlogWebApp.util.ParsePageCountException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,6 +41,7 @@ public class MainController {
 
     @GetMapping
     public String menu(@RequestParam(value = "page",required = false,defaultValue = "1") String page, Model model){
+
         try {
             int pageCountIndex=Parameters.parsePageCountIndex(page);
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
@@ -130,6 +132,5 @@ public class MainController {
     public byte[] getIcon(){
         return Images.getIconImageContent();
     }
-
 
 }

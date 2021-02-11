@@ -18,6 +18,8 @@ public class WebSecurityDevelopmentConfiguration extends WebSecurityConfigurerAd
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .anyRequest().permitAll();
+                    .anyRequest().permitAll()
+                    .and()
+                .exceptionHandling().accessDeniedHandler(new SimpleAccessDeniedHandler());
     }
 }
