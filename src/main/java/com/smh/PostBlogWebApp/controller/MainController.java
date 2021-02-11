@@ -114,6 +114,10 @@ public class MainController {
     @GetMapping(value="/image/{urlEndpoint}",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] getImage(@PathVariable("urlEndpoint") String urlEndpoint){
+        byte[] predefinedImageContent=null;
+        if((predefinedImageContent=Images.getPredefinedImage(urlEndpoint))!=null){
+            return predefinedImageContent;
+        }
         Image image=imageService.getByEndPoint(urlEndpoint);
         if(image!=null){
             return image.getContent();
@@ -121,16 +125,5 @@ public class MainController {
         return Images.getImageNotFoundImageContent();
     }
 
-    @GetMapping(value="image/logo",produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] getLogo(){
-        return Images.getLogoImageContent();
-    }
-
-    @GetMapping(value="/image/icon",produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] getIcon(){
-        return Images.getIconImageContent();
-    }
 
 }

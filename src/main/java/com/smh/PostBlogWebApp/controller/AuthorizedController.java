@@ -35,9 +35,7 @@ public class AuthorizedController {
             throw new NullPointerException("urlEndpoint and content cannot be null or empty");
         }
 
-        if(urlEndpoint.equals(Images.IMAGE_NOT_FOUND_IMAGE_NAME) ||
-                urlEndpoint.equals(Images.ICON_IMAGE_NAME) ||
-                urlEndpoint.equals(Images.LOGO_IMAGE_NAME)){
+        if(Images.contains(urlEndpoint)){
             throw new IllegalArgumentException("urlEndpoint is duplicated with predefined image names");
         }
 
