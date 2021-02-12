@@ -125,5 +125,18 @@ public class MainController {
         return Images.getImageNotFoundImageContent();
     }
 
+    @GetMapping("/s")
+    public String search(@RequestParam(required = false,defaultValue = "",value = "text") String text,Model model){
+        text=text.strip();
+        if(text.isEmpty()){
+            return "redirect:/";
+        }
+        List<Post> postList=postService.search(text);
+        model.addAttribute("text",text);
+        model.addAttribute("posts",postList);
+        model.addAttribute("subjects",subjectService.findAll());
+        return "search";
+    }
+
 
 }

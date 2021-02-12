@@ -25,4 +25,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post,Integer>
     @Query("SELECT COUNT(p) FROM Post p WHERE p.subject.name=?1")
     int  getCountBySubject(String subjectName);
 
+    @Query(value="SELECT * FROM posts WHERE MATCH (title) AGAINST (?1)",nativeQuery=true)
+    public List<Post> search(String searchText);
+
 }

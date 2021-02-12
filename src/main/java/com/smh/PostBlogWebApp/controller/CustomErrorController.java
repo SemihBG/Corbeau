@@ -1,6 +1,7 @@
 package com.smh.PostBlogWebApp.controller;
 
 import com.smh.PostBlogWebApp.exception.ErrorResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -24,8 +25,9 @@ public class CustomErrorController implements ErrorController {
     private final ErrorAttributes errorAttributes;
     private final boolean isDebug;
 
+    @Autowired
     public CustomErrorController(ErrorAttributes errorAttributes,
-                                 @Value("${debug}:false") String isDebug) {
+                                 @Value("${debug:false}") String isDebug) {
         this.errorAttributes = errorAttributes;
         this.isDebug=isDebug.equals("true");
     }

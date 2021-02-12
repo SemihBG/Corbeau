@@ -18,14 +18,16 @@ import java.io.IOException;
 @RequestMapping("/authorized")
 public class AuthorizedController {
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
+    private final SubjectService subjectService;
+    private final PostService postService;
 
     @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private PostService postService;
+    public AuthorizedController(ImageService imageService, SubjectService subjectService, PostService postService) {
+        this.imageService = imageService;
+        this.subjectService = subjectService;
+        this.postService = postService;
+    }
 
     @PutMapping(value="/image", consumes = {"multipart/form-data"},produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] saveImage(@RequestPart(value = "urlEndpoint") String urlEndpoint,

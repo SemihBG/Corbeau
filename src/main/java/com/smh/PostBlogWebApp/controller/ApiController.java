@@ -16,14 +16,16 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController {
 
-    @Autowired
-    private SubjectService subjectService;
+    private final SubjectService subjectService;
+    private final PostService postService;
+    private final ImageService imageService;
 
     @Autowired
-    private PostService postService;
-
-    @Autowired
-    private ImageService imageService;
+    public ApiController(SubjectService subjectService, PostService postService, ImageService imageService) {
+        this.subjectService = subjectService;
+        this.postService = postService;
+        this.imageService = imageService;
+    }
 
     @GetMapping("/post")
     public List<Post> listAllPosts(

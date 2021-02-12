@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <style type="text/css">
+
+        @media (min-width: 751px) {
+
+            span.title {
+                opacity: 85%;
+                font-size: 40px;
+                margin: 20px;
+            }
+
+            span.info {
+                opacity: 70%;
+                margin-right: 20px;
+            }
+
+            div.post-list{
+                margin: 50px;
+            }
+
+            span.page{
+                font-size: 40px;
+                opacity: 70%;
+            }
+
+            span.page-count{
+                font-size: 20px;
+                margin: 50px;
+                opacity: 85%;
+            }
+
+            svg{
+                width: 30px;
+                hwight: 30px;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+            span.title {
+                opacity: 85%;
+                font-size: 9px;
+                margin: 5px;
+            }
+
+            span.info {
+                opacity: 70%;
+                font-size: 7px;
+                margin-right: 5px;
+            }
+
+            div.post-list{
+                margin: 15px;
+            }
+
+            span.page{
+                font-size: 11px;
+                opacity: 70%;
+            }
+
+            span.page-count{
+                margin: 10px;
+                opacity: 85%;
+                font-size: 7px;
+            }
+
+            svg{
+                width: 9px;
+                hwight: 9px;
+            }
+
+        }
+
+        img.icon {
+            width:35px;
+            height:35px;
+            margin: 5px;
+        }
+
+        div.post {
+            color: black;
+        }
+        a.post {
+            text-decoration:none
+        }
+        a.post:after {
+            content: "";
+            display: block;
+            width: 0;
+            border-bottom: 1px solid;
+            margin: 0 auto;
+            transition:all 0.3s linear 0s;
+        }
+
+        a.post:hover:after {
+            width: 100%;
+        }
+
+        a.pageActive{
+            color: black;
+            text-decoration:none;
+            opacity: 85%;
+        }
+
+        a.pageInactive{
+            color: black;
+            text-decoration:none;
+            pointer-events: none;
+            opacity: 40%;
+        }
+
+        div.center{
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <img id="icon" class="icon" src="/image/icon-white" alt="icon">
+            <a class="navbar-brand" th:href="'/'" th:text="'Corbeau'"></a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" >
+                    <li th:each="subject:${subjects}" class="nav-item">
+                        <a class="nav-link" th:href="'/'+${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <h1 th:text="${text}"></h1>
+
+        <div class="post-list">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="post:${posts}">
+                    <a th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
+                        <div class="post">
+                            <span th:text="${post.title}" class="title"></span>
+                            <span th:text="'('+${post.subject.name}+'/'+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}+')'" class="info"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </body>
+
+</html>

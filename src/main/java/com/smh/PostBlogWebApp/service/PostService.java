@@ -17,5 +17,5 @@ public interface PostService {
     void deleteByTitle(String title);
     int getAllCount();
     int getCountBySubject(Subject subject);
-
+    List<Post> search(String searchText);
 }

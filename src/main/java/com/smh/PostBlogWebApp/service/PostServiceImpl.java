@@ -19,7 +19,6 @@ import java.util.stream.StreamSupport;
 
 
 @Service
-
 public class PostServiceImpl implements PostService {
 
     private static final String CACHE_NAME="post";
@@ -89,6 +88,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public int getCountBySubject(@NonNull Subject subject) {
         return postRepository.getCountBySubject(Objects.requireNonNull(subject.getName()));
+    }
+
+    @Override
+    public List<Post> search(@NonNull String searchText) throws IllegalArgumentException{
+        if(searchText.strip().isEmpty()){
+            throw new IllegalArgumentException("searchText cannot be blank or empty");
+        }
+        searchText=searchText.strip();
+        return postRepository.search(searchText);
     }
 
 }
