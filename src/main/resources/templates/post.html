@@ -3,35 +3,17 @@
 
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title th:text="${post.title}"></title>
-        <link rel="icon" th:href="@{/image/icon}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title th:text="${post.getTitle()}"></title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
         <style type="text/css">
 
-                #navbar ul {
-                    padding: 10px;
-                    list-style-type: none;
-                    text-align: center;
-                    background-color: #000;
-                }
-
-                #navbar ul li {
-                    display: inline;
-                    font-size: 20px;
-                }
-
-                #navbar ul li a {
-                    text-decoration: none;
-                    padding: .2em 1em;
-                    color: #fff;
-                    background-color: #000;
-                }
-
-                #navbar ul li a:hover {
-                    color: #000;
-                    background-color: #fff;
-                }
-
+            @media (min-width: 751px) {
 
                 h1{
                     font-family: 'Trebuchet MS', sans-serif;
@@ -48,16 +30,11 @@
                     margin-right: auto;
                     margin-bottom: 100px;
                 }
-
                 p {
                     font-size:19px;
                     font-family: Arial, Helvetica, sans-serif;
                     line-height: 150%;
                     opacity: 0.75;
-                }
-
-                code{
-                    font-size:17px;
                 }
 
                 h2{
@@ -75,37 +52,106 @@
                 }
 
                 div.date{
-                    margin: 0 15%;
+                    margin: 25px 15%;
                     font-family: Arial, Helvetica, sans-serif;
                     font-size:15px;
                     opacity:0.70;
                 }
 
-            </style>
+            }
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
+            @media (max-width: 750px) {
+                h1{
+                    font-family: 'Trebuchet MS', sans-serif;
+                    text-align:center;
+                    font-size:13px;
+                    font-weight: bold;
+                    margin-top:7px;
+                    margin-bottom:7px;
+                }
+                div.post{
+                    width: 70%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    margin-bottom: 25px;
+                }
+                p {
+                    font-size:9px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    line-height: 150%;
+                    opacity: 0.75;
+                }
+
+                h2{
+                    font-family: Georgia, serif;
+                    font-size:17px;
+                    font-weight: bold;
+                    opacity: 0.90;
+                }
+
+                h3{
+                    font-family: Georgia, serif;
+                    font-size:9px;
+                    font-weight: bold;
+                    opacity: 0.90;
+                }
+
+                div.date{
+                    margin: 10px 15%;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size:5px;
+                    opacity:0.70;
+                }
+
+                img{
+                    max-width:250px;
+                    max-height:250px;
+                }
+
+            }
+
+            img.icon {
+                width:35px;
+                height:35px;
+                margin: 5px;
+            }
+
+        </style>
 
     </head>
     <body>
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
 
-        <div id="navbar">
-            <ul>
-                <li><a th:href="@{/}"><i class="fa fa-home"></i></a></li>
-                <li th:each="subject:${subjects}"><a th:href="@{/}+${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
-            </ul>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <img id="icon" class="icon" src="/image/icon-green" alt="icon">
+            <a class="navbar-brand" th:href="'/'" th:text="'Corbeau'"></a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" >
+                    <li th:each="subject:${subjects}" class="nav-item">
+                        <a class="nav-link" th:href="'/'+${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
 
         <div class="date">
-            <div th:text="@{'Created : '}+${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></div>
-            <div th:if="${post.createdDate}!=${post.modifiedDate}" th:text="@{'Modified : '}+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></div>
+            <div th:text="'Created : '+${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></div>
+            <div th:if="${post.createdDate}!=${post.modifiedDate}" th:text="'Modified : '+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></div>
         </div>
 
         <h1 th:text="${post.title}"></h1>
-
         <div class="post" th:utext="${post.content}"></div>
 
     </body>

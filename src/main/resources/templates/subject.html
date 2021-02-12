@@ -3,190 +3,221 @@
 
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title th:text="${subject.name}"></title>
-        <link rel="icon" th:href="@{/image/icon}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title th:text="${subject.getName()}"></title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <style type="text/css">
 
-            #navbar ul {
-                padding: 10px;
-                list-style-type: none;
-                text-align: center;
-                background-color: #000;
+            @media (min-width: 751px) {
+
+                span.title {
+                    opacity: 85%;
+                    font-size: 40px;
+                    margin: 20px;
+                }
+
+                span.info {
+                    opacity: 70%;
+                    margin-right: 20px;
+                }
+
+                div.post-list{
+                    margin: 50px;
+                }
+
+                span.page{
+                    font-size: 40px;
+                    opacity: 70%;
+                }
+
+                span.page-count{
+                    font-size: 20px;
+                    margin: 50px;
+                    opacity: 85%;
+                }
+
+                svg{
+                    width: 30px;
+                    hwight: 30px;
+                }
+
             }
 
-            #navbar ul li {
-                display: inline;
-                font-size: 20px;
+            @media (max-width: 750px) {
+                span.title {
+                    opacity: 85%;
+                    font-size: 9px;
+                    margin: 5px;
+                }
+
+                span.info {
+                    opacity: 70%;
+                    font-size: 7px;
+                    margin-right: 5px;
+                }
+
+                div.post-list{
+                    margin: 15px;
+                }
+
+                span.page{
+                    font-size: 11px;
+                    opacity: 70%;
+                }
+
+                span.page-count{
+                    margin: 10px;
+                    opacity: 85%;
+                    font-size: 7px;
+                }
+
+                svg{
+                    width: 9px;
+                    hwight: 9px;
+                }
+
             }
 
-            #navbar ul li a {
-                text-decoration: none;
-                padding: .2em 1em;
-                color: #fff;
-                background-color: #000;
+            img.icon {
+                width:35px;
+                height:35px;
+                margin: 5px;
             }
 
-            #navbar ul li a:hover {
-                color: #000;
-                background-color: #fff;
+            div.post {
+                color: black;
             }
-
-            h1{
-                font-family: 'Trebuchet MS', sans-serif;
-                text-align:center;
-                font-size:55px;
-                font-weight: bold;
-                margin-top:25px;
-                margin-bottom:25px;
+            a.post {
+                text-decoration:none
             }
-
-            #post ul {
-                list-style-type: none;
-                margin: 75px 5% 75px 5%;
-                padding: 0;
-            }
-
-            #post li {
-                font-size: 30px;
-                border-bottom: 3px solid #ccc;
-            }
-
-            #post li:last-child {
-                border: none;
-            }
-
-            #post li a {
-                text-decoration: none;
-                color: #000;
-
-                -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-                -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-                -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-                -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-                transition: font-size 0.3s ease, background-color 0.3s ease;
+            a.post:after {
+                content: "";
                 display: block;
-                width:100%;
+                width: 0;
+                border-bottom: 1px solid;
+                margin: 0 auto;
+                transition:all 0.3s linear 0s;
             }
 
-            #post li a:hover {
-                background: #f6f6f6;
-                font-size: 50px;
-            }
-
-            span.title {
-                display: inline-block;
-                width:80%;
-                font-family: Arial, Helvetica, sans-serif;
-                opacity: 0.80;
-            }
-
-            span.date {
-                display: inline-block;
-                width:10%;
-                font-size: 20px;
-                font-family: Arial, Helvetica, sans-serif;
-                opacity: 0.70;
-            }
-
-            div.page {
-                padding: 10px;
-                text-align: center;
+            a.post:hover:after {
+                width: 100%;
             }
 
             a.pageActive{
-                margin: 0px 10px;
-                text-decoration: none;
-                font-size:30px;
-                opacity:0.80;
-                color: #000;
+                color: black;
+                text-decoration:none;
+                opacity: 85%;
             }
 
             a.pageInactive{
-                margin: 0px 10px;
-                text-decoration: none;
-                font-size:30px;
-                color: #000;
+                color: black;
+                text-decoration:none;
                 pointer-events: none;
-                opacity: 0.40;
+                opacity: 40%;
             }
 
-            span.page{
-                font-family: Arial, Helvetica, sans-serif;
-                font-size:25px;
-                opacity:0.80
-            }
-
-            div.info{
-                margin: 0 5%;
-                font-family: Arial, Helvetica, sans-serif;
-                font-size:20px;
-                opacity:0.80;
+            div.center{
+                text-align: center;
             }
 
         </style>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     </head>
+
+
 
     <body>
 
-        <div id="navbar">
-            <ul>
-                <li><a th:href="@{/}"><i class="fa fa-home"></i></a></li>
-                <li th:each="subject:${subjects}"><a th:href="${subject.urlEndpoint}" th:text="${subject.name}"></a></li>
-            </ul>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <img id="icon" class="icon" src="/image/icon-white" alt="icon">
+            <a class="navbar-brand" th:href="'/'" th:text="'Corbeau'"></a>
 
-        <h1 th:text="${subject.name}"></h1>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div id="post">
-            <ul>
-                <li th:each="post:${posts}">
-                    <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
-                        <div>
-                            <span class="title" th:text="${post.title}"></span>
-                            <span class="date" th:text="${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></span>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" >
+                    <li th:each="sbj:${subjects}" class="nav-item">
+                        <a class="nav-link active" th:if="${subject.getId()}==${sbj.getId()}" th:href="'/'+${sbj.getUrlEndpoint()}" th:text="${sbj.getName()}"></a>
+                        <a class="nav-link" th:unless="${subject.getId()}==${sbj.getId()}" th:href="'/'+${sbj.getUrlEndpoint()}" th:text="${sbj.getName()}"></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <div class="post-list">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="post:${posts}">
+                    <a th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
+                        <div class="post">
+                            <span th:text="${post.title}" class="title"></span>
+                            <span th:text="'('+${post.subject.name}+'/'+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}+')'" class="info"></span>
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div class="info">
-            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+@{-}+${lastPost}+@{' in '}+${allPost}"></span>
-            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+@{'. in '}+${allPost}"></span>
+        <div>
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}" class="page-count"></span>
+            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}" class="page-count"></span>
         </div>
 
-        <div class="page">
-            <a th:if="${pageCount}>1" th:href="@{/}+${subject.urlEndpoint}+@{?page=1}" class="pageActive">
-                <i class="fa fa-angle-double-left" aria-hidden="true" ></i>
+        <div class="center">
+            <a th:if="${pageCount}>1" th:href="'?page=1'" class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
-            <a th:if="${pageCount}>1" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${pageCount-1}"  class="pageActive">
-                <i class="fa fa-angle-left" aria-hidden="true" ></i>
+            <a th:if="${pageCount}>1" th:href="'?page='+${pageCount}-1"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-double-left" aria-hidden="true" ></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
-            <span th:text="${pageCount}+@{/}+${totalPages}" style="font-size:30px;" class="page"></span>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${pageCount+1}"  class="pageActive">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span th:text="${pageCount}+'/'+${totalPages}" class="page"></span>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${pageCount}+1"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/}+${subject.urlEndpoint}+@{?page=}+${totalPages}"  class="pageActive">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${totalPages}"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
         </div>
-
     </body>
 
 </html>

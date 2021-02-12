@@ -9,8 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <style>
-
+        <style type="text/css">
 
             @media (min-width: 751px) {
 
@@ -29,6 +28,22 @@
                     margin: 50px;
                 }
 
+                span.page{
+                    font-size: 40px;
+                    opacity: 70%;
+                }
+
+                span.page-count{
+                    font-size: 20px;
+                    margin: 50px;
+                    opacity: 85%;
+                }
+
+                svg{
+                    width: 30px;
+                    hwight: 30px;
+                }
+
             }
 
             @media (max-width: 750px) {
@@ -40,7 +55,7 @@
 
                 span.info {
                     opacity: 70%;
-                    font-size: 5px;
+                    font-size: 7px;
                     margin-right: 5px;
                 }
 
@@ -48,23 +63,34 @@
                     margin: 15px;
                 }
 
+                span.page{
+                    font-size: 11px;
+                    opacity: 70%;
+                }
+
+                span.page-count{
+                    margin: 10px;
+                    opacity: 85%;
+                    font-size: 7px;
+                }
+
+                svg{
+                    width: 9px;
+                    hwight: 9px;
+                }
+
             }
 
             img.icon {
                 width:35px;
                 height:35px;
-                content:url("http://localhost:8080/image/icon-white");
-                margin: 10px;
-            }
-            img.icon:hover{
-                content:url("http://localhost:8080/image/icon-green");
+                margin: 5px;
             }
 
             div.post {
                 color: black;
             }
             a.post {
-                display: inline-block;
                 text-decoration:none
             }
             a.post:after {
@@ -81,33 +107,30 @@
             }
 
             a.pageActive{
+                color: black;
                 text-decoration:none;
+                opacity: 85%;
             }
 
             a.pageInactive{
+                color: black;
                 text-decoration:none;
                 pointer-events: none;
+                opacity: 40%;
+            }
+
+            div.center{
+                text-align: center;
             }
 
         </style>
-
-        <script type="text/javascript">
-            window.onload = function() {
-                document.getElementById('icon').addEventListener('click', function (e) {
-                    var img = document.createElement('img');
-                    img.setAttribute('src', 'http://localhost:8080');
-                    e.target.appendChild(img);
-                });
-
-            };
-        </script>
 
     </head>
 
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <img id="icon" class="icon" alt="icon">
+            <img id="icon" class="icon" src="/image/icon-green" alt="icon">
             <a class="navbar-brand" th:href="'/'" th:text="'Corbeau'"></a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -141,37 +164,55 @@
         </div>
 
         <div>
-            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}"></span>
-            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}"></span>
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}" class="page-count"></span>
+            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}" class="page-count"></span>
         </div>
 
-        <i class="bi bi-chevron-right">asdas</i>
-
-        <div>
+        <div class="center">
             <a th:if="${pageCount}>1" th:href="'?page=1'" class="pageActive">
-                <i class="bi bi-chevron-double-left"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
             <a th:if="${pageCount}>1" th:href="'?page='+${pageCount}-1"  class="pageActive">
-                <i class="bi bi-chevron-left"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="bi bi-chevron-double-left"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="bi bi-chevron-left"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
             </a>
-            <span th:text="${pageCount}+'/'+${totalPages}" style="font-size:30px;" class="page"></span>
+            <span th:text="${pageCount}+'/'+${totalPages}" class="page"></span>
             <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${pageCount}+1"  class="pageActive">
-                <i class="bi bi-chevron-right"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
             <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${totalPages}"  class="pageActive">
-                <i class="bi bi-chevron-double-right"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="bi bi-chevron-right"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="bi bi-chevron-double-right"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
             </a>
         </div>
 
