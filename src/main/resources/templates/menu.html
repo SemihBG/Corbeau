@@ -10,6 +10,46 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <style>
+
+
+            @media (min-width: 751px) {
+
+                span.title {
+                    opacity: 85%;
+                    font-size: 40px;
+                    margin: 20px;
+                }
+
+                span.info {
+                    opacity: 70%;
+                    margin-right: 20px;
+                }
+
+                div.post-list{
+                    margin: 50px;
+                }
+
+            }
+
+            @media (max-width: 750px) {
+                span.title {
+                    opacity: 85%;
+                    font-size: 9px;
+                    margin: 5px;
+                }
+
+                span.info {
+                    opacity: 70%;
+                    font-size: 5px;
+                    margin-right: 5px;
+                }
+
+                div.post-list{
+                    margin: 15px;
+                }
+
+            }
+
             img.icon {
                 width:35px;
                 height:35px;
@@ -19,41 +59,67 @@
             img.icon:hover{
                 content:url("http://localhost:8080/image/icon-green");
             }
+
+            div.post {
+                color: black;
+            }
+            a.post {
+                display: inline-block;
+                text-decoration:none
+            }
+            a.post:after {
+                content: "";
+                display: block;
+                width: 0;
+                border-bottom: 1px solid;
+                margin: 0 auto;
+                transition:all 0.3s linear 0s;
+            }
+
+            a.post:hover:after {
+                width: 100%;
+            }
+
+            a.pageActive{
+                text-decoration:none;
+            }
+
+            a.pageInactive{
+                text-decoration:none;
+                pointer-events: none;
+            }
+
         </style>
+
+        <script type="text/javascript">
+            window.onload = function() {
+                document.getElementById('icon').addEventListener('click', function (e) {
+                    var img = document.createElement('img');
+                    img.setAttribute('src', 'http://localhost:8080');
+                    e.target.appendChild(img);
+                });
+
+            };
+        </script>
+
     </head>
 
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" th:href="'/'">Corbeau</a>
+            <img id="icon" class="icon" alt="icon">
+            <a class="navbar-brand" th:href="'/'" th:text="'Corbeau'"></a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Disabled</a>
+                <ul class="navbar-nav mr-auto" >
+                    <li th:each="subject:${subjects}" class="nav-item">
+                        <a class="nav-link" th:href="'/'+${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
                     </li>
                 </ul>
-                <img class="icon my-lg-0" alt="icon">
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -61,50 +127,51 @@
             </div>
         </nav>
 
-        <div id="post">
-            <ul>
-                <li th:each="post:${posts}">
-                    <a th:href="${post.subject.urlEndpoint}+@{/}+${post.urlEndpoint}">
-                        <div>
-                            <span class="subject" th:text="${post.subject.name}"></span>
-                            <span class="title" th:text="${post.title}"></span>
-                            <span class="date" th:text="${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></span>
+        <div class="post-list">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="post:${posts}">
+                    <a th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
+                        <div class="post">
+                            <span th:text="${post.title}" class="title"></span>
+                            <span th:text="'('+${post.subject.name}+'/'+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}+')'" class="info"></span>
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div class="info">
-            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+@{-}+${lastPost}+@{' in '}+${allPost}"></span>
-            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+@{'. in '}+${allPost}"></span>
+        <div>
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}"></span>
+            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}"></span>
         </div>
 
-        <div class="page">
-            <a th:if="${pageCount}>1" th:href="@{/?page=1}" class="pageActive">
-                <i class="fa fa-angle-double-left" aria-hidden="true" ></i>
+        <i class="bi bi-chevron-right">asdas</i>
+
+        <div>
+            <a th:if="${pageCount}>1" th:href="'?page=1'" class="pageActive">
+                <i class="bi bi-chevron-double-left"></i>
             </a>
-            <a th:if="${pageCount}>1" th:href="@{/?page=}+${pageCount-1}"  class="pageActive">
-                <i class="fa fa-angle-left" aria-hidden="true" ></i>
+            <a th:if="${pageCount}>1" th:href="'?page='+${pageCount}-1"  class="pageActive">
+                <i class="bi bi-chevron-left"></i>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-double-left" aria-hidden="true" ></i>
+                <i class="bi bi-chevron-double-left"></i>
             </a>
             <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                <i class="bi bi-chevron-left"></i>
             </a>
-            <span th:text="${pageCount}+@{/}+${totalPages}" style="font-size:30px;" class="page"></span>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/?page=}+${pageCount+1}"  class="pageActive">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span th:text="${pageCount}+'/'+${totalPages}" style="font-size:30px;" class="page"></span>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${pageCount}+1"  class="pageActive">
+                <i class="bi bi-chevron-right"></i>
             </a>
-            <a th:if="${pageCount}<${totalPages}" th:href="@{/?page=}+${totalPages}"  class="pageActive">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            </a>
-            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${totalPages}"  class="pageActive">
+                <i class="bi bi-chevron-double-right"></i>
             </a>
             <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                <i class="bi bi-chevron-right"></i>
+            </a>
+            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
+                <i class="bi bi-chevron-double-right"></i>
             </a>
         </div>
 
