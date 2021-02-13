@@ -25,7 +25,7 @@
             }
 
             div.post-list{
-                margin: 50px;
+                margin: 20px;
             }
 
             span.page{
@@ -44,6 +44,18 @@
                 hwight: 30px;
             }
 
+            h1.text{
+                margin: 5px;
+                font-size: 30px;
+                text-align: center;
+            }
+
+            div.zeroResult{
+                text-align: center;
+                margin: 25px;
+                font-size: 20px;
+            }
+
         }
 
         @media (max-width: 750px) {
@@ -60,7 +72,7 @@
             }
 
             div.post-list{
-                margin: 15px;
+                margin: 5px;
             }
 
             span.page{
@@ -76,7 +88,19 @@
 
             svg{
                 width: 9px;
-                hwight: 9px;
+                height: 9px;
+            }
+
+            h1.text{
+                margin: 5px;
+                font-size: 15px;
+                text-align: center;
+            }
+
+            div.zeroResult{
+                text-align: center;
+                margin: 10px;
+                font-size: 9px;
             }
 
         }
@@ -143,19 +167,19 @@
                         <a class="nav-link" th:href="'/'+${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form th:action="'/s'" th:object="${text}" method="get" class="form-inline my-2 my-lg-0">
+                    <input th:name="'text'" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
         </nav>
 
-        <h1 th:text="${text}"></h1>
+        <h1 th:text="'Search : '+${current_text}" class="text"></h1>
 
         <div class="post-list">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item" th:each="post:${posts}">
-                    <a th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
+                    <a th:href="'/'+${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
                         <div class="post">
                             <span th:text="${post.title}" class="title"></span>
                             <span th:text="'('+${post.subject.name}+'/'+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}+')'" class="info"></span>
@@ -164,6 +188,64 @@
                 </li>
             </ul>
         </div>
+
+        <div th:if="${allPost}>0">
+            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}" class="page-count"></span>
+            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}" class="page-count"></span>
+        </div>
+
+        <div th:unless="${allPost}>0" class="zeroResult">
+            <span>No result found</span>
+        </div>
+
+        <div class="center" th:if="${totalPages}>1">
+            <a th:if="${pageCount}>1" th:href="'?text='+${current_text}+'&page=1'" class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+            <a th:if="${pageCount}>1" th:href="'?text='+${current_text}+'&page='+(${pageCount}-1)"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+            <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+            <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+            <span th:text="${pageCount}+'/'+${totalPages}" class="page"></span>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?text='+${current_text}+'&page='+${pageCount+1}"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </a>
+            <a th:if="${pageCount}<${totalPages}" th:href="'?text='+${current_text}+'&page='+${totalPages}"  class="pageActive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </a>
+            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </a>
+            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </a>
+        </div>
+
 
     </body>
 

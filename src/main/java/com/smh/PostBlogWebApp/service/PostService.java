@@ -2,10 +2,11 @@ package com.smh.PostBlogWebApp.service;
 
 import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
+import com.smh.PostBlogWebApp.util.search.SearchPage;
+import com.smh.PostBlogWebApp.util.search.SearchPageRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface PostService {
 
@@ -17,5 +18,7 @@ public interface PostService {
     void deleteByTitle(String title);
     int getAllCount();
     int getCountBySubject(Subject subject);
-    List<Post> search(String searchText);
+    SearchPage<Post> search(String searchText, SearchPageRequest searchPageRequest);
+    int searchCount(String searchText);
+
 }

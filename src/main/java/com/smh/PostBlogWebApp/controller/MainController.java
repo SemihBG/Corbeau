@@ -6,42 +6,37 @@ import com.smh.PostBlogWebApp.entity.Subject;
 import com.smh.PostBlogWebApp.service.ImageService;
 import com.smh.PostBlogWebApp.service.PostService;
 import com.smh.PostBlogWebApp.service.SubjectService;
-import com.smh.PostBlogWebApp.util.Images;
-import com.smh.PostBlogWebApp.util.Parameters;
-import com.smh.PostBlogWebApp.util.ParsePageCountException;
+import com.smh.PostBlogWebApp.util.*;
+import com.smh.PostBlogWebApp.util.search.PageAdapter;
+import com.smh.PostBlogWebApp.util.search.SearchPage;
+import com.smh.PostBlogWebApp.util.search.SearchPageRequest;
+import com.smh.PostBlogWebApp.util.search.SearchText;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
 
-    public static final int ONE_PAGE_POST_COUNT=7;
+    public static final int ONE_PAGE_POST_COUNT=5;
+
+    private final SubjectService subjectService;
+    private final PostService postService;
+    private final ImageService imageService;
 
     @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private PostService postService;
-
-    @Autowired
-    private ImageService imageService;
+    public MainController(SubjectService subjectService, PostService postService, ImageService imageService) {
+        this.subjectService = subjectService;
+        this.postService = postService;
+        this.imageService = imageService;
+    }
 
     @GetMapping
     public String menu(@RequestParam(value = "page",required = false,defaultValue = "1") String page, Model model){
-
         try {
             int pageCountIndex=Parameters.parsePageCountIndex(page);
             PageRequest pageRequest=PageRequest.of(pageCountIndex, ONE_PAGE_POST_COUNT, Sort.by("modifiedDate").descending());
@@ -50,13 +45,8 @@ public class MainController {
             if(pageCountIndex!=0 && postPage.getNumberOfElements()==0){
                 return "redirect:/?page="+postPage.getTotalPages();
             }
-            model.addAttribute("subjects",subjectService.findAll());
-            model.addAttribute("posts",postPage.toList());
-            model.addAttribute("pageCount",pageCountIndex+1);
-            model.addAttribute("totalPages",postPage.getTotalPages());
-            model.addAttribute("allPost",postService.getAllCount());
-            model.addAttribute("firstPost",pageCountIndex*ONE_PAGE_POST_COUNT+1);
-            model.addAttribute("lastPost",pageCountIndex*ONE_PAGE_POST_COUNT+postPage.getNumberOfElements());
+            addPageDataToModel(model,postPage,pageRequest);
+            addRequiredDataToModel(model);
             return "menu";
         } catch (ParsePageCountException e) {
             return "redirect:/";
@@ -80,14 +70,9 @@ public class MainController {
             if(pageCountIndex!=0 && postPage.getNumberOfElements()==0){
                 return "redirect:/"+subjectUrl+"?page="+postPage.getTotalPages();
             }
+            addPageDataToModel(model,postPage,pageRequest);
             model.addAttribute("subject",subject);
-            model.addAttribute("subjects",subjectService.findAll());
-            model.addAttribute("posts",postPage.toList());
-            model.addAttribute("pageCount",pageCountIndex+1);
-            model.addAttribute("totalPages",postPage.getTotalPages());
-            model.addAttribute("allPost",postService.getCountBySubject(subject));
-            model.addAttribute("firstPost",pageCountIndex*ONE_PAGE_POST_COUNT+1);
-            model.addAttribute("lastPost",pageCountIndex*ONE_PAGE_POST_COUNT+postPage.getNumberOfElements());
+            addRequiredDataToModel(model);
             return "subject";
         } catch (ParsePageCountException e) {
             return "redirect:/"+subjectUrl;
@@ -106,8 +91,8 @@ public class MainController {
         if(post==null){
             return "redirect:/"+subjectUrl;
         }
-        model.addAttribute("subjects",subjectService.findAll());
         model.addAttribute("post",post);
+        addRequiredDataToModel(model);
         return "post";
     }
 
@@ -126,17 +111,49 @@ public class MainController {
     }
 
     @GetMapping("/s")
-    public String search(@RequestParam(required = false,defaultValue = "",value = "text") String text,Model model){
-        text=text.strip();
-        if(text.isEmpty()){
-            return "redirect:/";
+    public String search(@RequestParam(value = "text",required = false,defaultValue = "") String text,
+                         @RequestParam(value = "page",required = false,defaultValue = "1") String page,
+                         Model model){
+
+        try{
+            int pageCountIndex=Parameters.parsePageCountIndex(page);
+            text=text.strip();
+            if(text.isEmpty()){
+                return "redirect:/";
+            }
+            SearchPageRequest searchPageRequest=SearchPageRequest.of(pageCountIndex,ONE_PAGE_POST_COUNT);
+            SearchPage<Post> postSearchPage=postService.search(text, searchPageRequest);
+            PageAdapter<Post> pageAdapter=PageAdapter.of(postSearchPage);
+            //Control if exceed total page count.Redirect to last page count if exceeded
+            if(pageCountIndex!=0 && pageAdapter.getNumberOfElements()==0){
+                return "redirect:/s/?text="+text+"&page="+pageAdapter.getTotalPages();
+            }
+            model.addAttribute("current_text",text);
+            addPageDataToModel(model, pageAdapter,searchPageRequest);
+            addRequiredDataToModel(model);
+            return "search";
+        }catch (ParsePageCountException ignore){
+            return "redirect:/s/?text="+text;
         }
-        List<Post> postList=postService.search(text);
-        model.addAttribute("text",text);
-        model.addAttribute("posts",postList);
-        model.addAttribute("subjects",subjectService.findAll());
-        return "search";
+
     }
+
+    private void addRequiredDataToModel(@NonNull Model model){
+        model.addAttribute("subjects",subjectService.findAll());
+        model.addAttribute("text", SearchText.empty());
+    }
+
+    private void addPageDataToModel(@NonNull Model model, @NonNull Page page,@NonNull PageRequest pageRequest){
+        model.addAttribute("pageCount",pageRequest.getPageNumber()+1);
+        model.addAttribute("totalPages",page.getTotalPages());
+        model.addAttribute("posts",page.toList());
+        model.addAttribute("firstPost",pageRequest.getPageNumber()*ONE_PAGE_POST_COUNT+1);
+        model.addAttribute("lastPost",pageRequest.getPageNumber()*ONE_PAGE_POST_COUNT+
+                page.getNumberOfElements());
+        model.addAttribute("allPost",page.getTotalElements());
+
+    }
+
 
 
 }

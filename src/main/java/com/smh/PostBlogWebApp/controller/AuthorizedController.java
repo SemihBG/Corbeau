@@ -100,6 +100,10 @@ public class AuthorizedController {
     public String saveSubject(@RequestPart("name") String name,
                               @RequestPart("urlEndpoint") String urlEndpoint){
 
+        if(name.equals("s")){
+            throw new IllegalArgumentException("Subject name cannot be 's'");
+        }
+
         if(name==null || urlEndpoint==null || name.length()==0 || urlEndpoint.length()==0){
             throw new NullPointerException("name and urlEndpoint cannot be null or empty");
         }

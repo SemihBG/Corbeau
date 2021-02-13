@@ -3,19 +3,19 @@ package com.smh.PostBlogWebApp.service;
 import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
 import com.smh.PostBlogWebApp.repository.PostRepository;
+import com.smh.PostBlogWebApp.util.search.SearchPage;
+import com.smh.PostBlogWebApp.util.search.SearchPageRequest;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @Service
@@ -24,9 +24,14 @@ public class PostServiceImpl implements PostService {
     private static final String CACHE_NAME="post";
     private static final String CACHE_ALL_NAME="postAll";
     private static final String CACHE_COUNT_NAME="postCount";
+    private static final String CACHE_SEARCH_NAME="search";
+
+    private final PostRepository postRepository;
 
     @Autowired
-    private PostRepository postRepository;
+    public PostServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Caching(put = {
             @CachePut(cacheNames = CACHE_NAME,key="#post.urlEndpoint"),
@@ -34,7 +39,8 @@ public class PostServiceImpl implements PostService {
     },      evict = {
             @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
             @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true),
-            @CacheEvict(cacheNames = CACHE_NAME,allEntries = true)
+            @CacheEvict(cacheNames = CACHE_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_SEARCH_NAME,allEntries = true)
     })
     @Override
     public Post save(@NonNull Post post) {
@@ -70,7 +76,8 @@ public class PostServiceImpl implements PostService {
     @Caching(evict = {
             @CacheEvict(cacheNames = CACHE_NAME,allEntries = true),
             @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
-            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true)
+            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_SEARCH_NAME,allEntries = true)
     })
     @Transactional
     @Override
@@ -90,13 +97,25 @@ public class PostServiceImpl implements PostService {
         return postRepository.getCountBySubject(Objects.requireNonNull(subject.getName()));
     }
 
+    @Cacheable(cacheNames = CACHE_SEARCH_NAME)
     @Override
-    public List<Post> search(@NonNull String searchText) throws IllegalArgumentException{
-        if(searchText.strip().isEmpty()){
+    public SearchPage<Post> search(@NonNull String searchText,
+                             @NonNull SearchPageRequest searchPageRequest) throws IllegalArgumentException{
+        searchText=searchText.strip();
+        if(searchText.isEmpty()){
             throw new IllegalArgumentException("searchText cannot be blank or empty");
         }
-        searchText=searchText.strip();
-        return postRepository.search(searchText);
+
+        return new SearchPage<>(postRepository.search
+                (searchText,searchPageRequest.from(),searchPageRequest.to()),
+                searchPageRequest,searchCount(searchText));
+
+    }
+
+    @Cacheable(cacheNames = CACHE_SEARCH_NAME)
+    @Override
+    public int searchCount(@NonNull String searchText) {
+        return postRepository.searchCount(searchText);
     }
 
 }
