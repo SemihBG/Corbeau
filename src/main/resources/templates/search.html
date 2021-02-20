@@ -228,7 +228,6 @@
 </head>
 
     <body>
-
         <div class="nav" id="nav">
             <a th:href="'/'" th:text="Home"></a>
             <a th:each="subject:${subjects}" th:href="${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
@@ -236,16 +235,13 @@
                 <i class="fas fa-caret-left"></i>
             </a>
         </div>
-
         <div class="search">
             <form class="search" method="get" action="/s">
                 <input type="text" placeholder="PostTitle..." name="text">
                 <button type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>
-
         <h1 th:text="'Search : '+${current_text}" class="search"></h1>
-
         <div class="post-list">
             <a th:each="post:${posts}" th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
                 <div class="post">
