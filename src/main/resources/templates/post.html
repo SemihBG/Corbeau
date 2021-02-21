@@ -9,7 +9,7 @@
         <script src="https://kit.fontawesome.com/a393c27a2e.js" crossorigin="anonymous"></script>
         <style type="text/css">
 
-            @media (min-width: 751px) {
+            @media (min-width: 600px) {
 
                 h1{
                     font-family: 'Trebuchet MS', sans-serif;
@@ -55,13 +55,17 @@
                     opacity:0.70;
                 }
 
+                pre{
+                    font-size: 17px;
+                }
+
             }
 
-            @media (max-width: 750px) {
+            @media (max-width: 600px) {
                 h1{
                     font-family: 'Trebuchet MS', sans-serif;
                     text-align:center;
-                    font-size:13px;
+                    font-size:17px;
                     font-weight: bold;
                     margin-top:7px;
                     margin-bottom:7px;
@@ -96,7 +100,7 @@
                 div.date{
                     margin: 10px 15%;
                     font-family: Arial, Helvetica, sans-serif;
-                    font-size:5px;
+                    font-size:7px;
                     opacity:0.70;
                 }
 
@@ -122,9 +126,11 @@
                     text-align: left;
                 }
 
+                pre{
+                    font-size: 7px;
+                }
 
             }
-
 
             .nav {
                 overflow: hidden;
@@ -157,6 +163,10 @@
                 display: none;
             }
 
+            body {
+                margin:0
+            }
+
         </style>
 
     </head>
@@ -177,6 +187,8 @@
         <div class="date">
             <div th:text="'Created : '+${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></div>
             <div th:if="${post.createdDate}!=${post.modifiedDate}" th:text="'Modified : '+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></div>
+            <div th:text="'View Count : '+${post.getViewCount()}"></div>
+            <div th:text="It is not live data,reloaded in one hour"></div>
         </div>
 
         <h1 th:text="${post.title}"></h1>
@@ -184,11 +196,11 @@
 
         <script>
             function myFunction() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
+                var x = document.getElementById("nav");
+                if (x.className === "nav") {
                     x.className += " responsive";
                 } else {
-                    x.className = "topnav";
+                    x.className = "nav";
                 }
             }
         </script>
