@@ -1,13 +1,10 @@
 package com.smh.PostBlogWebApp.util.search;
 
 import lombok.NonNull;
-import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 public class SearchPage<T> implements Serializable {
 

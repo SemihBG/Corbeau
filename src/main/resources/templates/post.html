@@ -188,7 +188,7 @@
             <div th:text="'Created : '+${#dates.format(post.createdDate, 'dd-MM-yyyy')}"></div>
             <div th:if="${post.createdDate}!=${post.modifiedDate}" th:text="'Modified : '+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}"></div>
             <div th:text="'View Count : '+${post.getViewCount()}"></div>
-            <div th:text="It is not live data,reloaded in one hour"></div>
+            <div th:text="'It is not live data,reloaded in one hour'"></div>
         </div>
 
         <h1 th:text="${post.title}"></h1>

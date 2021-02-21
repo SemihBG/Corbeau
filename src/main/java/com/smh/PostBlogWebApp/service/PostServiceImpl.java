@@ -1,5 +1,6 @@
 package com.smh.PostBlogWebApp.service;
 
+import com.smh.PostBlogWebApp.aspect.InvocationCounter;
 import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
 import com.smh.PostBlogWebApp.repository.PostRepository;
@@ -59,6 +60,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAllBySubject(subject,pageable);
     }
 
+    @InvocationCounter("urlEndpoint")
     @Cacheable(cacheNames = CACHE_NAME)
     @Nullable
     @Override
@@ -107,7 +109,7 @@ public class PostServiceImpl implements PostService {
         }
 
         return new SearchPage<>(postRepository.search
-                (searchText,searchPageRequest.from(),searchPageRequest.to()),
+                (searchText,searchPageRequest.getPageNumber(),searchPageRequest.getPageSize()),
                 searchPageRequest,searchCount(searchText));
 
     }
@@ -117,5 +119,20 @@ public class PostServiceImpl implements PostService {
     public int searchCount(@NonNull String searchText) {
         return postRepository.searchCount(searchText);
     }
+
+    @Override
+    @Transactional
+    public void updateViewCount(String urlEndpoint,int viewCount) {
+        postRepository.updateViewCount(urlEndpoint,viewCount);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(cacheNames = CACHE_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_COUNT_NAME,allEntries = true),
+            @CacheEvict(cacheNames = CACHE_SEARCH_NAME,allEntries = true)
+    })
+    @Override
+    public void clearAllCaches(){}
 
 }

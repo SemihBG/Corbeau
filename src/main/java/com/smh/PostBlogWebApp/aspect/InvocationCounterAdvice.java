@@ -1,20 +1,37 @@
 package com.smh.PostBlogWebApp.aspect;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import com.smh.PostBlogWebApp.service.CounterService;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Slf4j
 public class InvocationCounterAdvice {
 
-    @Around("@annotation(InvocationCounter)")
-    public Object count(ProceedingJoinPoint joinPoint){
+    private final CounterService counterService;
+
+    @Autowired
+    public InvocationCounterAdvice(CounterService counterService) {
+        this.counterService = counterService;
+    }
+
+    @Before("@annotation(InvocationCounter)")
+    public void count(JoinPoint joinPoint){
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String methodName = signature.getMethod().getName();
-        return null;
+        String value=signature.getMethod().getAnnotation(InvocationCounter.class).value();
+        for(int i=0;i<signature.getMethod().getParameters().length;i++){
+            if(signature.getParameterNames()[i].equals(value)){
+                String name=joinPoint.getArgs()[i].toString();
+                counterService.incrementBufferAndGet(name);
+                log.debug("Counter is increased, name = "+name);
+            }
+        }
     }
 
 }

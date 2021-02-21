@@ -4,6 +4,7 @@ import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -33,5 +34,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post,Integer>
             ,nativeQuery=true)
     int searchCount(String searchText);
 
+    @Modifying
+    @Query(value = "UPDATE posts SET view_count=?2 WHERE url_endpoint=?1 ",nativeQuery=true)
+    void updateViewCount(String urlEndpoint,int viewCount);
 
 }

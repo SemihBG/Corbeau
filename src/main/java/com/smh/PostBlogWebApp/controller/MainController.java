@@ -3,6 +3,7 @@ package com.smh.PostBlogWebApp.controller;
 import com.smh.PostBlogWebApp.entity.Image;
 import com.smh.PostBlogWebApp.entity.Post;
 import com.smh.PostBlogWebApp.entity.Subject;
+import com.smh.PostBlogWebApp.service.CounterService;
 import com.smh.PostBlogWebApp.service.ImageService;
 import com.smh.PostBlogWebApp.service.PostService;
 import com.smh.PostBlogWebApp.service.SubjectService;
@@ -27,6 +28,9 @@ public class MainController {
     private final SubjectService subjectService;
     private final PostService postService;
     private final ImageService imageService;
+
+    @Autowired
+    private CounterService counterService;
 
     @Autowired
     public MainController(SubjectService subjectService, PostService postService, ImageService imageService) {

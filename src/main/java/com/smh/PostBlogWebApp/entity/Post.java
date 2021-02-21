@@ -41,6 +41,9 @@ public class Post implements Serializable {
     @Column(name="url_endpoint",nullable = false,unique = true)
     private String urlEndpoint;
 
+    @Column(name="view_count")
+    private int viewCount;
+
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
     private long createdDate;

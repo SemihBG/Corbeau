@@ -20,5 +20,6 @@ public interface PostService {
     int getCountBySubject(Subject subject);
     SearchPage<Post> search(String searchText, SearchPageRequest searchPageRequest);
     int searchCount(String searchText);
-
+    void updateViewCount(String urlEndpoint,int viewCount);
+    void clearAllCaches();
 }

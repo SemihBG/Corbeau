@@ -13,12 +13,14 @@ public class SearchPageRequest extends PageRequest {
         return new SearchPageRequest(page,size);
     }
 
-    public int from(){
-        return super.getPageNumber()*super.getPageSize();
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
-    public int to(){
-        return from()+super.getPageSize();
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
 }
