@@ -3,25 +3,40 @@ version: '3.3'
 services:
   database:
     image: mysql:5.7
+    container_name: mysql
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
     networks:
       - corbeau
+    expose:
+      - 3306
   redis:
     image: redis
+    container_name: redis
     command: [ "redis-server", "--protected-mode", "no" ]
-    ports:
-      - "6379:6379"
     networks:
       - corbeau
-
+    expose:
+      - 6379
+  server:
+    image: corbeau
+    container_name: corbeau
+    ports:
+      - "8888:8888"
+    environment:
+      redis-host: 'redis'
+      redis-port: '6379'
+      mysql-host: 'mysql'
+      mysql-port: '3306'
+      server.port: '8888'
+    depends_on:
+      - database
+      - redis
+    networks:
+      - corbeau
 networks:
   corbeau:
     driver: bridge

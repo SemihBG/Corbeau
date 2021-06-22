@@ -11,12 +11,13 @@
 
 	<groupId>com.semihbkgr</groupId>
 	<artifactId>Corbeau</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.1</version>
 	<name>Corbeau</name>
 	<description>Corbeau Web Application</description>
 
 	<properties>
 		<java.version>11</java.version>
+		<final.jar.name>corbeau</final.jar.name>
 	</properties>
 
 	<dependencies>
@@ -78,6 +79,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>repackage</id>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<finalName>${final.jar.name}</finalName>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
