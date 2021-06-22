@@ -9,11 +9,11 @@
 		<version>2.4.1</version>
 	</parent>
 
-	<groupId>com.smh</groupId>
-	<artifactId>PostBlogWebApp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>PostBlogWebApp</name>
-	<description>Post Blog Web Application</description>
+	<groupId>com.semihbkgr</groupId>
+	<artifactId>Corbeau</artifactId>
+	<version>0.0.1</version>
+	<name>Corbeau</name>
+	<description>Corbeau Web Application</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -66,7 +66,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
