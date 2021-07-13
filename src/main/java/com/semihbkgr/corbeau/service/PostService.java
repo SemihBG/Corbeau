@@ -6,9 +6,13 @@ import com.semihbkgr.corbeau.util.search.SearchPage;
 import com.semihbkgr.corbeau.util.search.SearchPageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Mono;
 
 public interface PostService {
 
+    Mono<Post> save(Post post);
+
+    /*
     Post save(Post post);
     Page<Post> findAll(Pageable pageable);
     Page<Post> findAllBySubject(Subject subject, Pageable pageable);
@@ -21,4 +25,5 @@ public interface PostService {
     int searchCount(String searchText);
     void updateViewCount(String urlEndpoint,int viewCount);
     void clearAllCaches();
+    */
 }

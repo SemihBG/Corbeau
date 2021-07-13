@@ -2,49 +2,37 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.repository.ImageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.lang.Nullable;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-    private static final String CACHE_NAME="image";
+    private static final String CACHE_NAME = "image";
 
-    @Autowired
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
-    @Cacheable(cacheNames = CACHE_NAME)
+    //@Cacheable(cacheNames = CACHE_NAME)
     @Override
-    public List<Image> findAll() {
-        return null;
+    public Flux<Image> findAll() {
+        return imageRepository.findAll();
     }
 
-    @CachePut(cacheNames = CACHE_NAME,key = "#image.urlEndpoint")
+    //@CachePut(cacheNames = CACHE_NAME,key = "#image.urlEndpoint")
     @Override
-    public Image save(Image image) {
-        return imageRepository.save(Objects.requireNonNull(image,"Image cannot be null"));
+    public Mono<Image> save(@NonNull Image image) {
+        return imageRepository.save(image);
     }
 
-    @Cacheable(cacheNames = CACHE_NAME)
-    @Nullable
+    //@CacheEvict(cacheNames = CACHE_NAME)
+    //@Transactional
     @Override
-    public Image getByEndPoint(String urlEndpoint) {
-        return imageRepository.findByUrlEndpoint(Objects.requireNonNull(urlEndpoint,"Image urlEndpoint cannot be null"));
-    }
-
-    @CacheEvict(cacheNames = CACHE_NAME)
-    @Transactional
-    @Override
-    public void deleteByUrlEndpoint(String urlEndpoint) {
-        imageRepository.deleteByUrlEndpoint(Objects.requireNonNull(urlEndpoint,"Image urlEndpoint cannot be null"));
+    public Mono<Void> deleteById(@NonNull String id) {
+        return imageRepository.deleteById(id);
     }
 
 }

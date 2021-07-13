@@ -1,15 +1,15 @@
 package com.semihbkgr.corbeau.service;
 
-
-import com.semihbkgr.corbeau.entity.Image;
-
-import java.util.List;
+import com.semihbkgr.corbeau.model.Image;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface ImageService {
 
-    List<Image> findAll();
-    Image save(Image image);
-    Image getByEndPoint(String urlEndpoint);
-    void deleteByUrlEndpoint(String urlEndpoint);
+    Flux<Image> findAll();
+
+    Mono<Image> save(Image image);
+
+    Mono<Void> deleteById(String id);
 
 }

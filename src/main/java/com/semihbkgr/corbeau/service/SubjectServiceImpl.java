@@ -2,24 +2,23 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.repository.SubjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.lang.Nullable;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import reactor.core.publisher.Mono;
 
 @Service
-
+@RequiredArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
 
+    private final SubjectRepository subjectRepository;
+
+    @Override
+    public Mono<Subject> save(@NonNull Subject subject) {
+        return subjectRepository.save(subject);
+    }
+
+    /*
     private static final String CACHE_NAME="subject";
     private static final String CACHE_ALL_NAME="subjectAll";
 
@@ -70,5 +69,5 @@ public class SubjectServiceImpl implements SubjectService {
     public void deleteByName(String name) {
         subjectRepository.deleteByName(Objects.requireNonNull(name));
     }
-
+    */
 }

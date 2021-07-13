@@ -1,18 +1,16 @@
 package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Post;
-import com.semihbkgr.corbeau.model.Subject;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
-import java.util.List;
+public interface PostRepository extends R2dbcRepository<Post, String> {
 
-public interface PostRepository extends PagingAndSortingRepository<Post,Integer> {
 
+
+
+    /*
     Page<Post> findAllBySubject(Subject subject, Pageable pageable);
+
     Post findByTitle(String title);
 
     @Query("SELECT p FROM Post p WHERE p.subject.name= ?1 AND p.urlEndpoint= ?2")
@@ -37,5 +35,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post,Integer>
     @Modifying
     @Query(value = "UPDATE posts SET view_count=?2 WHERE url_endpoint=?1 ",nativeQuery=true)
     void updateViewCount(String urlEndpoint,int viewCount);
+    */
 
 }
