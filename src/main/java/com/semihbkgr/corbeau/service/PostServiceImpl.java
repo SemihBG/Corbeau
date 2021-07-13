@@ -1,8 +1,8 @@
 package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.aspect.InvocationCounter;
-import com.semihbkgr.corbeau.entity.Post;
-import com.semihbkgr.corbeau.entity.Subject;
+import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import com.semihbkgr.corbeau.util.search.SearchPage;
 import com.semihbkgr.corbeau.util.search.SearchPageRequest;

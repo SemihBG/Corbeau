@@ -1,6 +1,6 @@
 package com.semihbkgr.corbeau.service;
 
-import com.semihbkgr.corbeau.entity.Image;
+import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

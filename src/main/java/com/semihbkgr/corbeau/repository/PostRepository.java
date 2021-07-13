@@ -1,7 +1,7 @@
 package com.semihbkgr.corbeau.repository;
 
-import com.semihbkgr.corbeau.entity.Post;
-import com.semihbkgr.corbeau.entity.Subject;
+import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.Subject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

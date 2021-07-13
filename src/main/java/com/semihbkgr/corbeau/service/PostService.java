@@ -1,7 +1,7 @@
 package com.semihbkgr.corbeau.service;
 
-import com.semihbkgr.corbeau.entity.Post;
-import com.semihbkgr.corbeau.entity.Subject;
+import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.util.search.SearchPage;
 import com.semihbkgr.corbeau.util.search.SearchPageRequest;
 import org.springframework.data.domain.Page;

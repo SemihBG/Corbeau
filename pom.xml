@@ -42,8 +42,8 @@
 			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>dev.miku</groupId>
+			<artifactId>r2dbc-mysql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

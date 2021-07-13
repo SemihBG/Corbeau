@@ -1,6 +1,6 @@
 package com.semihbkgr.corbeau.service;
 
-import com.semihbkgr.corbeau.entity.Subject;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
