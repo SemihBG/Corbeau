@@ -1,6 +1,5 @@
 package com.semihbkgr.corbeau.configuration;
 
-
 import com.semihbkgr.corbeau.service.CounterService;
 import com.semihbkgr.corbeau.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;

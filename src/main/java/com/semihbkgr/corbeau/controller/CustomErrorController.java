@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class CustomErrorController implements ErrorController {
 
+
+    /*
     private final ErrorAttributes errorAttributes;
     private final boolean isDebug;
 
@@ -50,5 +50,5 @@ public class CustomErrorController implements ErrorController {
     public String getErrorPath() {
         return null;
     }
-
+    */
 }

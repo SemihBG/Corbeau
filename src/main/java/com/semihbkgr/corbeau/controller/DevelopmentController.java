@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/dev")
 public class DevelopmentController{
 
+    /*
     @GetMapping("/throw/{exception}")
     public void throwException(@PathVariable String exception) throws Throwable {
         throw (Throwable)Class.forName(exception).getConstructor().newInstance();
     }
+    */
 
 }

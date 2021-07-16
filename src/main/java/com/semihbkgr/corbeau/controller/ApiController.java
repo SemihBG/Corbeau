@@ -16,6 +16,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController {
 
+
+    /*
     private final SubjectService subjectService;
     private final PostService postService;
     private final ImageService imageService;
@@ -55,5 +57,6 @@ public class ApiController {
     public Post post(@PathVariable String title){
         return postService.findByTitle(title);
     }
+    */
 
 }

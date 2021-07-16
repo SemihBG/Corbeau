@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class MainController {
 
+
+
+
+
+    /*
     public static final int ONE_PAGE_POST_COUNT=5;
 
     private final SubjectService subjectService;
@@ -158,6 +163,6 @@ public class MainController {
 
     }
 
-
+    */
 
 }

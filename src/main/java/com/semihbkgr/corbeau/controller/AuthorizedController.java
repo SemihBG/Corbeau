@@ -18,6 +18,8 @@ import java.io.IOException;
 @RequestMapping("/authorized")
 public class AuthorizedController {
 
+    /*
+
     private final ImageService imageService;
     private final SubjectService subjectService;
     private final PostService postService;
@@ -33,7 +35,7 @@ public class AuthorizedController {
     public byte[] saveImage(@RequestPart(value = "urlEndpoint") String urlEndpoint,
                             @RequestPart("content") MultipartFile file) throws IOException {
 
-        if(urlEndpoint==null || file==null || /*file.getBytes()==null ||*/ urlEndpoint.length()==0 || file.getBytes().length==0){
+        if(urlEndpoint==null || file==null || file.getBytes()==null || urlEndpoint.length()==0 || file.getBytes().length==0){
             throw new NullPointerException("urlEndpoint and content cannot be null or empty");
         }
 
@@ -61,10 +63,11 @@ public class AuthorizedController {
 
         if(subjectName==null || urlEndpoint==null || title==null || file==null ||
                 subjectName.length()==0 || urlEndpoint.length()==0 || title.length()==0 ||
-                /*file.getBytes()==null ||*/ file.getBytes().length==0){
+                file.getBytes()==null || file.getBytes().length==0){
             throw new NullPointerException("subjectName, urlEndpoint, title, and content cannot be null or empty");
         }
 
+/*
         Subject subject=subjectService.findByName(subjectName);
 
         if(subject==null){
@@ -151,5 +154,6 @@ public class AuthorizedController {
         return "changed";
     }
 
+    */
 
 }

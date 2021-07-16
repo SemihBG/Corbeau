@@ -12,12 +12,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@With
 @Table("images")
 public class Image extends TimeAuditable implements Serializable {
 
     @Id
-    private String id;
+    private int id;
 
     private String name;
+
+    private String format;
 
 }

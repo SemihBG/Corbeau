@@ -1,6 +1,8 @@
 package com.semihbkgr.corbeau.service;
 
+import com.semihbkgr.corbeau.exception.IllegalValueException;
 import com.semihbkgr.corbeau.model.Image;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -10,6 +12,8 @@ public interface ImageService {
 
     Mono<Image> save(Image image);
 
-    Mono<Void> deleteById(String id);
+    Mono<Image> update(int id, Image image) throws IllegalValueException;
+
+    Mono<Void> deleteById(int id) throws IllegalValueException;
 
 }
