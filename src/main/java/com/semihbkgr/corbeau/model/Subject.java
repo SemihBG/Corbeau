@@ -12,11 +12,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@With
 @Table("subjects")
 public class Subject extends TimeAuditable implements Serializable {
 
     @Id
-    private String id;
+    private int id;
 
     private String name;
 

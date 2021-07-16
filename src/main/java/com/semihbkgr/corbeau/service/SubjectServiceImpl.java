@@ -1,10 +1,12 @@
 package com.semihbkgr.corbeau.service;
 
+import com.semihbkgr.corbeau.exception.IllegalValueException;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.repository.SubjectRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -14,60 +16,30 @@ public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
 
     @Override
+    public Flux<Subject> findAll() {
+        return subjectRepository.findAll();
+    }
+
+    @Override
     public Mono<Subject> save(@NonNull Subject subject) {
-        return subjectRepository.save(subject);
+        return subjectRepository.save(subject.withId(0));
     }
 
-    /*
-    private static final String CACHE_NAME="subject";
-    private static final String CACHE_ALL_NAME="subjectAll";
-
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Caching(
-            evict = {
-                    @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true)
-            },
-            put = {
-                    @CachePut(cacheNames = CACHE_NAME,key = "#subject.name"),
-                    @CachePut(cacheNames = CACHE_NAME,key = "#subject.urlEndpoint")
-            }
-    )
     @Override
-    public Subject save(Subject subject) {
-        return subjectRepository.save(Objects.requireNonNull(subject));
+    public Mono<Subject> update(int id, @NonNull Subject subject) throws IllegalValueException {
+        return subjectRepository.findById(id)
+                .switchIfEmpty(Mono.error(()->
+                        new IllegalValueException("Subject not available by given id", subjectRepository.TABLE_NAME, "id", id)))
+                .then(subjectRepository.save(subject.withId(id)));
     }
 
-    @Cacheable(cacheNames = CACHE_ALL_NAME)
     @Override
-    public List<Subject> findAll() {
-        return StreamSupport.stream(subjectRepository.findAll().spliterator(),false).collect(Collectors.toList());
+    public Mono<Void> delete(int id) throws IllegalValueException {
+        return subjectRepository.findById(id)
+                .switchIfEmpty(Mono.error(()->
+                        new IllegalValueException("Image not available by given id", subjectRepository.TABLE_NAME, "id", id)))
+                .then(subjectRepository.deleteById(id));
     }
 
-    @Cacheable(cacheNames = CACHE_NAME)
-    @Nullable
-    @Override
-    public Subject findByUrlEndpoint(String url) {
-        return subjectRepository.findByUrlEndpoint(Objects.requireNonNull(url));
-    }
 
-    @Cacheable(cacheNames = CACHE_NAME)
-    @Nullable
-    @Override
-    public Subject findByName(String name) {
-        return subjectRepository.findByName(Objects.requireNonNull(name));
-    }
-
-    @Caching(evict = {
-            @CacheEvict(cacheNames = CACHE_ALL_NAME,allEntries = true),
-            @CacheEvict(cacheNames = CACHE_NAME)
-        }
-    )
-    @Transactional
-    @Override
-    public void deleteByName(String name) {
-        subjectRepository.deleteByName(Objects.requireNonNull(name));
-    }
-    */
 }
