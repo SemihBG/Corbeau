@@ -1,0 +1,19 @@
+spring:
+  r2dbc:
+    url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/db
+    username: ${mysql.username:user}
+    password: ${mysql.password:password}
+    pool:
+      initial-size: 10
+      max-size: 50
+      max-idle-time: 30m
+      validation-query: SELECT 1
+  redis:
+    host: ${redis-hostname:localhost}
+    port: ${redis-port:6379}
+    timeout: 1H
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+

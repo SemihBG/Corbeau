@@ -1,0 +1,11 @@
+server:
+  address: 0.0.0.0
+  port: 9000
+
+spring:
+  application:
+    name: Corbeau
+  profiles: #dev, pro
+    active: dev
+
+
