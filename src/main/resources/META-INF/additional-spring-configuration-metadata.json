@@ -24,6 +24,11 @@
       "name": "moderation.prime.password",
       "type": "java.lang.String",
       "description": "Description for moderation.prime.password."
+    },
+    {
+      "name": "moderation.prime.email",
+      "type": "java.lang.String",
+      "description": "Description for moderation.prime.email."
     }
   ]
 }

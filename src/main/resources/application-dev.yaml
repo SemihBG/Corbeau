@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/${mysql-table:corbeau}
+    url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/${mysql-table:db}
     username: ${mysql.username:user}
     password: ${mysql.password:password}
     pool:
@@ -19,18 +19,15 @@ spring:
   thymeleaf:
     reactive:
       max-chunk-size: 8192
-  security:
-    user:
-      name: admin
-      password: password
+
 
 logging:
   level:
     root: debug
 
-data:
-  populator: populator.sql
-  cleaner: cleaner.sql
+#data:
+#  populator: populator.sql
+#  cleaner: cleaner.sql
 
 moderation:
   prime:
