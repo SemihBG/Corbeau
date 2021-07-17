@@ -20,30 +20,30 @@ import java.util.Optional;
 @Slf4j
 public class R2dbcConfig {
 
-    private final Optional<String> populateSqlFileNameOptional;
-    private final Optional<String> clearSqlFileNameOptional;
+    private final Optional<String> populatorSqlFileNameOptional;
+    private final Optional<String> cleanerSqlFileNameOptional;
 
-    public R2dbcConfig(@Value("${data.populate:#{null}}") String populateSqlFile,
-                       @Value("${data.clear:#{null}}") String clearSqlFile) {
-        this.populateSqlFileNameOptional = Optional.ofNullable(populateSqlFile);
-        this.clearSqlFileNameOptional = Optional.ofNullable(clearSqlFile);
+    public R2dbcConfig(@Value("${data.populator:#{null}}") String populatorSqlFile,
+                       @Value("${data.cleaner:#{null}}") String cleanerSqlFile) {
+        this.populatorSqlFileNameOptional = Optional.ofNullable(populatorSqlFile);
+        this.cleanerSqlFileNameOptional = Optional.ofNullable(cleanerSqlFile);
     }
 
     @Bean
     @Profile("dev")
-    public ConnectionFactoryInitializer connectionFactoryInitialize(ConnectionFactory connectionFactory) {
+    public ConnectionFactoryInitializer connectionFactoryInitializer(ConnectionFactory connectionFactory) {
         var cfInitializer = new ConnectionFactoryInitializer();
         cfInitializer.setConnectionFactory(connectionFactory);
-        if (populateSqlFileNameOptional.isPresent()) {
-            log.info("ConnectionFactoryInitializer populate file: {}", populateSqlFileNameOptional.get());
-            var resource = new ResourceDatabasePopulator(new ClassPathResource(populateSqlFileNameOptional.get()));
+        if (populatorSqlFileNameOptional.isPresent()) {
+            log.info("ConnectionFactoryInitializer populator file: {}", populatorSqlFileNameOptional.get());
+            var resource = new ResourceDatabasePopulator(new ClassPathResource(populatorSqlFileNameOptional.get()));
             cfInitializer.setDatabasePopulator(resource);
-        } else log.info("ConnectionFactoryInitializer no populate file");
-        if (clearSqlFileNameOptional.isPresent()) {
-            log.info("ConnectionFactoryInitializer clear file: {}", clearSqlFileNameOptional.get());
-            var resource = new ResourceDatabasePopulator(new ClassPathResource(clearSqlFileNameOptional.get()));
+        } else log.info("ConnectionFactoryInitializer no populator file");
+        if (cleanerSqlFileNameOptional.isPresent()) {
+            log.info("ConnectionFactoryInitializer cleaner file: {}", cleanerSqlFileNameOptional.get());
+            var resource = new ResourceDatabasePopulator(new ClassPathResource(cleanerSqlFileNameOptional.get()));
             cfInitializer.setDatabaseCleaner(resource);
-        } else log.info("ConnectionFactoryInitializer no clear file");
+        } else log.info("ConnectionFactoryInitializer no cleaner file");
         return cfInitializer;
     }
 

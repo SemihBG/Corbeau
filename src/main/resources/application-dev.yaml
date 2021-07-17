@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/db
+    url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/${mysql-table:corbeau}
     username: ${mysql.username:user}
     password: ${mysql.password:password}
     pool:
@@ -23,3 +23,17 @@ spring:
     user:
       name: admin
       password: password
+
+logging:
+  level:
+    root: debug
+
+data:
+  populator: populator.sql
+  cleaner: cleaner.sql
+
+moderation:
+  prime:
+    enable: true
+    name: prime
+    password: password

@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "data.populator",
+      "type": "java.lang.String",
+      "description": "R2dbc ConnectionFactoryInitializer populator sql file."
+    },
+    {
+      "name": "data.cleaner",
+      "type": "java.lang.String",
+      "description": "R2dbc ConnectionFactoryInitializer cleaner sql file.."
+    },
+    {
+      "name": "moderation.prime.enable",
+      "type": "java.lang.Boolean",
+      "description": "Description for moderation.prime.enable."
+    },
+    {
+      "name": "moderation.prime.name",
+      "type": "java.lang.String",
+      "description": "Description for moderation.prime.name."
+    },
+    {
+      "name": "moderation.prime.password",
+      "type": "java.lang.String",
+      "description": "Description for moderation.prime.password."
+    }
+  ]
+}
