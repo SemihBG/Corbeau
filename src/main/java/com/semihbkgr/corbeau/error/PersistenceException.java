@@ -1,4 +1,4 @@
-package com.semihbkgr.corbeau.exception;
+package com.semihbkgr.corbeau.error;
 
 public class PersistenceException extends RuntimeException{
 

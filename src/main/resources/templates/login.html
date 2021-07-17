@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Login</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-    <form method="post" action="login">
+    <form method="post" action="./login">
         <label for="name">Name</label>
-        <input id="name" name="name" placeholder="Admin" type="text"/>
+        <input id="name" name="username" placeholder="name" type="text"/><br>
         <label for="password">Password</label>
-        <input id="password" name="password" placeholder="***********" type="password">
+        <input id="password" name="password" placeholder="***********" type="password"><br>
         <input type="submit" value="Login">
     </form>
 </body>

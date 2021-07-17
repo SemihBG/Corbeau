@@ -19,3 +19,7 @@ spring:
   thymeleaf:
     reactive:
       max-chunk-size: 8192
+  security:
+    user:
+      name: admin
+      password: password

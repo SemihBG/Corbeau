@@ -1,8 +1,6 @@
-package com.semihbkgr.corbeau.exception;
+package com.semihbkgr.corbeau.error;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 public class IllegalValueException extends PersistenceException {
