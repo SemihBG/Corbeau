@@ -10,4 +10,6 @@ public interface ModeratorService {
 
     Flux<Moderator> findAll();
 
+    Mono<Moderator> findByName(String name);
+
 }
