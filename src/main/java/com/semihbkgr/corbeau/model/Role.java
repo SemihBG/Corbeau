@@ -1,0 +1,20 @@
+package com.semihbkgr.corbeau.model;
+
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@With
+@Table("roles")
+public class Role {
+
+    @Id
+    private int id;
+
+    private String name;
+
+}
