@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+/*
 @Profile("development")
 @EnableWebSecurity
 public class WebSecurityDevelopmentConfiguration extends WebSecurityConfigurerAdapter {
@@ -16,10 +17,10 @@ public class WebSecurityDevelopmentConfiguration extends WebSecurityConfigurerAd
                 .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
+                .and()
                 .authorizeRequests()
-                    .anyRequest().permitAll()
-                    .and()
+                .anyRequest().permitAll()
+                .and()
                 .exceptionHandling().accessDeniedHandler(new SimpleAccessDeniedHandler());
     }
-}
+}*/

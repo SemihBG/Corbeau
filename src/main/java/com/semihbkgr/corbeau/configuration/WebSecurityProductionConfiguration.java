@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/*
 @Profile("production")
 @EnableWebSecurity
 public class WebSecurityProductionConfiguration extends WebSecurityConfigurerAdapter {
@@ -53,3 +54,4 @@ public class WebSecurityProductionConfiguration extends WebSecurityConfigurerAda
     }
 
 }
+*/

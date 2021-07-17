@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Configuration
 @EnableR2dbcRepositories(basePackages = "com.semihbkgr.corbeau.model")
+@EnableR2dbcAuditing
 @Slf4j
 public class R2dbcConfig {
 
@@ -23,8 +25,8 @@ public class R2dbcConfig {
 
     public R2dbcConfig(@Value("${data.populate:#{null}}") String populateSqlFile,
                        @Value("${data.clear:#{null}}") String clearSqlFile) {
-        this.populateSqlFileNameOptional = Optional.of(populateSqlFile);
-        this.clearSqlFileNameOptional = Optional.of(clearSqlFile);
+        this.populateSqlFileNameOptional = Optional.ofNullable(populateSqlFile);
+        this.clearSqlFileNameOptional = Optional.ofNullable(clearSqlFile);
     }
 
     @Bean
@@ -44,6 +46,5 @@ public class R2dbcConfig {
         } else log.info("ConnectionFactoryInitializer no clear file");
         return cfInitializer;
     }
-
 
 }

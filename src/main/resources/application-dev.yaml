@@ -16,4 +16,6 @@ spring:
     type: redis
     redis:
       cache-null-values: true
-
+  thymeleaf:
+    reactive:
+      max-chunk-size: 8192

@@ -1,15 +1,6 @@
 package com.semihbkgr.corbeau.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
+/*
 public class SimpleAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
@@ -48,3 +39,4 @@ public class SimpleAccessDeniedHandler implements AccessDeniedHandler {
 
 
 }
+*/

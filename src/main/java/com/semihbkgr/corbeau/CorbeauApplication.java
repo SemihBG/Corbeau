@@ -8,14 +8,10 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
-@EnableWebFlux
-@EnableWebFluxSecurity
-@EnableR2dbcRepositories
-@EnableR2dbcAuditing
-public class PostBlogWebAppApplication {
+public class CorbeauApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PostBlogWebAppApplication.class, args);
+        SpringApplication.run(CorbeauApplication.class, args);
     }
 
 }

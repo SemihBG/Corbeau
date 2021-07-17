@@ -1,6 +1,5 @@
 package com.semihbkgr.corbeau.controller;
 
-import com.semihbkgr.corbeau.exception.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
