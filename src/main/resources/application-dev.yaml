@@ -32,6 +32,7 @@ data:
 moderation:
   prime:
     enable: true
-    name: prime
+    name: admin
     password: password
     role: prime
+  roles: prime,writer,editor,support

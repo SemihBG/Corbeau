@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS db.posts;
 DROP TABLE IF EXISTS db.subjects;
 DROP TABLE IF EXISTS db.images;
-DROP TABLE IF EXISTS db.moderator_role_join;
 DROP TABLE IF EXISTS db.moderators;
 DROP TABLE IF EXISTS db.roles;
 
@@ -16,17 +15,12 @@ CREATE TABLE IF NOT EXISTS db.moderators
     name       VARCHAR(32)  NOT NULL UNIQUE,
     password   VARCHAR(256) NOT NULL,
     email      VARCHAR(128) NOT NULL UNIQUE,
+    role_id INT UNSIGNED NOT NULL ,
     created_by VARCHAR(32),
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED,
-    updated_at BIGINT UNSIGNED
-);
-CREATE TABLE IF NOT EXISTS db.moderator_role_join
-(
-    moderator_id INT UNSIGNED NOT NULL,
-    role_id      INT UNSIGNED NOT NULL,
-    FOREIGN KEY (moderator_id) REFERENCES db.moderators (id),
-    FOREIGN KEY (role_id) REFERENCES db.roles (id)
+    updated_at BIGINT UNSIGNED,
+    FOREIGN KEY (role_id) REFERENCES db.roles(id)
 );
 CREATE TABLE IF NOT EXISTS db.subjects
 (
@@ -59,7 +53,3 @@ CREATE TABLE IF NOT EXISTS db.images
     created_at BIGINT UNSIGNED,
     updated_at BIGINT UNSIGNED
 );
-
-INSERT INTO db.roles
-VALUES (1, 'prime'),
-       (2, 'support');

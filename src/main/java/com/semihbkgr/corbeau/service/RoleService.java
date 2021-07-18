@@ -9,6 +9,10 @@ public interface RoleService {
 
     Flux<Role> findAll();
 
+    Mono<Role> findById(int id);
+
     Mono<Role> findByName(String name) throws IllegalValueException;
+
+    Flux<Role> saveAll(Iterable<Role> roleIterable);
 
 }

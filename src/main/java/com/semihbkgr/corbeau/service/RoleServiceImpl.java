@@ -21,10 +21,21 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Mono<Role> findById(int id) {
+        return roleRepository.findById(id);
+    }
+
+    @Override
     public Mono<Role> findByName(@NonNull String name) throws IllegalValueException {
         return roleRepository.findByName(name)
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Role no found by given name", RoleRepository.TABLE_NAME, "name", name)));
     }
+
+    @Override
+    public Flux<Role> saveAll(@NonNull Iterable<Role> roleIterable) {
+        return roleRepository.saveAll(roleIterable);
+    }
+
 
 }

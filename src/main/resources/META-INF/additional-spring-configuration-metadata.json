@@ -34,6 +34,11 @@
       "name": "moderation.prime.role",
       "type": "java.lang.String",
       "description": "Description for moderation.prime.role."
+    },
+    {
+      "name": "moderation.roles",
+      "type": "java.lang.String",
+      "description": "Description for moderation.roles."
     }
   ]
 }

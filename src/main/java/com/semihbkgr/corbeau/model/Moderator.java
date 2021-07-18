@@ -4,6 +4,7 @@ import com.semihbkgr.corbeau.model.base.AllAuditable;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
@@ -27,8 +28,7 @@ public class Moderator extends AllAuditable implements Serializable {
 
     private String email;
 
-    @Transient
-    private List<Role> roles;
-
+    @Column("role_id")
+    private int roleId;
 
 }
