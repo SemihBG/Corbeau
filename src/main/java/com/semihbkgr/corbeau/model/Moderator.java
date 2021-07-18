@@ -30,4 +30,5 @@ public class Moderator extends AllAuditable implements Serializable {
     @Transient
     private List<Role> roles;
 
+
 }

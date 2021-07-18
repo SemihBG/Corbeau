@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface ModeratorRepository extends R2dbcRepository<Moderator,Integer> {
 
-    Mono<Moderator> findBYName(String name);
+    Mono<Moderator> findByName(String name);
 
 }

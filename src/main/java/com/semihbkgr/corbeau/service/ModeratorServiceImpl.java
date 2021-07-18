@@ -26,7 +26,7 @@ public class ModeratorServiceImpl implements ModeratorService {
 
     @Override
     public Mono<Moderator> findByName(@NonNull String name) {
-        return moderatorRepository.findBYName(name);
+        return moderatorRepository.findByName(name);
     }
 
 }

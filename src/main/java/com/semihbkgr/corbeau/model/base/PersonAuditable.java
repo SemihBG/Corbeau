@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 
 @Data
 @AllArgsConstructor
@@ -12,9 +12,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class PersonAuditable {
 
     @CreatedBy
-    private int createdBy;
+    private String createdBy;
 
-    @LastModifiedDate
-    private int updatedBy;
+    @LastModifiedBy
+    private String updatedBy;
 
 }

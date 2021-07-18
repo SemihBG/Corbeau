@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+
 @Component
 @Profile("dev")
 @Slf4j
@@ -50,12 +52,13 @@ public class DataPrimeModeratorStartupInterceptor implements CommandLineRunner {
                             primeModeratorPassword : DEFAULT_PRIME_MODERATOR_PASSWORD))
                     .email(primeModeratorEmail != null ?
                             primeModeratorEmail : DEFAULT_PRIME_MODERATOR_EMAIL)
+                    .roles(Collections.emptyList())
                     .build();
             moderatorService
                     .save(primeModerator)
                     .subscribe(moderator ->
                             log.info("Prime moderator has been saved successfully, name: {}, password: {}",
-                                    primeModerator.getName(), primeModerator.getPassword()));
+                                    primeModeratorName, primeModeratorPassword));
         } else log.warn("Prime moderator is disabled");
 
     }
