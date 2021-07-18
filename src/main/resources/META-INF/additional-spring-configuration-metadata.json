@@ -29,6 +29,11 @@
       "name": "moderation.prime.email",
       "type": "java.lang.String",
       "description": "Description for moderation.prime.email."
+    },
+    {
+      "name": "moderation.prime.role",
+      "type": "java.lang.String",
+      "description": "Description for moderation.prime.role."
     }
   ]
 }

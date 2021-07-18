@@ -1,14 +1,15 @@
 package com.semihbkgr.corbeau.error;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class IllegalValueException extends PersistenceException {
 
     private String table;
     private String column;
     private Object value;
-
 
     public IllegalValueException(String message, String table, String column, Object value) {
         super(message);

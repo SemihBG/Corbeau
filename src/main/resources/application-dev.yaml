@@ -25,12 +25,13 @@ logging:
   level:
     root: debug
 
-#data:
-#  populator: populator.sql
-#  cleaner: cleaner.sql
+data:
+  populator: populator.sql
+  cleaner: cleaner.sql
 
 moderation:
   prime:
     enable: true
     name: prime
     password: password
+    role: prime

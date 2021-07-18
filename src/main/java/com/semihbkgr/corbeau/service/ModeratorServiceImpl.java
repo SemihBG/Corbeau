@@ -29,4 +29,10 @@ public class ModeratorServiceImpl implements ModeratorService {
         return moderatorRepository.findByName(name);
     }
 
+    @Override
+    public Mono<Moderator> addRole(int id, int roleId) {
+        return moderatorRepository.addRole(id,roleId)
+                .then(moderatorRepository.findById(id));
+    }
+
 }

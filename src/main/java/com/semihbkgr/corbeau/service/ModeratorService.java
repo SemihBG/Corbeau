@@ -12,4 +12,6 @@ public interface ModeratorService {
 
     Mono<Moderator> findByName(String name);
 
+    Mono<Moderator> addRole(int id,int roleId);
+
 }
