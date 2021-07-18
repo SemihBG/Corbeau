@@ -1,6 +1,5 @@
 package com.semihbkgr.corbeau.configuration;
 
-import com.semihbkgr.corbeau.service.ModeratorDetailsService;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +12,9 @@ import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -54,13 +52,12 @@ public class R2dbcConfig {
     }
 
     @Bean
-    public ReactiveAuditorAware<String> auditorAware(){
+    public ReactiveAuditorAware<String> auditorAware() {
         return () -> ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
-                .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(User.class::cast)
-                .map(User::getUsername);
+                .map(authentication ->
+                        authentication.isAuthenticated() ?
+                                ((UserDetails) authentication.getPrincipal()).getUsername() : "none");
     }
 
 
