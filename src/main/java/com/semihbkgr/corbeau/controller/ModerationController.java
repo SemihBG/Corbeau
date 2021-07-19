@@ -4,8 +4,6 @@ import com.semihbkgr.corbeau.service.ModeratorDetailsService;
 import com.semihbkgr.corbeau.service.ModeratorService;
 import com.semihbkgr.corbeau.service.RoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 @Controller
 @RequestMapping("/moderation")
 @RequiredArgsConstructor
@@ -26,7 +22,7 @@ public class ModerationController {
     private final ModeratorService moderatorService;
     private final RoleService roleService;
 
-    @GetMapping({"", "/", "/panel"})
+    @GetMapping({"", "/", "/menu"})
     public Mono<String> panel(final Model model) {
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
@@ -35,14 +31,13 @@ public class ModerationController {
                 .map(ModeratorDetailsService.ModeratorDetails.class::cast)
                 .map(moderatorDetails -> {
                     model.addAttribute("name", moderatorDetails.getName());
-                    return moderatorDetails;
-                })
-                .then(Mono.just("panel"));
+                    return "/moderation/menu";
+                });
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "/moderation/login";
     }
 
     @GetMapping("/profile/{name}")
@@ -62,9 +57,8 @@ public class ModerationController {
                 .map(ModeratorDetailsService.ModeratorDetails.class::cast)
                 .map(moderatorDetails -> {
                     model.addAttribute("me", moderatorDetails.getUsername().equals(name));
-                    return moderatorDetails;
-                })
-                .then(Mono.just("profile"));
+                    return "/moderation/profile";
+                });
     }
 
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget -->
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--suppress ThymeleafVariablesResolveInspection, HtmlFormInputWithoutLabel, HtmlUnknownTag, HtmlUnknownTarget -->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Panel</title>
+    <title th:text="${moderator.name}"></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,20 +13,20 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+    <a class="navbar-brand" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator Panel</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navb">
         <ul class="nav navbar-nav ">
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">Link</a>
+                <a class="nav-link" href="/moderation">Menu</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">Link</a>
+                <a class="nav-link" href="/moderation/subject">Subject</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="javascript:void(0)">Disabled</a>
+                <a class="nav-link" href="/moderation/post">Post</a>
             </li>
         </ul>
         <ul class="nav navbar-nav" style="position: absolute; left: 50%; transform: translateX(-50%);">
@@ -37,7 +37,7 @@
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i  class="fas fa-user" style="font-size:18px;"></i></a>
+                <a class="nav-link active" href="javascript:void(0)"><i  class="fas fa-user" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell"  style="font-size:18px;"></i></a>
@@ -49,10 +49,24 @@
         </ul>
     </div>
 </nav>
-<div class="container" style="padding: 5%">
-    <button type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
-    <button type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
-    <button type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
+<div style="width: 50%;padding: 5%;">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center" th:text="${moderator.name}+'('+${role.name}+')'">name(role)</h2>
+            </div>
+            <div class="card-body">
+                <h3 th:text="${moderator.email}">email</h3>
+                <h3 th:text="${#dates.format(moderator.createdAt, 'dd-MM-yyyy')}">time</h3>
+                <h3 th:if="${moderator.createdAt}!=${moderator.updatedAt}" th:text="${#dates.format(moderator.updatedAt, 'dd-MM-yyyy')}">time</h3>
+            </div>
+            <div class="card-footer">
+                <a th:if="${me}" href="/edit"><h4 class="text-center">Edit</h4></a>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 </body>
 </html>

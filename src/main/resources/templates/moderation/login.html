@@ -53,8 +53,7 @@
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator
-        Panel</a>
+    <a class="navbar-brand" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -79,12 +78,12 @@
     <form action="/moderation/login" method="post" id="login" onsubmit="event.preventDefault();checkFormValidation();">
         <div class="form-group">
             <label class="text-info" for="name" style="font-size: 20px">Name:</label>
-            <input class="form-control border-info text-light" id="name" name="username" style="background-color: transparent;" type="text">
+            <input class="form-control border-info text-light" id="name" name="username" style="background-color: transparent;" type="text" th:value="${@environment.getProperty('moderation.prime.name')}">
             <p  class="text-warning" id="name-warn"></p>
         </div>
         <div class="form-group">
             <label class="text-info" for="password" style="font-size: 20px">Password:</label>
-            <input class="form-control border-info text-light" id="password" name="password" style="background-color: transparent;" type="password">
+            <input class="form-control border-info text-light" id="password" name="password" style="background-color: transparent;" type="password" th:value="${@environment.getProperty('moderation.prime.password')}">
             <p class="text-warning" id="password-warn"></p>
         </div>
         <button class="btn btn-outline-info" type="submit">Login</button>
