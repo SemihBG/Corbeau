@@ -3,6 +3,7 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.service.ModeratorDetailsService;
 import com.semihbkgr.corbeau.service.ModeratorService;
 import com.semihbkgr.corbeau.service.RoleService;
+import com.semihbkgr.corbeau.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -21,6 +22,12 @@ public class ModerationController {
 
     private final ModeratorService moderatorService;
     private final RoleService roleService;
+    private final SubjectService subjectService;
+
+    @GetMapping("/login")
+    public String login() {
+        return "/moderation/login";
+    }
 
     @GetMapping({"", "/", "/menu"})
     public Mono<String> panel(final Model model) {
@@ -33,11 +40,6 @@ public class ModerationController {
                     model.addAttribute("name", moderatorDetails.getName());
                     return "/moderation/menu";
                 });
-    }
-
-    @GetMapping("/login")
-    public String login() {
-        return "/moderation/login";
     }
 
     @GetMapping("/profile/{name}")
@@ -58,6 +60,15 @@ public class ModerationController {
                 .map(moderatorDetails -> {
                     model.addAttribute("me", moderatorDetails.getUsername().equals(name));
                     return "/moderation/profile";
+                });
+    }
+
+    @GetMapping("/subject")
+    public Mono<String> subject(final Model model){
+        return Mono.from(subjectService.findAll())
+                .map(subjectList->{
+                    model.addAttribute("subjects",subjectList);
+                    return "subject";
                 });
     }
 
