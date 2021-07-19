@@ -77,7 +77,7 @@ public class ModeratorDetailsService implements ReactiveUserDetailsService {
 
         @Override
         public String getUsername() {
-            return this.getUsername();
+            return this.name;
         }
 
         @Override

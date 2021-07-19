@@ -37,13 +37,14 @@
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)"><i  class="fas fa-user" style="font-size:18px;"></i></a>
+                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i  class="fas fa-user" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)"><i class="fas fa-bell"  style="font-size:18px;"></i></a>
+                <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell"  style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="javascript:void(0)"><i class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
+                <form id="logout" method="post" action="/moderation/logout" style="visibility: hidden"></form>
+                <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
             </li>
         </ul>
     </div>

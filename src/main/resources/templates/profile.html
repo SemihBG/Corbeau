@@ -57,7 +57,7 @@
             <div class="card-body">
                 <h3 th:text="${moderator.email}">email</h3>
                 <h3 th:text="${#dates.format(moderator.createdAt, 'dd-MM-yyyy')}">time</h3>
-                <h3 th:if="${moderator.createdAt}!=${moderator.updatedAt}" th:text="${#dates.format(moderator.createdAt, 'dd-MM-yyyy')}">time</h3>
+                <h3 th:if="${moderator.createdAt}!=${moderator.updatedAt}" th:text="${#dates.format(moderator.updatedAt, 'dd-MM-yyyy')}">time</h3>
             </div>
             <div class="card-footer">
                 <a th:if="${me}" href="/edit"><h4 class="text-center">Edit</h4></a>
