@@ -12,7 +12,7 @@
 
 	<groupId>com.semihbkgr</groupId>
 	<artifactId>corbeau</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<packaging>jar</packaging>
 	<name>Corbeau</name>
 	<description>Corbeau Web Application</description>
