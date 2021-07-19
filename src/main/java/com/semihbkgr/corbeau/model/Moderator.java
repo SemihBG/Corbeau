@@ -1,14 +1,12 @@
 package com.semihbkgr.corbeau.model;
 
-import com.semihbkgr.corbeau.model.base.AllAuditable;
+import com.semihbkgr.corbeau.model.base.TimeAuditable;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -17,7 +15,7 @@ import java.util.List;
 @Builder
 @With
 @Table("moderators")
-public class Moderator extends AllAuditable implements Serializable {
+public class Moderator extends TimeAuditable implements Serializable {
 
     @Id
     private int id;

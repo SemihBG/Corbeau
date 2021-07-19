@@ -16,8 +16,6 @@ CREATE TABLE IF NOT EXISTS db.moderators
     password   VARCHAR(256) NOT NULL,
     email      VARCHAR(128) NOT NULL UNIQUE,
     role_id INT UNSIGNED NOT NULL ,
-    created_by VARCHAR(32),
-    updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED,
     updated_at BIGINT UNSIGNED,
     FOREIGN KEY (role_id) REFERENCES db.roles(id)

@@ -1,28 +1,101 @@
 <!DOCTYPE html>
 <!--suppress HtmlUnknownTarget -->
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script crossorigin='anonymous' src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+    <script>
+
+        const NAME_MIN_LENGTH=5;
+        const NAME_MAX_LENGTH=25;
+        const NAME_REGEX=new RegExp(/^[0-9a-z_]+$/i);
+        const PASSWORD_MIN_LENGTH=7;
+        const PASSWORD_MAX_LENGTH=27;
+
+        function checkFormValidation() {
+            const nameWarn= document.getElementById("name-warn");
+            const passwordWarn = document.getElementById("password-warn");
+            nameWarn.style.display = "none";
+            passwordWarn.style.display = "none";
+            let post = true;
+            const nameInput = document.getElementById("name");
+            const passwordInput = document.getElementById("password");
+            if (nameInput.value.length < NAME_MIN_LENGTH || nameInput.value.length> NAME_MAX_LENGTH) {
+                nameWarn.innerHTML="Name must be between "+NAME_MIN_LENGTH+"-"+NAME_MAX_LENGTH;
+                console.log(nameWarn.innerHTML);
+                nameWarn.style.display = "block";
+                post=false;
+            }else if(!NAME_REGEX.test(nameInput.value)){
+                nameWarn.innerHTML="Name must consist of letters and numbers";
+                console.log(nameWarn.innerHTML);
+                nameWarn.style.display = "block";
+                post=false;
+            }
+            if (passwordInput.value.length < PASSWORD_MIN_LENGTH || passwordInput.value.length>PASSWORD_MAX_LENGTH) {
+                passwordWarn.innerHTML="Password must be between "+PASSWORD_MIN_LENGTH+"-"+PASSWORD_MAX_LENGTH;
+                console.log(passwordWarn.innerHTML);
+                passwordWarn.style.display = "block";
+                post=false;
+            }
+            console.log("checkFormValidation, post: "+post);
+            if(post){
+                document.getElementById("login").submit();
+            }
+        }
+    </script>
 </head>
-<body>
-<div class="container">
-    <h2>Corbeau Moderator Login</h2>
-    <form action="./login" method="post">
+<body style="background: #222D32;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator
+        Panel</a>
+    <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navb">
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:void(0)"><i class="fas fa-sign-in-alt"
+                                                                        style="font-size: 18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)"><i class="fas fa-info" style="font-size: 18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="javascript:void(0)"><i class="fas fa-chart-pie"
+                                                                          style="font-size: 18px;"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container border" style="width: 50%; padding: 3%; margin-top: 5%;border-radius: 11px;">
+    <h2 class="text-light text-center">Login</h2>
+    <form action="/moderation/login" method="post" id="login" onsubmit="event.preventDefault();checkFormValidation();">
         <div class="form-group">
-            <label for="name">Name</label>
-            <input class="form-control" id="name" name="username" placeholder="name" type="text"/><br>
+            <label class="text-info" for="name" style="font-size: 20px">Name:</label>
+            <input class="form-control border-info" id="name" name="username" style="background-color: transparent;" type="text">
+            <p  class="text-warning" id="name-warn"></p>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input class="form-control" id="password" name="password" placeholder="***********" type="password"><br>
+            <label class="text-info" for="password" style="font-size: 20px">Password:</label>
+            <input class="form-control border-info" id="password" name="password" style="background-color: transparent;" type="password">
+            <p class="text-warning" id="password-warn"></p>
         </div>
-        <button class="btn btn-default" type="submit">Login</button>
+        <button class="btn btn-outline-info" type="submit">Login</button>
+        <div style="margin-top: 20px;">
+            <p class="text-danger" th:if="${(param.error != null)}" id="error">Incorrect Credentials</p>
+        </div>
     </form>
 </div>
+<script>
+    document.getElementById("name-warn").style.display = "none";
+    document.getElementById("password-warn").style.display = "none";
+</script>
 </body>
 </html>
