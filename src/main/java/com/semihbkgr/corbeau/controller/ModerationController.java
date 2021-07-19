@@ -61,4 +61,10 @@ public class ModerationController {
                 });
     }
 
+    @SuppressWarnings("MVCPathVariableInspection")
+    @GetMapping("/{ignore}")
+    public String redirectNotFoundUrl(){
+        return "redirect:/moderation/menu";
+    }
+
 }
