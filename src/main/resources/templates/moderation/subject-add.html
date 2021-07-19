@@ -2,7 +2,7 @@
 <!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Subject</title>
+    <title>SubjectAdd</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -54,10 +54,9 @@
     </div>
 </nav>
 <div class="container" style="padding: 5%">
-    <h2 class="text-center" th:text="Subjects"></h2>
-    <tr data-th-each="subject : ${subjects}">
-        <td>[[${subject.name}]]</td>
-    </tr>
+    <form>
+
+    </form>
     <a class="text-center border-info" href="moderation/subject/add">Add</a>
 </div>
 </body>

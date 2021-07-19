@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
+
 @Controller
 @RequestMapping("/moderation")
 @RequiredArgsConstructor
@@ -66,10 +68,15 @@ public class ModerationController {
     @GetMapping("/subject")
     public Mono<String> subject(final Model model){
         return Mono.from(subjectService.findAll())
-                .map(subjectList->{
-                    model.addAttribute("subjects",subjectList);
-                    return "subject";
+                .map(subjectFlux->{
+                    model.addAttribute("subjects",subjectFlux);
+                    return "/moderation/subject";
                 });
+    }
+
+    @GetMapping("/subject/add")
+    public String subjectAdd(){
+        return "/moderation/subject-add";
     }
 
     @SuppressWarnings("MVCPathVariableInspection")
