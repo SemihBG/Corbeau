@@ -1,19 +1,22 @@
 package com.semihbkgr.corbeau.model.projection;
 
-import com.semihbkgr.corbeau.model.base.TimeAuditable;
-import lombok.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class PostShallow extends TimeAuditable {
+public interface PostShallow {
 
-    private String id;
+    String getId();
 
-    private String title;
+    String getTitle();
 
-    private String subjectId;
+    String getCreatedBy();
+
+    String getUpdatedBy();
+
+    long getCreatedAt();
+
+    long getUpdatedAt();
+
+    int getSubjectId();
+
+    String getSubjectName();
 
 }

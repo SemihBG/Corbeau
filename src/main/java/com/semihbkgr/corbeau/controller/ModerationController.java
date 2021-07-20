@@ -2,10 +2,7 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
-import com.semihbkgr.corbeau.service.ModeratorDetailsService;
-import com.semihbkgr.corbeau.service.ModeratorService;
-import com.semihbkgr.corbeau.service.RoleService;
-import com.semihbkgr.corbeau.service.SubjectService;
+import com.semihbkgr.corbeau.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -24,6 +21,7 @@ public class ModerationController {
     private final ModeratorService moderatorService;
     private final RoleService roleService;
     private final SubjectService subjectService;
+    private final PostService postService;
 
     @GetMapping("/login")
     public String login() {
@@ -65,10 +63,15 @@ public class ModerationController {
     }
 
     @GetMapping("/subject")
-    public String subject(final Model model){
-        var subjectsReactiveDataDrivenMode = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects",subjectsReactiveDataDrivenMode);
-        return "/moderation/subject";
+    public Mono<String> subject(final Model model){
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects",subjectsReactiveData);
+        return Mono.from(ReactiveSecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name",authentication.getName());
+                    return "/moderation/subject";
+                });
     }
 
     @PostMapping("/subject")
@@ -83,6 +86,18 @@ public class ModerationController {
         return Mono.from(subjectService.update(
                 id, Subject.builder().name(subjectSaveDto.getName()).build()))
                 .then(Mono.just("redirect:/moderation/subject"));
+    }
+
+    @GetMapping("/post")
+    public Mono<String> post(final Model model){
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(), 1);
+        model.addAttribute("posts",postsReactiveData);
+        return Mono.from(ReactiveSecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name",authentication.getName());
+                    return "/moderation/post";
+                });
     }
 
     @SuppressWarnings("MVCPathVariableInspection")

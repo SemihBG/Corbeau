@@ -57,3 +57,5 @@ VALUES ('Java'),
        ('Go'),
        ('Kotlin');
 
+INSERT INTO db.posts(title, content, subject_id)
+VALUES ('post01', 'content', 1);
