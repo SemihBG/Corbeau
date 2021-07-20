@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class Post extends AllAuditable implements Serializable {
 
     @Id
-    private String id;
+    private int id;
 
     private String title;
 

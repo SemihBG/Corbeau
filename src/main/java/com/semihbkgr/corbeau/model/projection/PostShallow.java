@@ -1,6 +1,8 @@
 package com.semihbkgr.corbeau.model.projection;
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 public interface PostShallow {
 
     String getId();
@@ -15,8 +17,9 @@ public interface PostShallow {
 
     long getUpdatedAt();
 
-    int getSubjectId();
-
-    String getSubjectName();
+    //TODO fix projection bug
+    default String getSubjectName() {
+        return "none";
+    }
 
 }

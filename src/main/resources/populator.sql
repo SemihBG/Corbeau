@@ -52,10 +52,12 @@ CREATE TABLE IF NOT EXISTS db.images
     updated_at BIGINT UNSIGNED
 );
 
-INSERT INTO db.subjects (name)
-VALUES ('Java'),
-       ('Go'),
-       ('Kotlin');
+INSERT INTO db.subjects (id, name)
+VALUES (1, 'Java'),
+       (2, 'Go'),
+       (3, 'Kotlin');
 
 INSERT INTO db.posts(title, content, subject_id)
-VALUES ('post01', 'content', 1);
+VALUES ('postJava', 'content', 1),
+       ('postGo', 'content', 2),
+       ('postKotlin', 'content', 3);

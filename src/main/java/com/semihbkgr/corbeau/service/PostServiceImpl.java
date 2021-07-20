@@ -18,7 +18,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Flux<PostShallow> findAll() {
-        return postRepository.findAllShallow();
+        return postRepository.findAllPostShallow();
     }
 
     @Override
