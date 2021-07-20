@@ -1,5 +1,7 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.model.Subject;
+import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
 import com.semihbkgr.corbeau.service.ModeratorDetailsService;
 import com.semihbkgr.corbeau.service.ModeratorService;
 import com.semihbkgr.corbeau.service.RoleService;
@@ -10,13 +12,9 @@ import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 
 @Controller
 @RequestMapping("/moderation")
@@ -73,9 +71,22 @@ public class ModerationController {
         return "/moderation/subject";
     }
 
+    @PostMapping("/subject")
+    public Mono<String> subjectSave(@ModelAttribute SubjectSaveDto subjectSaveDto){
+        return Mono.from(subjectService.save(
+                        Subject.builder().name(subjectSaveDto.getName()).build()))
+                .then(Mono.just("redirect:/moderation/subject"));
+    }
+
+    @PostMapping("/subject/{id}")
+    public Mono<String> subjectUpdate(@PathVariable("id") int id,@ModelAttribute SubjectSaveDto subjectSaveDto){
+        return Mono.from(subjectService.update(
+                id, Subject.builder().name(subjectSaveDto.getName()).build()))
+                .then(Mono.just("redirect:/moderation/subject"));
+    }
 
     @SuppressWarnings("MVCPathVariableInspection")
-    @GetMapping("/{ignore}")
+    @GetMapping({"","/","/{ignore}"})
     public String redirectNotFoundUrl(){
         return "redirect:/moderation/menu";
     }

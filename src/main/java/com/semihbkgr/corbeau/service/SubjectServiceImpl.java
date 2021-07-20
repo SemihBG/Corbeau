@@ -27,6 +27,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Mono<Subject> update(int id, @NonNull Subject subject) throws IllegalValueException {
+        if(id<1) throw new IllegalArgumentException();
         return subjectRepository.findById(id)
                 .switchIfEmpty(Mono.error(()->
                         new IllegalValueException("Subject not available by given id", subjectRepository.TABLE_NAME, "id", id)))
@@ -35,6 +36,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Mono<Void> delete(int id) throws IllegalValueException {
+        if(id<1) throw new IllegalArgumentException();
         return subjectRepository.findById(id)
                 .switchIfEmpty(Mono.error(()->
                         new IllegalValueException("Image not available by given id", subjectRepository.TABLE_NAME, "id", id)))
