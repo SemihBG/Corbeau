@@ -90,7 +90,7 @@ public class ModerationController {
 
     @GetMapping("/post")
     public Mono<String> post(final Model model){
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(), 1);
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllPaged(null), 1);
         model.addAttribute("posts",postsReactiveData);
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)

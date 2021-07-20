@@ -9,8 +9,12 @@ import com.semihbkgr.corbeau.service.RoleService;
 import com.semihbkgr.corbeau.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -35,7 +39,8 @@ public class ApiController {
     }
 
     @GetMapping("/post")
-    public Flux<PostShallow> posts() {
-        return postService.findAll();
+    public Flux<PostShallow> posts(@RequestParam(value="p",required = false, defaultValue = "-1") int page) {
+        if(page<1) page=0;
+        return postService.findAllPaged(PageRequest.of(page,10, Sort.by("updated_at")));
     }
 }

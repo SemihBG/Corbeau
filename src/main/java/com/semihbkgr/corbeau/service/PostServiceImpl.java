@@ -5,6 +5,7 @@ import com.semihbkgr.corbeau.model.projection.PostShallow;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,8 +18,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Flux<PostShallow> findAll() {
-        return postRepository.findAllPostShallow();
+    public Flux<PostShallow> findAllPaged(Pageable pageable) {
+        return postRepository.findAllPostShallow(pageable.getPageSize(),pageable.getPageNumber(),"updated_at");
     }
 
     @Override
