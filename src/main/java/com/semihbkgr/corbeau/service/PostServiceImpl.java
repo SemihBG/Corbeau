@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Flux<PostShallow> findAllPaged(Pageable pageable) {
-        return postRepository.findAllPostShallow(pageable.getPageSize(),pageable.getPageNumber(),"updated_at");
+        return postRepository.findAllPostShallow(pageable);
     }
 
     @Override

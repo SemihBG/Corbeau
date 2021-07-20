@@ -1,25 +1,29 @@
 package com.semihbkgr.corbeau.model.projection;
 
 
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 
-public interface PostShallow {
+@Data
+@Builder
+public class PostShallow {
 
-    String getId();
+    private int id;
 
-    String getTitle();
+    private String title;
 
-    String getCreatedBy();
+    private int subjectId;
 
-    String getUpdatedBy();
+    private String subjectName;
 
-    long getCreatedAt();
+    private String createdBy;
 
-    long getUpdatedAt();
+    private String updatedBy;
 
-    //TODO fix projection bug
-    default String getSubjectName() {
-        return "none";
-    }
+    private long createdAt;
+
+    private long updatedAt;
+
 
 }
