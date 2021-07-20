@@ -45,7 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public ServerAuthenticationSuccessHandler serverAuthenticationSuccessHandler() {
-        return new RedirectServerAuthenticationSuccessHandler("/moderation");
+        return new RedirectServerAuthenticationSuccessHandler("/moderation/menu");
     }
 
     @Bean

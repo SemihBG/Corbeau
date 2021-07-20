@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS db.moderators
     name       VARCHAR(32)  NOT NULL UNIQUE,
     password   VARCHAR(256) NOT NULL,
     email      VARCHAR(128) NOT NULL UNIQUE,
-    role_id INT UNSIGNED NOT NULL ,
+    role_id    INT UNSIGNED NOT NULL,
     created_at BIGINT UNSIGNED,
     updated_at BIGINT UNSIGNED,
-    FOREIGN KEY (role_id) REFERENCES db.roles(id)
+    FOREIGN KEY (role_id) REFERENCES db.roles (id)
 );
 CREATE TABLE IF NOT EXISTS db.subjects
 (
@@ -51,3 +51,9 @@ CREATE TABLE IF NOT EXISTS db.images
     created_at BIGINT UNSIGNED,
     updated_at BIGINT UNSIGNED
 );
+
+INSERT INTO db.subjects (name)
+VALUES ('Java'),
+       ('Go'),
+       ('Kotlin');
+

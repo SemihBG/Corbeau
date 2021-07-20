@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -31,8 +32,8 @@ public class ModerationController {
         return "/moderation/login";
     }
 
-    @GetMapping({"", "/", "/menu"})
-    public Mono<String> panel(final Model model) {
+    @GetMapping("/menu")
+    public Mono<String> menu(final Model model) {
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
@@ -66,18 +67,12 @@ public class ModerationController {
     }
 
     @GetMapping("/subject")
-    public Mono<String> subject(final Model model){
-        return Mono.from(subjectService.findAll())
-                .map(subjectFlux->{
-                    model.addAttribute("subjects",subjectFlux);
-                    return "/moderation/subject";
-                });
+    public String subject(final Model model){
+        var subjectsReactiveDataDrivenMode = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects",subjectsReactiveDataDrivenMode);
+        return "/moderation/subject";
     }
 
-    @GetMapping("/subject/add")
-    public String subjectAdd(){
-        return "/moderation/subject-add";
-    }
 
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping("/{ignore}")

@@ -77,12 +77,12 @@
     <h2 class="text-light text-center">Login</h2>
     <form action="/moderation/login" method="post" id="login" onsubmit="event.preventDefault();checkFormValidation();">
         <div class="form-group">
-            <label class="text-info" for="name" style="font-size: 20px">Name:</label>
+            <label class="text-info" for="name" style="font-size: 20px;">Name:</label>
             <input class="form-control border-info text-light" id="name" name="username" style="background-color: transparent;" type="text" th:value="${@environment.getProperty('moderation.prime.name')}">
             <p  class="text-warning" id="name-warn"></p>
         </div>
         <div class="form-group">
-            <label class="text-info" for="password" style="font-size: 20px">Password:</label>
+            <label class="text-info" for="password" style="font-size: 20px;">Password:</label>
             <input class="form-control border-info text-light" id="password" name="password" style="background-color: transparent;" type="password" th:value="${@environment.getProperty('moderation.prime.password')}">
             <p class="text-warning" id="password-warn"></p>
         </div>

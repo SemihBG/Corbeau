@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.model;
 
+import com.semihbkgr.corbeau.model.base.AllAuditable;
 import com.semihbkgr.corbeau.model.base.TimeAuditable;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Builder
 @With
 @Table("subjects")
-public class Subject extends TimeAuditable implements Serializable {
+public class Subject extends AllAuditable implements Serializable {
 
     @Id
     private int id;
