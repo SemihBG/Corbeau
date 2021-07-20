@@ -17,37 +17,4 @@ import java.util.Map;
 public class CustomErrorController implements ErrorController {
 
 
-    /*
-    private final ErrorAttributes errorAttributes;
-    private final boolean isDebug;
-
-    @Autowired
-    public CustomErrorController(ErrorAttributes errorAttributes,
-                                 @Value("${debug:false}") String isDebug) {
-        this.errorAttributes = errorAttributes;
-        this.isDebug=isDebug.equals("true");
-    }
-
-    @RequestMapping
-    public ErrorResponse response(HttpServletRequest request, HttpServletResponse response){
-        return new ErrorResponse(HttpStatus.valueOf(response.getStatus()),getErrorAttributes(request));
-    }
-
-    private Map<String,Object> getErrorAttributes(HttpServletRequest request){
-        return errorAttributes.getErrorAttributes(new ServletWebRequest(request), getErrorAttributeOptions());
-    }
-
-    private ErrorAttributeOptions getErrorAttributeOptions(){
-        if(isDebug){
-            return ErrorAttributeOptions.of(ErrorAttributeOptions.Include.values());
-        }
-        return ErrorAttributeOptions.defaults();
-    }
-
-    @Override
-    @Deprecated
-    public String getErrorPath() {
-        return null;
-    }
-    */
 }
