@@ -7,7 +7,6 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -117,23 +116,23 @@ public class ModerationController {
                 });
     }
 
+
     @GetMapping("/post/{title}")
     public Mono<String> postProfile(@PathVariable("title")String title,final Model model){
         return postService.findByTitle(title)
                 .flatMap(post -> {
-                   model.addAttribute("post",post);
+                    model.addAttribute("post",post);
+                    return subjectService.findById(post.getSubjectId());
+                })
+                .flatMap(subject->{
+                    model.addAttribute("subject",subject);
                     return ReactiveSecurityContextHolder.getContext();
                 })
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name",authentication.getName());
-                    return "/moderation/post-profile";
+                    return "/moderation/postUpdate";
                 });
-    }
-
-    @GetMapping("/post/new")
-    public Mono<String> post(){
-
     }
 
     @SuppressWarnings("MVCPathVariableInspection")

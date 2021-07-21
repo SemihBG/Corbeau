@@ -2,7 +2,7 @@
 <!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget, HtmlFormInputWithoutLabel -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${post.title}"></title>
+    <title th:text="'Update '+${post.title}"></title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -57,6 +57,7 @@
 
 <div class="container">
     <h1 th:text="${post.title}"></h1>
+    <h2 th:text="${subject.name}"></h2>
 </div>
 </body>
 </html>

@@ -17,6 +17,13 @@ public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
 
     @Override
+    public Mono<Subject> findById(int id) throws IllegalValueException{
+        return subjectRepository.findById(id)
+                .switchIfEmpty(Mono.error(()->
+                        new IllegalValueException("No subject found by given id",SubjectRepository.TABLE_NAME,"id",id)));
+    }
+
+    @Override
     public Flux<SubjectDeep> findAll() {
         return subjectRepository.findAll();
     }

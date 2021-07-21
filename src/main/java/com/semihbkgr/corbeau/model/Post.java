@@ -5,6 +5,7 @@ import com.semihbkgr.corbeau.model.base.TimeAuditable;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
@@ -24,7 +25,8 @@ public class Post extends AllAuditable implements Serializable {
 
     private String content;
 
-    private String subjectId;
+    @Column("subject_id")
+    private int subjectId;
 
     @Transient
     private int viewCount;

@@ -2,7 +2,6 @@ package com.semihbkgr.corbeau.controller;
 
 
 import com.semihbkgr.corbeau.model.Role;
-import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
 import com.semihbkgr.corbeau.model.projection.SubjectDeep;
 import com.semihbkgr.corbeau.service.PostService;
@@ -11,7 +10,6 @@ import com.semihbkgr.corbeau.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
