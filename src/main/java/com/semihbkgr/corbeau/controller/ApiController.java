@@ -4,6 +4,7 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.model.Role;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
+import com.semihbkgr.corbeau.model.projection.SubjectDeep;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.RoleService;
 import com.semihbkgr.corbeau.service.SubjectService;
@@ -34,7 +35,7 @@ public class ApiController {
     }
 
     @GetMapping("/subject")
-    public Flux<Subject> subjects(){
+    public Flux<SubjectDeep> subjects(){
         return subjectService.findAll();
     }
 

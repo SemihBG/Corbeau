@@ -2,17 +2,18 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Subject;
+import com.semihbkgr.corbeau.model.projection.SubjectDeep;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SubjectService {
 
-    Flux<Subject> findAll();
+    Flux<SubjectDeep> findAll();
 
     Mono<Subject> save(Subject subject);
 
     Mono<Subject> update(int id,Subject subject) throws IllegalValueException;
 
-    Mono<Void> delete(int id) throws IllegalValueException;
+    Mono<Void> deleteById(int id) throws IllegalValueException;
 
 }

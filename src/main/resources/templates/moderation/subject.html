@@ -77,6 +77,7 @@
         <tr>
             <th style="display:none;">Id</th>
             <th>Name</th>
+            <th>PostCount</th>
             <th>CreatedBy</th>
             <th>UpdatedBy</th>
             <th>CreatedAt</th>
@@ -87,6 +88,7 @@
         <tr data-th-each="subject : ${subjects}">
             <td style="display:none;" th:text="${subject.id}"></td>
             <td th:text="${subject.name}"></td>
+            <td th:text="${subject.postCount}"></td>
             <td th:if="${subject.createdBy}!=${null}" th:text="${subject.getCreatedBy()}"></td>
             <td th:unless="${subject.createdBy}!=${null}">None</td>
             <td th:if="${subject.updatedBy}!=${null}" th:text="${subject.updatedBy}"></td>
