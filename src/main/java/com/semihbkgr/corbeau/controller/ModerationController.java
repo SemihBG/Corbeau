@@ -131,6 +131,11 @@ public class ModerationController {
                 });
     }
 
+    @GetMapping("/post/new")
+    public Mono<String> post(){
+
+    }
+
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"","/","/{ignore}"})
     public String redirectNotFoundUrl(){
