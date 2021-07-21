@@ -61,7 +61,7 @@
         <thead>
         <tr>
             <th>Title</th>
-
+            <th>Subject</th>
             <th>CreatedBy</th>
             <th>UpdatedBy</th>
             <th>CreatedAt</th>
@@ -71,6 +71,7 @@
         <tbody>
         <tr data-th-each="post : ${posts}">
             <td th:text="${post.title}"></td>
+            <td th:text="${post.subjectName}"></td>
             <td th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></td>
             <td th:unless="${post.createdBy}!=${null}">StartUp</td>
             <td th:if="${post.updatedBy}!=${null}" th:text="${post.updatedBy}"></td>

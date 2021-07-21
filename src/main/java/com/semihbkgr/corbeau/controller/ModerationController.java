@@ -4,6 +4,8 @@ import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
 import com.semihbkgr.corbeau.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,6 +19,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/moderation")
 @RequiredArgsConstructor
 public class ModerationController {
+
+    static final int POST_PAGE_SIZE=5;
 
     private final ModeratorService moderatorService;
     private final RoleService roleService;
@@ -89,8 +93,9 @@ public class ModerationController {
     }
 
     @GetMapping("/post")
-    public Mono<String> post(final Model model){
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllPaged(null), 1);
+    public Mono<String> post(final Model model,@RequestParam(value = "p",required = false,defaultValue = "0") int page){
+        if(page<0) page=0;
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(page,POST_PAGE_SIZE).withSort(Sort.by("updated_at"))), 1);
         model.addAttribute("posts",postsReactiveData);
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)

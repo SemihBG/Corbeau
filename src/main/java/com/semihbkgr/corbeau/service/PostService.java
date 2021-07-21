@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface PostService {
 
-    Flux<PostShallow> findAllPaged(Pageable pageable);
+    Flux<PostShallow> findAll(Pageable pageable);
 
     Mono<Post> save(Post post);
 

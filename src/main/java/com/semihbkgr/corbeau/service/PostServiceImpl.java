@@ -18,8 +18,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Flux<PostShallow> findAllPaged(Pageable pageable) {
-        return postRepository.findAllPostShallow(pageable);
+    public Flux<PostShallow> findAll(@NonNull Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     @Override
