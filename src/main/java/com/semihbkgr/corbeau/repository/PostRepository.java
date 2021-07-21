@@ -8,7 +8,11 @@ import reactor.core.publisher.Mono;
 
 public interface PostRepository {
 
+    String TABLE_NAME="posts";
+
     Mono<Post> save(Post post);
+
+    Mono<Post> findByTitle(String title);
 
     Flux<PostShallow> findAll(Pageable pageable);
 

@@ -117,6 +117,20 @@ public class ModerationController {
                 });
     }
 
+    @GetMapping("/post/{title}")
+    public Mono<String> postProfile(@PathVariable("title")String title,final Model model){
+        return postService.findByTitle(title)
+                .flatMap(post -> {
+                   model.addAttribute("post",post);
+                    return ReactiveSecurityContextHolder.getContext();
+                })
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name",authentication.getName());
+                    return "/moderation/post-profile";
+                });
+    }
+
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"","/","/{ignore}"})
     public String redirectNotFoundUrl(){

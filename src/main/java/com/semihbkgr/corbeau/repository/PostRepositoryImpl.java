@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.CriteriaDefinition;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -48,6 +49,11 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Mono<Post> save(@NonNull Post post) {
         return template.insert(post);
+    }
+
+    @Override
+    public Mono<Post> findByTitle(@NonNull String title) {
+        return template.selectOne(Query.query(Criteria.where("title").is(title)),Post.class);
     }
 
     //Pageable sort takes only first order in sort.
