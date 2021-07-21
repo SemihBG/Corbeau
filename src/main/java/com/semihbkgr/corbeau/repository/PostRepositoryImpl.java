@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.CriteriaDefinition;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -83,6 +85,11 @@ public class PostRepositoryImpl implements PostRepository {
                 .updatedAt(row.get("updated_at", Long.class))
                 .build()
         ).all();
+    }
+
+    @Override
+    public Mono<Long> count() {
+        return template.count(Query.query(CriteriaDefinition.empty()),Post.class);
     }
 
 }

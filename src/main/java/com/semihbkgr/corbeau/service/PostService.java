@@ -12,4 +12,6 @@ public interface PostService {
 
     Mono<Post> save(Post post);
 
+    Mono<Long> count();
+
 }

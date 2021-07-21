@@ -27,4 +27,9 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(post);
     }
 
+    @Override
+    public Mono<Long> count() {
+        return postRepository.count();
+    }
+
 }

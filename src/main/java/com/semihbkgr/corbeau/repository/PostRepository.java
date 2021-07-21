@@ -12,4 +12,6 @@ public interface PostRepository {
 
     Flux<PostShallow> findAll(Pageable pageable);
 
+    Mono<Long> count();
+
 }

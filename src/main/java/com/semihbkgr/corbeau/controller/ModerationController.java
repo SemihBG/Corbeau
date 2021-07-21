@@ -3,9 +3,11 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
 import com.semihbkgr.corbeau.service.*;
+import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -93,11 +95,21 @@ public class ModerationController {
     }
 
     @GetMapping("/post")
-    public Mono<String> post(final Model model,@RequestParam(value = "p",required = false,defaultValue = "0") int page){
-        if(page<0) page=0;
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(page,POST_PAGE_SIZE).withSort(Sort.by("updated_at"))), 1);
+    public Mono<String> post(final Model model, @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr){
+        int index= ParameterUtils.parsePageToIndex(pageStr);
+        if(index==-1) return Mono.just("redirect:/moderation/post?p=1");
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at"))), 1);
         model.addAttribute("posts",postsReactiveData);
-        return Mono.from(ReactiveSecurityContextHolder.getContext())
+        return postService.count()
+                .flatMap(count->{
+                    var pageCount=(int)Math.ceil((double)count/POST_PAGE_SIZE);
+                    model.addAttribute("count",count);
+                    model.addAttribute("page",index+1);
+                    model.addAttribute("pageCount",pageCount);
+                    model.addAttribute("hasPrevious",index>0);
+                    model.addAttribute("hasNext",index+1<pageCount);
+                    return ReactiveSecurityContextHolder.getContext();
+                })
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name",authentication.getName());
