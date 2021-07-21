@@ -73,14 +73,14 @@
             <td th:text="${post.title}"></td>
             <td th:text="${post.subjectName}"></td>
             <td th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></td>
-            <td th:unless="${post.createdBy}!=${null}">StartUp</td>
+            <td th:unless="${post.createdBy}!=${null}">None</td>
             <td th:if="${post.updatedBy}!=${null}" th:text="${post.updatedBy}"></td>
-            <td th:unless="${post.updatedBy}!=${null}">StartUp</td>
+            <td th:unless="${post.updatedBy}!=${null}">None</td>
             <td th:if="${post.createdAt}>0" th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></td>
-            <td th:unless="${post.createdAt}>0">StartUp</td>
+            <td th:unless="${post.createdAt}>0">None</td>
             <td th:if="${post.createdAt}!=${post.updatedAt}"
                 th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></td>
-            <td th:unless="${post.createdAt}!=${post.updatedAt}">StartUp</td>
+            <td th:unless="${post.createdAt}!=${post.updatedAt}">None</td>
         </tr>
         </tbody>
     </table>

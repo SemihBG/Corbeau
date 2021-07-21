@@ -10,88 +10,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin='anonymous' src='https://kit.fontawesome.com/a076d05399.js'></script>
+
     <script>
 
         const SUBJECT_NAME_MIN_LENGTH = 5;
         const SUBJECT_NAME_MAX_LENGTH = 25;
         const SUBJECT_NAME_REGEX = new RegExp(/^[0-9a-z_]+$/i);
-        const SUBJECT_UPDATE_ROOT_URL="/moderation/subject";
-        var selectedSubjectName;
+        const SUBJECT_UPDATE_ROOT_URL = "/moderation/subject";
+        let selectedSubjectName;
 
-        function addRowHandlers() {
-            var table = document.getElementById("subject-table");
-            var rows = table.getElementsByTagName("tr");
-            for (i = 0; i < rows.length; i++) {
-                var currentRow = table.rows[i];
-                var createClickHandler = function (row) {
-                    return function () {
-                        var id = row.getElementsByTagName("td")[0].innerHTML;
-                        var name = row.getElementsByTagName("td")[1].innerHTML;
-                        selectedSubjectName=name;
-                        document.getElementById("update-button").classList.remove("disabled")
-                        document.getElementById("update-button").disabled=false;
-                        document.getElementById("update-current-name").innerHTML=name;
-                        document.getElementById("update-name").value=name;
-                        document.getElementById("update-name").placeholder=name;
-                        document.getElementById("update").action=SUBJECT_UPDATE_ROOT_URL+"/"+id;
-                        console.log("Subject selected, name: "+name);
-                    };
-                };
-                currentRow.onclick = createClickHandler(currentRow);
-            }
-        }
-
-        function saveSubject() {
-            const nameWarn = document.getElementById("save-name-warn");
-            nameWarn.style.display = "none";
-            let post = true;
-            const nameInput = document.getElementById("save-name");
-            const name=nameInput.value.trim();
-            nameInput.value=name;
-            if (name.length < SUBJECT_NAME_MIN_LENGTH || name.length > SUBJECT_NAME_MAX_LENGTH) {
-                nameWarn.innerHTML = "Subject name must be between " + SUBJECT_NAME_MIN_LENGTH + "-" + SUBJECT_NAME_MAX_LENGTH;
-                console.log(nameWarn.innerHTML);
-                nameWarn.style.display = "block";
-                post = false;
-            } else if (!SUBJECT_NAME_REGEX.test(name)) {
-                nameWarn.innerHTML = "Subject name must consist of letters and numbers";
-                console.log(nameWarn.innerHTML);
-                nameWarn.style.display = "block";
-                post = false;
-            }
-            console.log("saveSubject, post: " + post);
-            if (post) document.getElementById("save").submit();
-
-        }
-
-        function updateSubject(){
-            const nameWarn = document.getElementById("update-name-warn");
-            nameWarn.style.display = "none";
-            let post = true;
-            const nameInput = document.getElementById("update-name");
-            const name=nameInput.value.trim();
-            nameInput.value=name;
-            if(name.trim()===selectedSubjectName){
-                nameWarn.innerHTML = "Subject name is already "+selectedSubjectName;
-                console.log(nameWarn.innerHTML);
-                nameWarn.style.display = "block";
-                post = false;
-            } else if (name.length < SUBJECT_NAME_MIN_LENGTH || name.length > SUBJECT_NAME_MAX_LENGTH) {
-                nameWarn.innerHTML = "Subject name must be between " + SUBJECT_NAME_MIN_LENGTH + "-" + SUBJECT_NAME_MAX_LENGTH;
-                console.log(nameWarn.innerHTML);
-                nameWarn.style.display = "block";
-                post = false;
-            } else if (!SUBJECT_NAME_REGEX.test(name)) {
-                nameWarn.innerHTML = "Subject name must consist of letters and numbers";
-                console.log(nameWarn.innerHTML);
-                nameWarn.style.display = "block";
-                post = false;
-            }
-            console.log("updateSubject, post: " + post);
-            if (post) document.getElementById("update").submit();
+        function isSubjectNameValid(name) {
+            return name.length >= SUBJECT_NAME_MIN_LENGTH &&
+                name.length <= SUBJECT_NAME_MAX_LENGTH &&
+                SUBJECT_NAME_REGEX.test(name);
         }
 
     </script>
+
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -128,16 +63,16 @@
                 <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden" ></form>
+                <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden"></form>
                 <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i
                         class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
             </li>
         </ul>
     </div>
 </nav>
-<div class="container" style="padding: 5% 5% 5% 5%;">
+<div class="container" style="padding: 5%;">
     <h2 class="text-center text-light" th:text="Subjects"></h2>
-    <table class="table table-dark table-hover" id="subject-table" style="padding: 0;margin: 0">
+    <table class="table table-dark table-hover" id="subject-table">
         <thead>
         <tr>
             <th style="display:none;">Id</th>
@@ -153,42 +88,99 @@
             <td style="display:none;" th:text="${subject.id}"></td>
             <td th:text="${subject.name}"></td>
             <td th:if="${subject.createdBy}!=${null}" th:text="${subject.getCreatedBy()}"></td>
-            <td th:unless="${subject.createdBy}!=${null}">StartUp</td>
+            <td th:unless="${subject.createdBy}!=${null}">None</td>
             <td th:if="${subject.updatedBy}!=${null}" th:text="${subject.updatedBy}"></td>
-            <td th:unless="${subject.updatedBy}!=${null}">StartUp</td>
+            <td th:unless="${subject.updatedBy}!=${null}">None</td>
             <td th:if="${subject.createdAt}>0" th:text="${#dates.format(subject.createdAt, 'dd-MM-yyyy')}"></td>
-            <td th:unless="${subject.createdAt}>0">StartUp</td>
-            <td th:if="${subject.createdAt}!=${subject.updatedAt}" th:text="${#dates.format(subject.updatedAt, 'dd-MM-yyyy')}"></td>
-            <td th:unless="${subject.createdAt}!=${subject.updatedAt}">StartUp</td>
+            <td th:unless="${subject.createdAt}>0">None</td>
+            <td th:if="${subject.createdAt}!=${subject.updatedAt}"
+                th:text="${#dates.format(subject.updatedAt, 'dd-MM-yyyy')}"></td>
+            <td th:unless="${subject.createdAt}!=${subject.updatedAt}">None</td>
         </tr>
         </tbody>
     </table>
-    <div class="container bg-dark" style="padding-top: 3%;margin: 0;">
-        <form action="/moderation/subject" id="save" method="post" onsubmit="event.preventDefault();saveSubject();"
-              style="padding: 0; margin: 0">
+
+    <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0; ">
+        <form action="/moderation/subject/{id}" id="update" method="post">
+            <p class="text-light" id="update-current-name"></p>
             <div class="form-group">
-                <input class="form-control border-info text-light" id="save-name" name="name"
-                       style="background-color: transparent;" type="text">
-                <p class="text-warning" id="save-name-warn" style="display: none"></p>
+                <input autocomplete=off class="form-control border-info text-secondary" id="update-name"
+                       name="name" style="background-color: transparent;" type="text" readonly>
             </div>
-            <button class="btn btn-outline-info" type="submit">Save</button>
+            <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
         </form>
     </div>
-    <div class="container bg-dark" style="padding-top: 3%; padding-bottom: 3%;margin: 0;">
-        <form action="/moderation/subject/{id}" id="update" method="post" onsubmit="event.preventDefault();updateSubject();">
-            <p id="update-current-name" class="text-light"></p>
+
+    <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0;">
+        <form action="/moderation/subject" id="save" method="post" style="padding: 0; margin: 0">
             <div class="form-group">
-                <input class="form-control border-info text-light" id="update-name" name="name" style="background-color: transparent;" type="text">
-                <p class="text-warning" id="update-name-warn" style="display: none"></p>
+                <input autocomplete=off class="form-control border-info text-secondary" id="save-name"
+                       name="name" style="background-color: transparent;" type="text">
             </div>
-            <button class="btn btn-outline-info disabled" type="submit" id="update-button" disabled>Update</button>
+            <button class="btn btn-outline-info disabled" disabled id="save-button" type="submit">Save</button>
         </form>
     </div>
+
 
 </div>
 
 <script>
-    addRowHandlers()
+
+    const saveName = document.getElementById('save-name');
+    const saveButton = document.getElementById('save-button');
+    saveName.addEventListener("input", function () {
+        const isValid = isSubjectNameValid(this.value);
+        if (isValid && saveButton.disabled) {
+            saveButton.classList.remove('disabled');
+            saveName.classList.remove('text-secondary');
+            saveName.classList.add('text-info');
+            saveButton.disabled = false;
+        } else if (!isValid && !saveButton.disabled) {
+            saveButton.classList.add('disabled');
+            saveName.classList.add('text-secondary');
+            saveName.classList.remove('text-info');
+            saveButton.disabled = true;
+        }
+    });
+
+    const updateName = document.getElementById('update-name');
+    const updateButton = document.getElementById('update-button');
+    updateName.addEventListener("input",function (){
+        const isValid = isSubjectNameValid(this.value);
+        if(this.value!==selectedSubjectName && isValid && updateButton.disabled){
+            updateButton.classList.remove('disabled');
+            updateName.classList.remove('text-secondary');
+            updateName.classList.add('text-info');
+            updateButton.disabled = false;
+        }else if (this.value===selectedSubjectName || (!isValid && !updateButton.disabled)) {
+            updateButton.classList.add('disabled');
+            updateName.classList.add('text-secondary');
+            updateName.classList.remove('text-info');
+            updateButton.disabled = true;
+        }
+    });
+
+    let table = document.getElementById("subject-table");
+    let rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+        let currentRow = table.rows[i];
+        let createClickHandler = function (row) {
+            return function () {
+                let id = row.getElementsByTagName("td")[0].innerHTML;
+                let name = row.getElementsByTagName("td")[1].innerHTML;
+                selectedSubjectName = name;
+                document.getElementById("update").action = SUBJECT_UPDATE_ROOT_URL + "/" + id;
+                document.getElementById("update-current-name").innerHTML = name;
+                let updateName = document.getElementById("update-name");
+                updateName.value = name;
+                updateName.placeholder = name;
+                updateName.readOnly = false;
+                updateName.focus();
+            };
+        };
+        currentRow.onclick = createClickHandler(currentRow);
+    }
+
 </script>
 </body>
 </html>
