@@ -45,11 +45,8 @@ public class SubjectServiceImpl implements SubjectService {
                 .switchIfEmpty(Mono.error(()->
                         new IllegalValueException("Subject not available by given id", SubjectRepository.TABLE_NAME, "id", id)))
                 .flatMap(savedSubject->{
-                    var updatedSubject=subject.withId(savedSubject.getId());
-                    updatedSubject.setCreatedBy(savedSubject.getCreatedBy());
-                    updatedSubject.setCreatedAt(savedSubject.getCreatedAt());
-                    updatedSubject.setName(subject.getName());
-                    return subjectRepository.update(updatedSubject);
+                    savedSubject.setName(subject.getName());
+                    return subjectRepository.update(savedSubject);
                 });
     }
 

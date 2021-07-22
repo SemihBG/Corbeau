@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
 import com.semihbkgr.corbeau.service.*;
@@ -7,6 +8,8 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 @Controller
 @RequestMapping("/moderation")
@@ -97,7 +102,7 @@ public class ModerationController {
     public Mono<String> post(final Model model, @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr){
         int index= ParameterUtils.parsePageToIndex(pageStr);
         if(index==-1) return Mono.just("redirect:/moderation/post?p=1");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at"))), 1);
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
         model.addAttribute("posts",postsReactiveData);
         return postService.count()
                 .flatMap(count->{
@@ -136,6 +141,16 @@ public class ModerationController {
                     return "/moderation/post-update";
                 });
     }
+
+    @PostMapping("/post/{id}")
+    public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute Post post, final Model model){
+        return postService.update(id,post)
+                .map(savedPost -> {
+                    model.addAttribute("post",savedPost);
+                    return "redirect:/moderation/post/"+post.getTitle();
+                });
+    }
+
 
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"","/","/{ignore}"})

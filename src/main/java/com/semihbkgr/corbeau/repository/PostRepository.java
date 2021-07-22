@@ -12,6 +12,10 @@ public interface PostRepository {
 
     Mono<Post> save(Post post);
 
+    Mono<Post> update(Post post);
+
+    Mono<Post> findById(int id);
+
     Mono<Post> findByTitle(String title);
 
     Flux<PostShallow> findAll(Pageable pageable);

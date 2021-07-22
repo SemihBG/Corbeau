@@ -52,6 +52,16 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public Mono<Post> update(@NonNull Post post) {
+        return template.update(post);
+    }
+
+    @Override
+    public Mono<Post> findById(int id) {
+        return template.selectOne(Query.query(Criteria.where("id").is(id)),Post.class);
+    }
+
+    @Override
     public Mono<Post> findByTitle(@NonNull String title) {
         return template.selectOne(Query.query(Criteria.where("title").is(title)),Post.class);
     }

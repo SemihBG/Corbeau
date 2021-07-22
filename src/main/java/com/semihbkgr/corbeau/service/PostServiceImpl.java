@@ -37,6 +37,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Mono<Post> update(int id, Post post) {
+        return postRepository.findById(id)
+                .switchIfEmpty(Mono.error(()->
+                        new IllegalValueException("No post fond by given id",PostRepository.TABLE_NAME,"id",id)))
+                .flatMap(savedPost->{
+                    savedPost.setTitle(post.getTitle());
+                    savedPost.setContent(post.getContent());
+                    savedPost.setSubjectId(post.getSubjectId());
+                    return postRepository.update(savedPost);
+                });
+    }
+
+    @Override
     public Mono<Long> count() {
         return postRepository.count();
     }

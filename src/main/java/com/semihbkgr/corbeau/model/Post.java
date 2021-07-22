@@ -15,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@With
 @Table("posts")
 public class Post extends AllAuditable implements Serializable {
 
