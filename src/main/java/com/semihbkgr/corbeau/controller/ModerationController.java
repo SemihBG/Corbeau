@@ -8,8 +8,6 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,8 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
 
 @Controller
 @RequestMapping("/moderation")
@@ -102,7 +98,7 @@ public class ModerationController {
     public Mono<String> post(final Model model, @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr){
         int index= ParameterUtils.parsePageToIndex(pageStr);
         if(index==-1) return Mono.just("redirect:/moderation/post?p=1");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAll(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
         model.addAttribute("posts",postsReactiveData);
         return postService.count()
                 .flatMap(count->{

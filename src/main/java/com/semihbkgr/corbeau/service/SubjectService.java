@@ -16,7 +16,9 @@ public interface SubjectService {
 
     Mono<Subject> findById(int id) throws IllegalValueException;
 
-    Mono<Subject> update(int id,Subject subject) throws IllegalValueException;
+    Mono<SubjectDeep> findByNameDeep(String name) throws IllegalValueException;
+
+    Mono<Subject> update(int id, Subject subject) throws IllegalValueException;
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
 

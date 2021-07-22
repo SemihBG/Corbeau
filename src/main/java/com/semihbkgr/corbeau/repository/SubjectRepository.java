@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 public interface SubjectRepository {
 
-    String TABLE_NAME="subjects";
+    String TABLE_NAME = "subjects";
 
     Mono<Subject> save(Subject subject);
 
@@ -17,9 +17,11 @@ public interface SubjectRepository {
 
     Mono<Subject> findById(int id);
 
+    Mono<SubjectDeep> findByNameDeep(String name);
+
     Mono<Subject> update(Subject subject);
 
-    Mono<Void> deleteById (int id);
+    Mono<Void> deleteById(int id);
 
 }
 

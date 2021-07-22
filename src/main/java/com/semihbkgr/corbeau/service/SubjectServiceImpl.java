@@ -22,7 +22,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Flux<Subject> findAll(){
+    public Flux<Subject> findAll() {
         return subjectRepository.findAll();
     }
 
@@ -32,19 +32,26 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Mono<Subject> findById(int id) throws IllegalValueException{
+    public Mono<Subject> findById(int id) throws IllegalValueException {
         return subjectRepository.findById(id)
-                .switchIfEmpty(Mono.error(()->
-                        new IllegalValueException("No subject found by given id",SubjectRepository.TABLE_NAME,"id",id)));
+                .switchIfEmpty(Mono.error(() ->
+                        new IllegalValueException("No subject found by given id", SubjectRepository.TABLE_NAME, "id", id)));
+    }
+
+    @Override
+    public Mono<SubjectDeep> findByNameDeep(@NonNull String name) throws IllegalValueException {
+        return subjectRepository.findByNameDeep(name)
+                .switchIfEmpty(Mono.error(() ->
+                        new IllegalValueException("No subject found by given id", SubjectRepository.TABLE_NAME, "name", name)));
     }
 
     @Override
     public Mono<Subject> update(int id, @NonNull Subject subject) throws IllegalValueException {
-        if(id<1 || subject.getName()==null) throw new IllegalArgumentException();
+        if (id < 1 || subject.getName() == null) throw new IllegalArgumentException();
         return subjectRepository.findById(id)
-                .switchIfEmpty(Mono.error(()->
+                .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Subject not available by given id", SubjectRepository.TABLE_NAME, "id", id)))
-                .flatMap(savedSubject->{
+                .flatMap(savedSubject -> {
                     savedSubject.setName(subject.getName());
                     return subjectRepository.update(savedSubject);
                 });
@@ -52,9 +59,9 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Mono<Void> deleteById(int id) throws IllegalValueException {
-        if(id<1) throw new IllegalArgumentException();
+        if (id < 1) throw new IllegalArgumentException();
         return subjectRepository.findById(id)
-                .switchIfEmpty(Mono.error(()->
+                .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Image not available by given id", SubjectRepository.TABLE_NAME, "id", id)))
                 .then(subjectRepository.deleteById(id));
     }

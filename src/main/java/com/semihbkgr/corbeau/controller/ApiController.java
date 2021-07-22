@@ -48,7 +48,7 @@ public class ApiController {
 
     @GetMapping("/post")
     public Flux<PostShallow> posts(@RequestParam(value="p",required = false, defaultValue = "-1") int page) {
-        return postService.findAll(PageRequest.of(Math.max(page,0),POST_PAGE_SIZE, Sort.by("updated_at").descending()));
+        return postService.findAllShallow(PageRequest.of(Math.max(page,0),POST_PAGE_SIZE, Sort.by("updated_at").descending()));
     }
 
 
