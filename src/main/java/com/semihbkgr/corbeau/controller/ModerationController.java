@@ -121,6 +121,17 @@ public class ModerationController {
                 });
     }
 
+    @GetMapping("/post/save")
+    public Mono<String> postSave(final Model model){
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects",subjectsReactiveData);
+        return ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name",authentication.getName());
+                    return "/moderation/post-save";
+                });
+    }
 
     @GetMapping("/post/{title}")
     public Mono<String> postUpdate(@PathVariable("title")String title,final Model model){
@@ -142,11 +153,20 @@ public class ModerationController {
                 });
     }
 
+    @PostMapping("/post")
+    public Mono<String> postSaveProcess(@ModelAttribute Post post,final Model model){
+        return postService.save(post)
+                .map(savedPost->{
+                    model.addAttribute("post",savedPost);
+                    return "redirect:/moderation/post/"+savedPost.getTitle();
+                });
+    }
+
     @PostMapping("/post/{id}")
     public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute Post post, final Model model){
         return postService.update(id,post)
-                .map(savedPost -> {
-                    model.addAttribute("post",savedPost);
+                .map(updatedPost -> {
+                    model.addAttribute("post",updatedPost);
                     return "redirect:/moderation/post/"+post.getTitle();
                 });
     }

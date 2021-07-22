@@ -86,7 +86,7 @@
             <input class="form-control border-info text-info" id="password" name="password" style="background-color: transparent;" type="password" th:value="${@environment.getProperty('moderation.prime.password')}">
             <p class="text-warning" id="password-warn"></p>
         </div>
-        <button class="btn btn-outline-info" type="submit">Login</button>
+        <button class="btn btn-outline-info" type="submit" id="login-button">Login</button>
         <div style="margin-top: 20px;">
             <p class="text-danger" th:if="${(param.error != null)}" id="error">Incorrect Credentials</p>
         </div>
@@ -95,6 +95,7 @@
 <script>
     document.getElementById("name-warn").style.display = "none";
     document.getElementById("password-warn").style.display = "none";
+    document.getElementById("login-button").click();
 </script>
 </body>
 </html>
