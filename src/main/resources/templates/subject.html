@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--suppress HtmlUnknownTarget -->
+<!--suppress HtmlUnknownTarget, ThymeleafVariablesResolveInspection -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="'Corbeau '+${}"></title>
+    <title th:text="'Corbeau '+${subject.name}"></title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,9 @@
     </div>
 </nav>
 <div class="container" style="margin-top: 5%; margin-bottom: 5%;">
-    <h1>Corbeau</h1>
+    <table>
+
+    </table>
 </div>
 </body>
 </html>

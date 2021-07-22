@@ -42,12 +42,11 @@ public class ApplicationController {
         return subjectService.findByNameDeep(subjectName)
                 .map(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
-                    var postsInfoReactiveData = new ReactiveDataDriverContextVariable(
-                            postService.findAllBySubjectIdInfo(subjectDeep.getId(), PageRequest.of(
-                                    index, POST_PAGE_SIZE, Sort.by("updated_at").descending())),
-                            1
-                    );
-                    model.addAttribute("posts",postsInfoReactiveData);
+                    return postService.findAllBySubjectIdInfo(subjectDeep.getId(), PageRequest.of(
+                            index, POST_PAGE_SIZE, Sort.by("updated_at").descending())).collectList();
+                })
+                .map(postInfoList -> {
+                    model.addAttribute("postInfoList", postInfoList);
                     return "subject";
                 });
     }
