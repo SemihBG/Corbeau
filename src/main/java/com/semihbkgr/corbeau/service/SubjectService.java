@@ -8,11 +8,13 @@ import reactor.core.publisher.Mono;
 
 public interface SubjectService {
 
-    Mono<Subject> findById(int id) throws IllegalValueException;
-
-    Flux<SubjectDeep> findAll();
-
     Mono<Subject> save(Subject subject);
+
+    Flux<Subject> findAll();
+
+    Flux<SubjectDeep> findAllDeep();
+
+    Mono<Subject> findById(int id) throws IllegalValueException;
 
     Mono<Subject> update(int id,Subject subject) throws IllegalValueException;
 

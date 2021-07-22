@@ -28,7 +28,7 @@
                 <a class="nav-link" href="/moderation/subject">Subject</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href=javascript:void(0)>Post</a>
+                <a class="nav-link active" href="/moderation/post">Post</a>
             </li>
         </ul>
         <ul class="nav navbar-nav" style="position: absolute; left: 50%; transform: translateX(-50%);">
@@ -55,9 +55,30 @@
     </div>
 </nav>
 
-<div class="container">
-    <h1 th:text="${post.title}"></h1>
-    <h2 th:text="${subject.name}"></h2>
+<div class="container" style="margin-top: 5%;">
+    <div style="width: 50%">
+        <h2 class="text-center text-light" th:text="${post.title}"></h2>
+        <h4 class="text-light" th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></h4>
+        <h4 class="text-light" th:unless="${post.createdBy}!=${null}">None</h4>
+        <h4 class="text-light" th:if="${post.updatedBy}!=${null}" th:text="${post.updatedBy}"></h4>
+        <h4 class="text-light" th:unless="${post.updatedBy}!=${null}">None</h4>
+        <h4 class="text-light" th:if="${post.createdAt}>0"
+            th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></h4>
+        <h4 class="text-light" th:unless="${post.createdAt}>0">None</h4>
+        <h4 class="text-light" th:if="${post.createdAt}!=${post.updatedAt}"
+            th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h4>
+        <h4 class="text-light" th:unless="${post.createdAt}!=${post.updatedAt}">None</h4>
+        <h4 class="text-light" th:text="${subject.name}"></h4>
+    </div>
 </div>
+<div class="container">
+    <form action="/moderation/post" method="post">
+        <select id="subjects" name="subject">
+            <option th:each="s : ${subjects}" th:text="${s.name}" th:value="${s.id}"></option>
+        </select>
+        <textarea>[[${post.content}]]</textarea>
+    </form>
+</div>
+
 </body>
 </html>

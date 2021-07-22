@@ -9,11 +9,13 @@ public interface SubjectRepository {
 
     String TABLE_NAME="subjects";
 
-    Flux<SubjectDeep> findAll();
+    Mono<Subject> save(Subject subject);
+
+    Flux<Subject> findAll();
+
+    Flux<SubjectDeep> findAllDeep();
 
     Mono<Subject> findById(int id);
-
-    Mono<Subject> save(Subject subject);
 
     Mono<Subject> update(Subject subject);
 

@@ -24,9 +24,21 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
     private final R2dbcEntityTemplate template;
 
+
+    @Override
+    public Mono<Subject> save(@NonNull Subject subject) {
+        return template.insert(subject);
+    }
+
+    @Override
+    public Flux<Subject> findAll() {
+        return template.select(Query.query(Criteria.empty()),Subject.class);
+    }
+
+
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Flux<SubjectDeep> findAll() {
+    public Flux<SubjectDeep> findAllDeep() {
         return template.getDatabaseClient().sql(SQL_FIND_ALL)
                 .map((row, rowMetadata) ->
                     SubjectDeep.builder()
@@ -44,11 +56,6 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     @Override
     public Mono<Subject> findById(int id) {
         return template.selectOne(Query.query(Criteria.where("id").is(id)),Subject.class);
-    }
-
-    @Override
-    public Mono<Subject> save(@NonNull Subject subject) {
-        return template.insert(subject);
     }
 
     @Override

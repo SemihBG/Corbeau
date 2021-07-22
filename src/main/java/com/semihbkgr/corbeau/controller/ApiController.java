@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.controller;
 
 
 import com.semihbkgr.corbeau.model.Role;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
 import com.semihbkgr.corbeau.model.projection.SubjectDeep;
 import com.semihbkgr.corbeau.service.PostService;
@@ -23,6 +24,8 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class ApiController {
 
+    static final int POST_PAGE_SIZE=10;
+
     private final RoleService roleService;
     private final SubjectService subjectService;
     private final PostService postService;
@@ -32,15 +35,23 @@ public class ApiController {
         return roleService.findAll();
     }
 
+
     @GetMapping("/subject")
-    public Flux<SubjectDeep> subjects(){
+    public Flux<Subject> subjects(){
         return subjectService.findAll();
+    }
+
+    @GetMapping("/subject-deep")
+    public Flux<SubjectDeep> subjectsDeep(){
+        return subjectService.findAllDeep();
     }
 
     @GetMapping("/post")
     public Flux<PostShallow> posts(@RequestParam(value="p",required = false, defaultValue = "-1") int page) {
-        if(page<1) page=0;
-        return postService.findAll(PageRequest.of(page,10, Sort.by("updated_at")));
+        return postService.findAll(PageRequest.of(Math.max(page,0),POST_PAGE_SIZE, Sort.by("updated_at")));
     }
+
+
+
 }
 

@@ -69,8 +69,8 @@ public class ModerationController {
 
     @GetMapping("/subject")
     public Mono<String> subject(final Model model){
-        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects",subjectsReactiveData);
+        var subjectsDeepReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAllDeep(), 1);
+        model.addAttribute("subjects",subjectsDeepReactiveData);
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
@@ -118,7 +118,9 @@ public class ModerationController {
 
 
     @GetMapping("/post/{title}")
-    public Mono<String> postProfile(@PathVariable("title")String title,final Model model){
+    public Mono<String> postUpdate(@PathVariable("title")String title,final Model model){
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects",subjectsReactiveData);
         return postService.findByTitle(title)
                 .flatMap(post -> {
                     model.addAttribute("post",post);
@@ -131,7 +133,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name",authentication.getName());
-                    return "/moderation/postUpdate";
+                    return "/moderation/post-update";
                 });
     }
 
