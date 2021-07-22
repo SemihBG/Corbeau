@@ -22,4 +22,6 @@ public interface PostService {
 
     Mono<Long> count();
 
+    Mono<Long> countBySubjectId(int subjectId);
+
 }

@@ -37,16 +37,28 @@ public class ApplicationController {
                                 final Model model) {
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/subject/" + subjectName + "?p=" + 1);
-        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects", subjectsReactiveData);
         return subjectService.findByNameDeep(subjectName)
-                .map(subjectDeep -> {
+                .flatMap(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
-                    return postService.findAllBySubjectIdInfo(subjectDeep.getId(), PageRequest.of(
-                            index, POST_PAGE_SIZE, Sort.by("updated_at").descending())).collectList();
+                    var postsInfoReactiveData = new ReactiveDataDriverContextVariable(
+                            postService.findAllBySubjectIdInfo(subjectDeep.getId(),
+                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())),
+                            1
+                    );
+                    model.addAttribute("posts", postsInfoReactiveData);
+                    return postService.countBySubjectId(subjectDeep.getId());
                 })
-                .map(postInfoList -> {
-                    model.addAttribute("postInfoList", postInfoList);
+                .flatMap(count -> {
+                    var pageCount=(int)Math.ceil((double)count/POST_PAGE_SIZE);
+                    model.addAttribute("count",count);
+                    model.addAttribute("page",index+1);
+                    model.addAttribute("pageCount",pageCount);
+                    model.addAttribute("hasPrevious",index>0);
+                    model.addAttribute("hasNext",index+1<pageCount);
+                    return subjectService.findAll().collectList();
+                })
+                .map(subjectList->{
+                    model.addAttribute("subjects",subjectList);
                     return "subject";
                 });
     }

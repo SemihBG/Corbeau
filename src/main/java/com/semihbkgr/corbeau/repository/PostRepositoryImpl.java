@@ -182,4 +182,9 @@ public class PostRepositoryImpl implements PostRepository {
         return template.count(Query.query(CriteriaDefinition.empty()), Post.class);
     }
 
+    @Override
+    public Mono<Long> countBySubjectId(int subjectId) {
+        return template.count(Query.query(Criteria.where("subject_id").is(subjectId)),Post.class);
+    }
+
 }

@@ -60,4 +60,9 @@ public class PostServiceImpl implements PostService {
         return postRepository.count();
     }
 
+    @Override
+    public Mono<Long> countBySubjectId(int subjectId) {
+        return postRepository.countBySubjectId(subjectId);
+    }
+
 }
