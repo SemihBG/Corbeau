@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
@@ -11,7 +12,9 @@ public interface PostService {
 
     Mono<Post> findByTitle(String title) throws IllegalValueException;
 
-    Flux<PostShallow> findAll(Pageable pageable);
+    Flux<PostShallow> findAllShallow(Pageable pageable);
+
+    Flux<PostInfo> findAllBySubjectIdInfo(int subjectId,Pageable pageable);
 
     Mono<Post> save(Post post);
 

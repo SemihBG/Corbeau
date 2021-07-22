@@ -33,18 +33,21 @@ public class ApplicationController {
 
     @GetMapping("/subject/{subject_name}")
     public Mono<String> subject(@PathVariable("subject_name") String subjectName,
-                                @RequestParam(value = "/p", required = false, defaultValue = "0") String pageStr,
+                                @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
                                 final Model model) {
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/subject/" + subjectName + "?p=" + 1);
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects", subjectsReactiveData);
         return subjectService.findByNameDeep(subjectName)
                 .map(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
-                    var postsReactiveData = new ReactiveDataDriverContextVariable(
+                    var postsInfoReactiveData = new ReactiveDataDriverContextVariable(
                             postService.findAllBySubjectIdInfo(subjectDeep.getId(), PageRequest.of(
                                     index, POST_PAGE_SIZE, Sort.by("updated_at").descending())),
                             1
                     );
+                    model.addAttribute("posts",postsInfoReactiveData);
                     return "subject";
                 });
     }

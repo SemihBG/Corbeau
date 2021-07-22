@@ -1,304 +1,37 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Corbeau/Home</title>
-        <link rel="shortcut icon" href="/image/logo"/>
-        <script src="https://kit.fontawesome.com/a393c27a2e.js" crossorigin="anonymous"></script>
-        <style type="text/css">
-
-            @media screen and (min-width: 600px) {
-
-                span.title {
-                    opacity: 85%;
-                    font-size: 40px;
-                    margin: 20px;
-                }
-
-                span.info {
-                    opacity: 70%;
-                    margin: 0 20px;
-                    float: right;
-                }
-
-                div.post-list{
-                    margin: 50px 50px 25px 50px;
-                }
-
-                span.page{
-                    font-size: 40px;
-                    opacity: 70%;
-                }
-
-                span.page-count{
-                    font-size: 20px;
-                    margin: 50px;
-                    opacity: 85%;
-                }
-
-                i.page{
-                    font-size:30px;
-                    width: 25px;
-                    height: 25px;
-                }
-
-            }
-
-            @media screen and (max-width: 600px) {
-                span.title {
-                    opacity: 85%;
-                    font-size: 9px;
-                    margin: 5px;
-                }
-
-                span.info {
-                    opacity: 70%;
-                    font-size: 7px;
-                    margin: 0 5px;
-                    float: right;
-                }
-
-                div.post-list{
-                    margin: 25px 15px;
-                }
-
-                span.page{
-                    font-size: 17px;
-                    opacity: 70%;
-                }
-
-                span.page-count{
-                    margin: 15px;
-                    opacity: 85%;
-                    font-size: 14px;
-                }
-
-                i.page{
-                    font-size:17px;
-                    width: 14px;
-                    height: 14px;
-                }
-
-                .nav a:not(:first-child) {display: none;}
-                .nav a.icon {
-                    float: right;
-                    display: block;
-                }
-                .nav.responsive {position: relative;}
-                .nav.responsive .icon {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-                .nav.responsive a {
-                    float: none;
-                    display: block;
-                    text-align: left;
-                }
-
-
-            }
-
-            body {
-                margin: 0;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            .nav {
-                overflow: hidden;
-                background-color: #333;
-            }
-
-            .nav a {
-                float: left;
-                display: block;
-                color: #f2f2f2;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
-            }
-
-            .nav a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-
-            .nav a.active {
-                background: #2196F3;
-                pointer-events: none;
-                cursor: default;
-                color: white;
-            }
-
-            .nav .icon {
-                display: none;
-            }
-
-            div.post {
-                color: black;
-            }
-            a.post {
-                text-decoration:none;
-                margin: 10px;
-                display: block;
-                border: 1px solid grey;
-                padding: 5px;
-                border-radius: 10px;
-            }
-
-            a.post:hover {
-                background-color: #f1f1f1;
-            }
-
-            a.pageActive{
-                color: black;
-                text-decoration:none;
-                opacity: 70%;
-            }
-
-            a.pageInactive{
-                color: black;
-                text-decoration:none;
-                pointer-events: none;
-                opacity: 30%;
-            }
-
-            div.center{
-                text-align: center;
-                margin:10px;
-            }
-
-            div.search{
-                text-align: center;
-            }
-
-            form.search input[type=text] {
-                padding: 10px;
-                font-size: 17px;
-                border: 1px solid grey;
-                width: 30%;
-                min-width: 160px;
-                background: #f1f1f1;
-                border-radius: 10px;
-            }
-
-            form.search::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-
-            form.search button {
-                width: 5%;
-                min-width: 40px;
-                padding: 10px;
-                background: #2196F3;
-                color: white;
-                font-size: 17px;
-                border: 1px solid grey;
-                border-left: none;
-                cursor: pointer;
-                border-radius: 10px;
-            }
-
-            form.search button:hover {
-                background: #0b7dda;
-            }
-
-            img.logo{
-                width: 40px;
-                height: 40px;
-                margin-top: 10px;
-            }
-
-            h1.app-name{
-                font-size: 40px;
-                display: inline-block;
-                opacity: 75%;
-            }
-
-        </style>
-
-    </head>
-
-    <body>
-
-        <div class="nav" id="nav">
-            <a th:href="'/'" class="active" th:text="Home"></a>
-            <a th:each="subject:${subjects}" th:href="${subject.getUrlEndpoint()}" th:text="${subject.getName()}"></a>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                <i class="fas fa-caret-left"></i>
-            </a>
-        </div>
-
-        <div class="search">
-            <div>
-                <img class="logo" src="/image/icon">
-                <h1 class="app-name">Corbeau</h1>
-            </div>
-            <form class="search" method="get" action="/s">
-                <input type="text" placeholder="PostTitle..." name="text">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-
-        <div class="post-list">
-            <a th:each="post:${posts}" th:href="${post.subject.urlEndpoint}+'/'+${post.urlEndpoint}" class="post">
-                <div class="post">
-                    <span th:text="${post.title}" class="title"></span>
-                    <span th:text="'('+${post.subject.name}+'/'+${#dates.format(post.modifiedDate, 'dd-MM-yyyy')}+')'" class="info"></span>
-                </div>
-            </a>
-        </div>
-
-        <div th:if="${allPost}>0">
-            <span th:if="${firstPost}!=${lastPost}" th:text="${firstPost}+'-'+${lastPost}+' in '+${allPost}" class="page-count"></span>
-            <span th:unless="${firstPost}!=${lastPost}" th:text="${lastPost}+'. in '+${allPost}" class="page-count"></span>
-        </div>
-
-        <div class="center" th:if="${totalPages}>1">
-            <a th:if="${pageCount}>1" th:href="'?page=1'" class="pageActive">
-                <i class="fas fa-angle-double-left page"></i>
-            </a>
-            <a th:if="${pageCount}>1" th:href="'?page='+(${pageCount}-1)"  class="pageActive">
-                <i class="fas fa-chevron-left page"></i>
-            </a>
-            <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fas fa-angle-double-left page"></i>
-            </a>
-            <a th:unless="${pageCount}>1" th:href="@{#}" class="pageInactive">
-                <i class="fas fa-chevron-left page"></i>
-            </a>
-            <span th:text="${pageCount}+'/'+${totalPages}" class="page"></span>
-            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${pageCount+1}"  class="pageActive">
-                <i class="fas fa-chevron-right page"></i>
-            </a>
-            <a th:if="${pageCount}<${totalPages}" th:href="'?page='+${totalPages}"  class="pageActive">
-                <i class="fas fa-angle-double-right page"></i>
-            </a>
-            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fas fa-chevron-right page"></i>
-            </a>
-            <a th:unless="${pageCount}<${totalPages}" th:href="@{#}" class="pageInactive">
-                <i class="fas fa-angle-double-right page"></i>
-            </a>
-        </div>
-
-
-        <script>
-            function myFunction() {
-                var x = document.getElementById("nav");
-                if (x.className === "nav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "nav";
-                }
-            }
-        </script>
-
-    </body>
-
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Corbeau</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script crossorigin='anonymous' src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
+<body style="background: #222D32;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>Corbeau</a>
+    <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navb">
+        <ul class="nav navbar-nav">
+            <li class="nav-item" th:each="subject: ${subjects}">
+                <a class="nav-link" th:href="'/subject/'+${subject.name}" th:text="${subject.name}"></a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)"><i class="fas fa-search" style="font-size: 18px;"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container" style="margin-top: 5%; margin-bottom: 5%;">
+    <h1>Corbeau</h1>
+</div>
+</body>
 </html>

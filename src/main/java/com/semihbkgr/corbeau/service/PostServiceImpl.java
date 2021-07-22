@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import lombok.NonNull;
@@ -27,8 +28,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Flux<PostShallow> findAll(@NonNull Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Flux<PostShallow> findAllShallow(@NonNull Pageable pageable) {
+        return postRepository.findAllShallow(pageable);
+    }
+
+    @Override
+    public Flux<PostInfo> findAllBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
+        return postRepository.findAllBySubjectIdInfo(subjectId,pageable);
     }
 
     @Override
