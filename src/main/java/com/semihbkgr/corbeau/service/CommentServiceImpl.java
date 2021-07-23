@@ -34,4 +34,9 @@ public class CommentServiceImpl implements CommentService {
                 .then(commentRepository.deleteById(id));
     }
 
+    @Override
+    public Mono<Long> countByPostId(int postId) {
+        return commentRepository.countByPostId(postId);
+    }
+
 }

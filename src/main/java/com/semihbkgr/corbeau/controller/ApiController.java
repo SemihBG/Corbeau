@@ -21,7 +21,6 @@ public class ApiController {
     private final CommentService commentService;
 
     @GetMapping("/comment/{post_id}")
-    @ResponseStatus
     public Flux<Comment> comment(@PathVariable("post_id") int postId,
                                  @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr) {
         int index = Math.max(ParameterUtils.parsePageToIndex(pageStr), 0);

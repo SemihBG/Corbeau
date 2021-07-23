@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
 import com.semihbkgr.corbeau.util.ParameterUtils;
@@ -22,6 +23,7 @@ public class ApplicationController {
 
     private final SubjectService subjectService;
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping
     public String menu(final Model model) {
@@ -67,8 +69,12 @@ public class ApplicationController {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
         model.addAttribute("subjects", subjectsReactiveData);
         return postService.findByTitle(title)
-                .map(post -> {
+                .flatMap(post -> {
                     model.addAttribute("post", post);
+                    return commentService.countByPostId(post.getId());
+                })
+                .map(commentCount -> {
+                    model.addAttribute("commentCount", commentCount);
                     return "post";
                 });
     }
