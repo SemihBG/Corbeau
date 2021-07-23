@@ -6,7 +6,6 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class ApplicationController {
     private final PostService postService;
 
     @GetMapping
-    public String menu(final Model model, ServerHttpResponse response) {
+    public String menu(final Model model) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
         model.addAttribute("subjects", subjectsReactiveData);
         return "menu";
@@ -49,17 +48,28 @@ public class ApplicationController {
                     return postService.countBySubjectId(subjectDeep.getId());
                 })
                 .flatMap(count -> {
-                    var pageCount=(int)Math.ceil((double)count/POST_PAGE_SIZE);
-                    model.addAttribute("count",count);
-                    model.addAttribute("page",index+1);
-                    model.addAttribute("pageCount",pageCount);
-                    model.addAttribute("hasPrevious",index>0);
-                    model.addAttribute("hasNext",index+1<pageCount);
+                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
+                    model.addAttribute("count", count);
+                    model.addAttribute("page", index + 1);
+                    model.addAttribute("pageCount", pageCount);
+                    model.addAttribute("hasPrevious", index > 0);
+                    model.addAttribute("hasNext", index + 1 < pageCount);
                     return subjectService.findAll().collectList();
                 })
-                .map(subjectList->{
-                    model.addAttribute("subjects",subjectList);
+                .map(subjectList -> {
+                    model.addAttribute("subjects", subjectList);
                     return "subject";
+                });
+    }
+
+    @GetMapping("/post/{title}")
+    public Mono<String> post(@PathVariable("title") String title, final Model model) {
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        model.addAttribute("subjects", subjectsReactiveData);
+        return postService.findByTitle(title)
+                .map(post -> {
+                    model.addAttribute("post", post);
+                    return "post";
                 });
     }
 
