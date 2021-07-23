@@ -6,14 +6,17 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/prism.css" rel="stylesheet" />
+    <link href="/style/content.css" rel="stylesheet" />
+    <link href="/style/prism.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script crossorigin='anonymous' src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://kit.fontawesome.com/efb096d4dc.js" crossorigin="anonymous"></script>
+
+
 </head>
 <body style="background: #222D32;">
-<script src="/prism.js"></script>
+<script src="/style/prism.js"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href=javascript:void(0)><i class="fas fa-crow" style="font-size: 18px;"></i>Corbeau</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
@@ -32,12 +35,10 @@
         </ul>
     </div>
 </nav>
-
-<pre><code class="language-css">p { color: red }</code></pre>
-
 <div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%;">
-    <h1 th:text="${post.title}" class="text-center text-light"></h1>
-    <div th:utext="${post.content}" class="text-light"></div>
+    <h1 th:text="${post.title}" class=" text-light text-center"></h1>
+    <h1 th:text="${post.title}" class="text-light text-center"></h1>
+    <div th:utext="${post.content}" class="content-text"></div>
 </div>
 </body>
 </html>

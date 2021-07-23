@@ -1,0 +1,49 @@
+div.content-text{
+    color: white;
+    opacity: .7;
+}
+h1.content-title-primary{
+    color:white;
+    opacity: .85;
+    font-size: xxx-large;
+}
+h1.content-title-secondary{
+    color:white;
+    opacity: .7;
+    font-size: xx-large;
+}
+p.content-text-emphasized{
+    display: inline;
+    color: yellow;
+}
+p.content-text-trivial{
+    display: inline;
+    color: gray;
+}
+p.content-text-quote{
+    display: inline;
+    color: blanchedalmond;
+}
+p.content-text-warning{
+    display: inline;
+    color: red;
+}
+a.content-link{
+
+}
+a.content-fragment{
+
+}
+div.content-image-inline{
+    display: inline-grid;
+}
+img.content-image-left{
+    max-width: 70%;
+    height: auto;
+}
+img.content-image-right{
+    max-width: 350px;
+    width: auto;
+    max-height: 350px;
+    height: auto;
+}
