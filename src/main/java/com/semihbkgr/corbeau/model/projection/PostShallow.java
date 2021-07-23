@@ -11,6 +11,7 @@ public class PostShallow {
     private int id;
     private String title;
     private int subjectId;
+    private boolean activated;
     private String subjectName;
     private String createdBy;
     private String updatedBy;

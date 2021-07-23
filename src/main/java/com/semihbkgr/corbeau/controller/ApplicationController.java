@@ -42,7 +42,7 @@ public class ApplicationController {
                 .flatMap(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
                     var postsInfoReactiveData = new ReactiveDataDriverContextVariable(
-                            postService.findAllBySubjectIdInfo(subjectDeep.getId(),
+                            postService.findAllActivatedBySubjectIdInfo(subjectDeep.getId(),
                                     PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())),
                             1
                     );

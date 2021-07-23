@@ -33,8 +33,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Flux<PostInfo> findAllBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
-        return postRepository.findAllBySubjectIdInfo(subjectId,pageable);
+    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, @NonNull Pageable pageable) {
+        return postRepository.findAllByActivatedShallow(activated,pageable);
+    }
+
+    @Override
+    public Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
+        return postRepository.findAllActivatedBySubjectIdInfo(subjectId,pageable);
     }
 
     @Override
@@ -51,6 +56,7 @@ public class PostServiceImpl implements PostService {
                     savedPost.setTitle(post.getTitle());
                     savedPost.setContent(post.getContent());
                     savedPost.setSubjectId(post.getSubjectId());
+                    savedPost.setActivated(post.isActivated());
                     return postRepository.update(savedPost);
                 });
     }

@@ -14,7 +14,9 @@ public interface PostService {
 
     Flux<PostShallow> findAllShallow(Pageable pageable);
 
-    Flux<PostInfo> findAllBySubjectIdInfo(int subjectId,Pageable pageable);
+    Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
+
+    Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
 
     Mono<Post> save(Post post);
 

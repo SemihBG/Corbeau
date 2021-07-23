@@ -13,6 +13,7 @@ public class PostInfo {
 
     private int id;
     private String title;
+    private boolean activated;
     private String createdBy;
     private String updatedBy;
     private long createdAt;

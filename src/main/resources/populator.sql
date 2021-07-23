@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS db.posts
     title      VARCHAR(128)    NOT NULL UNIQUE,
     content    LONGTEXT,
     subject_id INT             NOT NULL,
+    activated  BOOLEAN                  DEFAULT FALSE,
     created_by VARCHAR(32),
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,

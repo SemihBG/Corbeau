@@ -50,28 +50,56 @@ public class PostRepositoryImpl implements PostRepository {
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id ";
 
-    static final String SQL_FIND_BY_SUBJECT_ID_INFO_PAGED_ORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
-                    "db.posts.created_at, db.posts.updated_at " +
-                    "FROM db.posts WHERE db.posts.subject_id=? " +
-                    "ORDER BY %s %s LIMIT ? OFFSET ?";
-
-    static final String SQL_FIND_BY_SUBJECT_ID_INFO_PAGED_UNORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
-                    "db.posts.created_at, db.posts.updated_at " +
-                    "FROM db.posts WHERE db.posts.subject_id=? " +
+    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED =
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+                    "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
+                    "WHERE db.posts.activated = ?" +
+                    "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED =
+    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED =
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+                    "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
+                    "WHERE db.posts.activated = ?" +
+                    "LIMIT ? OFFSET ?";
+
+    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED =
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+                    "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
+                    "WHERE db.posts.activated = ?" +
+                    "ORDER BY %s %s ";
+
+    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED =
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+                    "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
+                    "WHERE db.posts.activated = ?";
+
+    static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_ORDERED =
             "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
-                    "FROM db.posts WHERE db.posts.subject_id=? " +
+                    "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
+                    "ORDER BY %s %s LIMIT ? OFFSET ?";
+
+    static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_UNORDERED =
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+                    "db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
+                    "LIMIT ? OFFSET ?";
+
+    static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED =
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+                    "db.posts.created_at, db.posts.updated_at " +
+                    "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
                     "ORDER BY %s %s";
 
-    static final String SQL_FIND_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED =
+    static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED =
             "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
-                    "FROM db.posts WHERE db.posts.subject_id=? ";
+                    "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? ";
 
     static final BiFunction<Row, RowMetadata, PostShallow> POST_SHALLOW_MAPPER =
             (row, rowMetadata) ->
@@ -147,29 +175,59 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Flux<PostInfo> findAllBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
+    public Flux<PostShallow> findAllByActivatedShallow(boolean activated,@NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_BY_SUBJECT_ID_INFO_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                            Sort.Direction.ASC : Sort.Direction.DESC))
+                    .bind(0, String.valueOf(activated))
+                    .bind(1, pageable.getPageSize())
+                    .bind(2, pageable.getOffset());
+        } else if (pageable.isPaged() && pageable.getSort().isUnsorted())
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED)
+                    .bind(0, String.valueOf(activated))
+                    .bind(1, pageable.getPageSize())
+                    .bind(2, pageable.getOffset());
+        else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
+            var order = pageable.getSort().stream().findFirst().orElseThrow();
+            ges = template.getDatabaseClient()
+                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                            Sort.Direction.ASC : Sort.Direction.DESC))
+                    .bind(0, String.valueOf(activated));
+        } else
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED)
+                    .bind(0, String.valueOf(activated));
+
+        return ges.map(POST_SHALLOW_MAPPER)
+                .all();
+    }
+
+    @Override
+    public Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
+        DatabaseClient.GenericExecuteSpec ges;
+        if (pageable.isPaged() && pageable.getSort().isSorted()) {
+            var order = pageable.getSort().stream().findFirst().orElseThrow();
+            ges = template.getDatabaseClient()
+                    .sql(String.format(SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, subjectId)
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted())
-            ges = template.getDatabaseClient().sql(SQL_FIND_BY_SUBJECT_ID_INFO_PAGED_UNORDERED)
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_UNORDERED)
                     .bind(0, subjectId)
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, subjectId);
         } else
-            ges = template.getDatabaseClient().sql(SQL_FIND_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED)
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED)
                     .bind(0, subjectId);
 
         return ges.map(POST_INFO_MAPPER)
@@ -184,7 +242,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Mono<Long> countBySubjectId(int subjectId) {
-        return template.count(Query.query(Criteria.where("subject_id").is(subjectId)),Post.class);
+        return template.count(Query.query(Criteria.where("subject_id").is(subjectId)), Post.class);
     }
 
 }
