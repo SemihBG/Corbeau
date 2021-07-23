@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS db.comments;
 DROP TABLE IF EXISTS db.posts;
 DROP TABLE IF EXISTS db.subjects;
 DROP TABLE IF EXISTS db.images;
@@ -51,6 +52,17 @@ CREATE TABLE IF NOT EXISTS db.images
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
     updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS db.comments
+(
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    name       VARCHAR(32)     NOT NULL,
+    surname    VARCHAR(32)     NOT NULL,
+    email      VARCHAR(64)     NOT NULL,
+    content    VARCHAR(256)    NOT NULL,
+    post_id    INT             NOT NULL,
+    created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    FOREIGN KEY (post_id) REFERENCES db.posts (id)
 );
 
 INSERT INTO db.subjects (id, name)

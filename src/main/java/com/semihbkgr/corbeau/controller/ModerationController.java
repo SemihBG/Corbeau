@@ -22,12 +22,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ModerationController {
 
-    static final int POST_PAGE_SIZE=5;
+    static final int POST_PAGE_SIZE = 5;
 
     private final ModeratorService moderatorService;
     private final RoleService roleService;
     private final SubjectService subjectService;
     private final PostService postService;
+
 
     @GetMapping("/login")
     public String login() {
@@ -69,109 +70,110 @@ public class ModerationController {
     }
 
     @GetMapping("/subject")
-    public Mono<String> subject(final Model model){
+    public Mono<String> subject(final Model model) {
         var subjectsDeepReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAllDeep(), 1);
-        model.addAttribute("subjects",subjectsDeepReactiveData);
+        model.addAttribute("subjects", subjectsDeepReactiveData);
         return Mono.from(ReactiveSecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
-                    model.addAttribute("name",authentication.getName());
+                    model.addAttribute("name", authentication.getName());
                     return "/moderation/subject";
                 });
     }
 
     @PostMapping("/subject")
-    public Mono<String> subjectSave(@ModelAttribute SubjectSaveDto subjectSaveDto){
+    public Mono<String> subjectSave(@ModelAttribute SubjectSaveDto subjectSaveDto) {
         return Mono.from(subjectService.save(
-                        Subject.builder().name(subjectSaveDto.getName()).build()))
+                Subject.builder().name(subjectSaveDto.getName()).build()))
                 .then(Mono.just("redirect:/moderation/subject"));
     }
 
     @PostMapping("/subject/{id}")
-    public Mono<String> subjectUpdate(@PathVariable("id") int id,@ModelAttribute SubjectSaveDto subjectSaveDto){
+    public Mono<String> subjectUpdate(@PathVariable("id") int id, @ModelAttribute SubjectSaveDto subjectSaveDto) {
         return Mono.from(subjectService.update(
                 id, Subject.builder().name(subjectSaveDto.getName()).build()))
                 .then(Mono.just("redirect:/moderation/subject"));
     }
 
     @GetMapping("/post")
-    public Mono<String> post(final Model model, @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr){
-        int index= ParameterUtils.parsePageToIndex(pageStr);
-        if(index==-1) return Mono.just("redirect:/moderation/post?p=1");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index,POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
-        model.addAttribute("posts",postsReactiveData);
+    public Mono<String> post(final Model model, @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr) {
+        int index = ParameterUtils.parsePageToIndex(pageStr);
+        if (index == -1) return Mono.just("redirect:/moderation/post?p=1");
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index, POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
+        model.addAttribute("posts", postsReactiveData);
         return postService.count()
-                .flatMap(count->{
-                    var pageCount=(int)Math.ceil((double)count/POST_PAGE_SIZE);
-                    model.addAttribute("count",count);
-                    model.addAttribute("page",index+1);
-                    model.addAttribute("pageCount",pageCount);
-                    model.addAttribute("hasPrevious",index>0);
-                    model.addAttribute("hasNext",index+1<pageCount);
+                .flatMap(count -> {
+                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
+                    model.addAttribute("count", count);
+                    model.addAttribute("page", index + 1);
+                    model.addAttribute("pageCount", pageCount);
+                    model.addAttribute("hasPrevious", index > 0);
+                    model.addAttribute("hasNext", index + 1 < pageCount);
                     return ReactiveSecurityContextHolder.getContext();
                 })
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
-                    model.addAttribute("name",authentication.getName());
+                    model.addAttribute("name", authentication.getName());
                     return "/moderation/post";
                 });
     }
 
     @GetMapping("/post/save")
-    public Mono<String> postSave(final Model model){
+    public Mono<String> postSave(final Model model) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects",subjectsReactiveData);
+        model.addAttribute("subjects", subjectsReactiveData);
         return ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
-                    model.addAttribute("name",authentication.getName());
+                    model.addAttribute("name", authentication.getName());
                     return "/moderation/post-save";
                 });
     }
 
     @GetMapping("/post/{title}")
-    public Mono<String> postUpdate(@PathVariable("title")String title,final Model model){
+    public Mono<String> postUpdate(@PathVariable("title") String title, final Model model) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects",subjectsReactiveData);
+        model.addAttribute("subjects", subjectsReactiveData);
         return postService.findByTitle(title)
                 .flatMap(post -> {
-                    model.addAttribute("post",post);
+                    model.addAttribute("post", post);
                     return subjectService.findById(post.getSubjectId());
                 })
-                .flatMap(subject->{
-                    model.addAttribute("subject",subject);
+                .flatMap(subject -> {
+                    model.addAttribute("subject", subject);
                     return ReactiveSecurityContextHolder.getContext();
                 })
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
-                    model.addAttribute("name",authentication.getName());
+                    model.addAttribute("name", authentication.getName());
                     return "/moderation/post-update";
                 });
     }
 
     @PostMapping("/post")
-    public Mono<String> postSaveProcess(@ModelAttribute Post post,final Model model){
+    public Mono<String> postSaveProcess(@ModelAttribute Post post, final Model model) {
         return postService.save(post)
-                .map(savedPost->{
-                    model.addAttribute("post",savedPost);
-                    return "redirect:/moderation/post/"+savedPost.getTitle();
+                .map(savedPost -> {
+                    model.addAttribute("post", savedPost);
+                    return "redirect:/moderation/post/" + savedPost.getTitle();
                 });
     }
 
     @PostMapping("/post/{id}")
-    public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute Post post, final Model model){
-        return postService.update(id,post)
+    public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute Post post, final Model model) {
+        return postService.update(id, post)
                 .map(updatedPost -> {
-                    model.addAttribute("post",updatedPost);
-                    return "redirect:/moderation/post/"+post.getTitle();
+                    model.addAttribute("post", updatedPost);
+                    return "redirect:/moderation/post/" + post.getTitle();
                 });
     }
 
 
     @SuppressWarnings("MVCPathVariableInspection")
-    @GetMapping({"","/","/{ignore}"})
-    public String redirectNotFoundUrl(){
+    @GetMapping({"", "/", "/{ignore}"})
+    public String redirectNotFoundUrl() {
         return "redirect:/moderation/menu";
     }
+
 
 }
