@@ -71,33 +71,33 @@ VALUES (1, 'Java'),
        (2, 'Go'),
        (3, 'Kotlin');
 
-INSERT INTO db.posts(title, content, subject_id, created_at, updated_at)
-VALUES ('postJava01', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo01', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin01', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava02', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo02', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin02', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava03', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo03', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin03', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava04', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo04', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin04', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava05', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo05', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin05', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava06', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo06', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin06', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava07', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo07', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postKotlin07', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postJava08', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000)),
-       ('postGo08', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000));
+INSERT INTO db.posts(title, content, subject_id, created_at, updated_at, activated)
+VALUES ('postJava01', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postGo01', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postKotlin01', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postJava02', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postGo02', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postKotlin02', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postJava03', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postGo03', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postKotlin03', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postJava04', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postGo04', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postKotlin04', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('postJava05', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postGo05', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postKotlin05', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postJava06', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postGo06', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postKotlin06', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postJava07', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postGo07', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postKotlin07', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postJava08', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('postGo08', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false);
 
 
-INSERT INTO db.posts(title, content, subject_id, created_at, updated_at)
+INSERT INTO db.posts(title, content, subject_id, created_at, updated_at, activated)
 VALUES ('testPost', '
 <h1 class="content-title-primary">1.0 Title of Something</h1>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id iaculis neque. Phasellus eget odio ut arcu sollicitudin maximus. Donec eget diam eros. Nunc gravida, nunc a blandit porta, sem massa finibus turpis, nec sagittis metus felis sed dolor. Mauris at augue ut ante facilisis laoreet. Suspendisse sit amet turpis ac leo placerat condimentum sit amet sed est. Vestibulum cursus lacus eget ipsum sollicitudin lobortis. Nunc elit dui, hendrerit quis fermentum vitae, euismod sed felis. Nam tempor faucibus tincidunt. Ut condimentum velit sit amet tincidunt viverra. Fusce sed volutpat quam.
@@ -173,7 +173,7 @@ public class SubjectServiceImpl implements SubjectService {
 
 }
 </code></pre>
-', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000));
+', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true);
 
 
 

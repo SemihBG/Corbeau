@@ -91,6 +91,9 @@
             <div class="form-group">
                 <textarea class="form-control" id="content" name="content" style="resize: none;overflow: hidden;min-height: 250px;" oninput="auto_grow(this)">[[${post.content}]]</textarea>
             </div >
+            <div class="form-group">
+                <input class="form-control" type="checkbox" th:checked="${post.activated}" name="activated" >
+            </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
     </div>
