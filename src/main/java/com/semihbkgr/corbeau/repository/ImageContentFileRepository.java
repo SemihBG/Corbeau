@@ -64,10 +64,8 @@ public class ImageContentFileRepository implements ImageContentRepository {
                                     contentBAOS.write(content);
                                 }
                                 var img = ImageIO.read(new ByteArrayInputStream(contentBAOS.toByteArray()));
-                                var nameExtensionPair = ParameterUtils.extractFileName(name);
                                 return Mono.just(Image.builder()
-                                        .name(nameExtensionPair.getFirst())
-                                        .format(nameExtensionPair.getSecond())
+                                        .name(name)
                                         .width(img.getWidth())
                                         .height(img.getHeight())
                                         .size(size)

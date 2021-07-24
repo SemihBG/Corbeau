@@ -15,9 +15,4 @@ public class ParameterUtils {
         }
     }
 
-    public static Pair<String,String> extractFileName(String fileName){
-        var index=fileName.lastIndexOf('.');
-        return Pair.of(fileName.substring(0,index),fileName.substring(index+1));
-    }
-
 }

@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS db.images
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     name       VARCHAR(64)     NOT NULL UNIQUE,
-    format     VARCHAR(4)      NOT NULL,
     width      INT             NOT NULL,
     height     INT             NOT NULL,
     size       LONG            NOT NULL,
