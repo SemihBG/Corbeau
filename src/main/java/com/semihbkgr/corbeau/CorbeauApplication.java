@@ -12,6 +12,7 @@ public class CorbeauApplication {
     //TODO Html page title
     //TODO Html page extract css and js files
     //TODO Html page local bootsrap files
+    //TODO remove dto
     public static void main(String[] args) {
         SpringApplication.run(CorbeauApplication.class, args);
     }

@@ -47,14 +47,16 @@ CREATE TABLE IF NOT EXISTS db.posts
 CREATE TABLE IF NOT EXISTS db.images
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
-    name       VARCHAR(64)     NOT NULL UNIQUE,
+    name       VARCHAR(64)     NOT NULL,
+    extension  VARCHAR(4)      NOT NULL,
     width      INT             NOT NULL,
     height     INT             NOT NULL,
     size       LONG            NOT NULL,
     created_by VARCHAR(32),
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
-    updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0
+    updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    UNIQUE KEY 'name_extension' ('name', 'extension')
 );
 CREATE TABLE IF NOT EXISTS db.comments
 (

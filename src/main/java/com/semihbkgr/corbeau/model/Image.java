@@ -21,6 +21,8 @@ public class Image extends AllAuditable implements Serializable {
 
     private String name;
 
+    private String extension;
+
     private int width;
 
     private int height;
