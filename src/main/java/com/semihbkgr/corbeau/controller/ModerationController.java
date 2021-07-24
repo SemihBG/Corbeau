@@ -17,18 +17,20 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
+@SuppressWarnings("DuplicatedCode")
 @Controller
 @RequestMapping("/moderation")
 @RequiredArgsConstructor
 public class ModerationController {
 
-    static final int POST_PAGE_SIZE = 5;
+    static final int POST_COUNT = 5;
+    static final int IMAGE_COUNT = 5;
 
     private final ModeratorService moderatorService;
     private final RoleService roleService;
     private final SubjectService subjectService;
     private final PostService postService;
-
+    private final ImageService imageService;
 
     @GetMapping("/login")
     public String login() {
@@ -37,13 +39,10 @@ public class ModerationController {
 
     @GetMapping("/menu")
     public Mono<String> menu(final Model model) {
-        return Mono.from(ReactiveSecurityContextHolder.getContext())
+        return ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
-                .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(ModeratorDetailsService.ModeratorDetails.class::cast)
-                .map(moderatorDetails -> {
-                    model.addAttribute("name", moderatorDetails.getName());
+                .map(authentication -> {
+                    model.addAttribute("name", authentication.getName());
                     return "/moderation/menu";
                 });
     }
@@ -99,11 +98,11 @@ public class ModerationController {
     public Mono<String> post(final Model model, @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr) {
         int index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/moderation/post?p=1");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index, POST_PAGE_SIZE).withSort(Sort.by("updated_at").descending())), 1);
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index, POST_COUNT).withSort(Sort.by("updated_at").descending())), 1);
         model.addAttribute("posts", postsReactiveData);
         return postService.count()
                 .flatMap(count -> {
-                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
+                    var pageCount = (int) Math.ceil((double) count / POST_COUNT);
                     model.addAttribute("count", count);
                     model.addAttribute("page", index + 1);
                     model.addAttribute("pageCount", pageCount);
@@ -168,12 +167,38 @@ public class ModerationController {
                 });
     }
 
+    @GetMapping("/image")
+    public Mono<String> image(@RequestParam(value = "p",required = false,defaultValue = "1") String pageStr, final Model model){
+        int index = ParameterUtils.parsePageToIndex(pageStr);
+        if (index == -1) return Mono.just("redirect:/moderation/image?p=1");
+        var imagesReactiveData = new ReactiveDataDriverContextVariable(imageService.findAll(PageRequest.of(
+                index, IMAGE_COUNT,Sort.by("updatedAt").descending())),
+                1
+        );
+        model.addAttribute("images", imagesReactiveData);
+        return imageService.count()
+                .flatMap(count -> {
+                    var pageCount = (int) Math.ceil((double) count / POST_COUNT);
+                    model.addAttribute("count", count);
+                    model.addAttribute("page", index + 1);
+                    model.addAttribute("pageCount", pageCount);
+                    model.addAttribute("hasPrevious", index > 0);
+                    model.addAttribute("hasNext", index + 1 < pageCount);
+                    return ReactiveSecurityContextHolder.getContext();
+                })
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name", authentication.getName());
+                    return "/moderation/image";
+                });
+    }
 
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"", "/", "/{ignore}"})
     public String redirectNotFoundUrl() {
         return "redirect:/moderation/menu";
     }
+
 
 
 }

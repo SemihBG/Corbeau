@@ -5,6 +5,7 @@ import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.repository.ImageRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,8 +17,8 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
 
     @Override
-    public Flux<Image> findAll() {
-        return imageRepository.findAll();
+    public Flux<Image> findAll(@NonNull Pageable pageable) {
+        return imageRepository.findAllBy(pageable);
     }
 
     @Override
@@ -39,6 +40,11 @@ public class ImageServiceImpl implements ImageService {
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Image not available by given id", imageRepository.TABLE_NAME, "id", id)))
                 .then(imageRepository.deleteById(id));
+    }
+
+    @Override
+    public Mono<Long> count() {
+        return imageRepository.count();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.semihbkgr.corbeau.model;
 
-import com.semihbkgr.corbeau.model.base.TimeAuditable;
+import com.semihbkgr.corbeau.model.base.AllAuditable;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -14,12 +14,18 @@ import java.io.Serializable;
 @Builder
 @With
 @Table("images")
-public class Image extends TimeAuditable implements Serializable {
+public class Image extends AllAuditable implements Serializable {
 
     @Id
     private int id;
 
     private String name;
+
+    private int width;
+
+    private int height;
+
+    private long size;
 
     private String format;
 
