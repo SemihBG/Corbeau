@@ -3,11 +3,13 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.dto.SubjectSaveDto;
+import com.semihbkgr.corbeau.repository.ImageContentRepository;
 import com.semihbkgr.corbeau.service.*;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -31,6 +33,7 @@ public class ModerationController {
     private final SubjectService subjectService;
     private final PostService postService;
     private final ImageService imageService;
+    private final ImageContentRepository imageContentRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -168,11 +171,11 @@ public class ModerationController {
     }
 
     @GetMapping("/image")
-    public Mono<String> image(@RequestParam(value = "p",required = false,defaultValue = "1") String pageStr, final Model model){
+    public Mono<String> image(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr, final Model model) {
         int index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/moderation/image?p=1");
         var imagesReactiveData = new ReactiveDataDriverContextVariable(imageService.findAll(PageRequest.of(
-                index, IMAGE_COUNT,Sort.by("updatedAt").descending())),
+                index, IMAGE_COUNT, Sort.by("updatedAt").descending())),
                 1
         );
         model.addAttribute("images", imagesReactiveData);
@@ -193,12 +196,32 @@ public class ModerationController {
                 });
     }
 
+    @GetMapping("/image/save")
+    public Mono<String> imageSave(final Model model) {
+        return ReactiveSecurityContextHolder
+                .getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name", authentication.getName());
+                    return "/moderation/image-save";
+                });
+    }
+
+    @PostMapping("/image/save")
+    public Mono<String> imageSaveProcess(@RequestPart("name") String name,
+                                         @RequestPart("extension") String extension,
+                                         @RequestPart("content") Mono<FilePart> contentMono) {
+        return imageContentRepository
+                .save(name.concat(".").concat(extension), contentMono)
+                .map(imageService::save)
+                .then(Mono.just("redirect:/moderation/image"));
+    }
+
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"", "/", "/{ignore}"})
     public String redirectNotFoundUrl() {
         return "redirect:/moderation/menu";
     }
-
 
 
 }

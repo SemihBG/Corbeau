@@ -8,4 +8,5 @@ spring:
   profiles: #dev, pro
     active: dev
 
-
+image:
+  rootDirectory: images

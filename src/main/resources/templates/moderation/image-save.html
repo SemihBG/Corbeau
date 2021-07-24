@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget, HtmlFormInputWithoutLabel, HtmlUnknownTag -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Corbeau Image Save</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
+
+    <script>
+        function saveImage() {
+            const form = document.getElementById("image-save");
+            form.submit();
+        }
+
+        function setValuesAutomatically() {
+            const fullPath = document.getElementById("content").value;
+            const startIndex = (fullPath.indexOf('\\') >= 0 ?
+                fullPath.lastIndexOf('\\') :
+                fullPath.lastIndexOf('/'));
+            let filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0)
+                filename = filename.substring(1);
+            const extensionIndex = filename.indexOf(".");
+            const name = filename.substring(0, extensionIndex);
+            const extension = filename.substring(extensionIndex + 1);
+            const nameInput = document.getElementById("name");
+            if (nameInput.value === null || nameInput.value==="")
+                nameInput.value = name;
+            const extensionInput = document.getElementById("extension");
+            extensionInput.value = extension;
+        }
+
+    </script>
+
+</head>
+<body style="background: #222D32;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
+        Moderator
+        Panel</a>
+    <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navb">
+        <ul class="nav navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/menu">Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/subject">Subject</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/post">Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href=javascript:void(0)>Image</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/comment">Comment</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav" style="position: absolute; left: 50%; transform: translateX(-50%);">
+            <form class="form-inline my-2 my-lg-0 justify-content-center">
+                <input class="form-control mr-sm-2" placeholder="Search" type="text">
+                <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
+                                                                           style="font-size: 18px;"></i></button>
+            </form>
+        </ul>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i class="fas fa-user"
+                                                                                style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell" style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden"></form>
+                <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i
+                        class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%">
+    <h2 class="text-center text-light">Image Save</h2>
+    <form action="/moderation/image/save" enctype="multipart/form-data" id="image-save" method="post"
+          onsubmit="event.preventDefault(); saveImage()">
+        <div class="form-group">
+            <label class="text-info" for="name" style="font-size: 20px;">Name:</label>
+            <input class="form-control border-info text-info" id="name" name="name"
+                   style="background-color: transparent;" type="text">
+        </div>
+        <div class="form-group">
+            <label class="text-info" for="extension" style="font-size: 20px;">Extension:</label>
+            <input class="form-control border-info text-info disabled" id="extension" name="extension"
+                   style="background-color: transparent;" type="text" disabled>
+        </div>
+        <div class="form-group custom-file">
+            <input accept="image/png, image/gif, image/jpeg" class="form-control-file custom-file-input border-info text-info" id="content" name="content"
+                   onchange="setValuesAutomatically()" style="background-color: transparent;"
+                   type="file">
+            <label class="text-info custom-file-label border-info" for="content" style="font-size: 20px; background-color: transparent;" data-browse="Select">Select Image</label>
+        </div>
+        <button class="btn btn-outline-info" id="login-button" type="submit" style="margin-top: 2.5%;">Save</button>
+    </form>
+</div>
+</body>
+</html>

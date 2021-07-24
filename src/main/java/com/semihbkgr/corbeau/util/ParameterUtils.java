@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.util;
 
+import org.springframework.data.util.Pair;
 import org.springframework.lang.Nullable;
 
 public class ParameterUtils {
@@ -12,6 +13,11 @@ public class ParameterUtils {
         }catch (NumberFormatException ignore){
             return -1;
         }
+    }
+
+    public static Pair<String,String> extractFileName(String fileName){
+        var index=fileName.lastIndexOf('.');
+        return Pair.of(fileName.substring(0,index),fileName.substring(index+1));
     }
 
 }

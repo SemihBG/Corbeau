@@ -39,6 +39,11 @@
       "name": "moderation.roles",
       "type": "java.lang.String",
       "description": "Description for moderation.roles."
+    },
+    {
+      "name": "image.rootDirectory",
+      "type": "java.lang.String",
+      "description": "Description for image.rootDirectory."
     }
   ]
 }
