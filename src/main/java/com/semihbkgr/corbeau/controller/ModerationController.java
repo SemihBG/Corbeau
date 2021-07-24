@@ -33,6 +33,7 @@ public class ModerationController {
     private final PostService postService;
     private final ImageService imageService;
     private final ImageContentRepository imageContentRepository;
+    private final ImageContentService imageContentService
 
     @GetMapping("/login")
     public String login() {
