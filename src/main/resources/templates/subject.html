@@ -37,7 +37,7 @@
     <h2 class="text-center text-info" th:text="${subject.name}"></h2>
     <div class="list-group" >
         <a class="list-group-item list-group-item-action bg-dark" style="margin-top: 1%"
-           th:each="post : ${posts}" th:href="'/post/'+${post.title}">
+           th:each="post : ${posts}" th:href="'/post/'+${post.endpoint}">
             <h4 class="text-secondary" style="display: inline" th:text="${post.title}"></h4>
             <h5 class="text-secondary" style="display: inline; float: right"
                 th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h5>

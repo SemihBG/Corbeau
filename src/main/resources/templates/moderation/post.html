@@ -81,6 +81,7 @@
         </thead>
         <tbody>
         <tr data-th-each="post : ${posts}">
+            <td th:text="${post.endpoint}" style="display: none;"></td>
             <td th:text="${post.title}"></td>
             <td th:text="${post.subjectName}"></td>
             <td th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></td>
@@ -137,9 +138,9 @@
         let currentRow = table.rows[i];
         let createClickHandler = function (row) {
             return function () {
-                const name = row.getElementsByTagName("td")[0].innerHTML;
+                const endpoint = row.getElementsByTagName("td")[0].innerHTML;
                 const updateForm = document.getElementById('post-update');
-                updateForm.href=POST_UPDATE_PAGE_ROOT_URL+"/"+name;
+                updateForm.href=POST_UPDATE_PAGE_ROOT_URL+"/"+endpoint;
                 updateForm.click();
             };
         };

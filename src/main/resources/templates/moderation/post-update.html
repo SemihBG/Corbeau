@@ -9,19 +9,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/efb096d4dc.js" crossorigin="anonymous"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
 
     <script>
         function auto_grow(element) {
             element.style.height = "5px";
-            element.style.height = (element.scrollHeight)+"px";
+            element.style.height = (element.scrollHeight) + "px";
         }
     </script>
 
 </head>
 <body style="background: #222D32;">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
+        Moderator
         Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
@@ -68,7 +69,7 @@
     </div>
 </nav>
 
-<div class="container" style="margin-top: 5%; margin-bottom: 5%;">
+<div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%;">
     <div style="width: 50%">
         <h2 class="text-center text-light" th:text="${post.title}"></h2>
         <h4 class="text-light" th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></h4>
@@ -85,20 +86,31 @@
     </div>
     <div>
         <h2 class="text-info text-center">Update</h2>
-        <form th:action="'/moderation/post/'+${post.id}" method="post">
+        <form method="post" th:action="'/moderation/post/'+${post.id}">
             <div class="form-group">
-                <input class="form-control" type="text" id="title" name="title" th:value="${post.title}">
+                <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
+                       style="background-color: transparent" th:value="${post.title}" type="text">
             </div>
             <div class="form-group">
-                <select id="subjects" name="subjectId" class="form-control">
-                    <option th:each="s : ${subjects}" th:text="${s.name}" th:value="${s.id}" th:selected="${s.id==subject.id}"></option>
+                <input class="form-control text-info border-info" id="endpoint" name="endpoint" placeholder="Endpoint"
+                       style="background-color: transparent" th:value="${post.endpoint}" type="text">
+            </div>
+            <div class="form-group">
+                <select class="form-control text-info border-info" id="subjects" name="subjectId"
+                        style="background-color: transparent;">
+                    <option th:each="s : ${subjects}" th:selected="${s.id==subject.id}" th:text="${s.name}"
+                            th:value="${s.id}"></option>
                 </select>
             </div>
             <div class="form-group">
-                <textarea class="form-control" id="content" name="content" style="resize: none;overflow: hidden;min-height: 250px;" oninput="auto_grow(this)">[[${post.content}]]</textarea>
-            </div >
-            <div class="form-group">
-                <input class="form-control" type="checkbox" th:checked="${post.activated}" name="activated" >
+                <textarea class="form-control text-info border-info" id="content" name="content"
+                          oninput="auto_grow(this)"
+                          style="resize: none;overflow: hidden;min-height: 250px; background-color: transparent">[[${post.content}]]</textarea>
+            </div>
+            <div class="form-group form-check">
+                <input class="form-check-input" id="acitivated" name="activated" style="background-color: transparent;"
+                       th:checked="${post.activated}" type="checkbox"/>
+                <label class="form-check-label text-info" for="acitivated">Activated </label>
             </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>

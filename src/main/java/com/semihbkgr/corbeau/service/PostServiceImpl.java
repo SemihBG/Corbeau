@@ -57,6 +57,7 @@ public class PostServiceImpl implements PostService {
                     savedPost.setContent(post.getContent());
                     savedPost.setSubjectId(post.getSubjectId());
                     savedPost.setActivated(post.isActivated());
+                    savedPost.setEndpoint(post.getEndpoint());
                     return postRepository.update(savedPost);
                 });
     }

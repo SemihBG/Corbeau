@@ -154,7 +154,7 @@ public class ModerationController {
         return postService.save(post)
                 .map(savedPost -> {
                     model.addAttribute("post", savedPost);
-                    return "redirect:/moderation/post/" + savedPost.getTitle();
+                    return "redirect:/moderation/post/" + savedPost.getEndpoint();
                 });
     }
 
@@ -163,7 +163,7 @@ public class ModerationController {
         return postService.update(id, post)
                 .map(updatedPost -> {
                     model.addAttribute("post", updatedPost);
-                    return "redirect:/moderation/post/" + post.getTitle();
+                    return "redirect:/moderation/post/" + post.getEndpoint();
                 });
     }
 

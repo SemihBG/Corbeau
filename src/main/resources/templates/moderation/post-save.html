@@ -16,11 +16,22 @@
             element.style.height = "5px";
             element.style.height = (element.scrollHeight)+"px";
         }
+
+        function onSubjectsChanged(subjects){
+            if(subjects.selectedIndex!==0){
+                subjects.classList.add("text-info")
+                subjects.classList.remove("text-secondary")
+            }else{
+                subjects.classList.add("text-secondary")
+                subjects.classList.remove("text-info")
+            }
+        }
+
     </script>
 
 </head>
 <body style="background: #222D32;">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator
         Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
@@ -67,25 +78,29 @@
         </ul>
     </div>
 </nav>
-<div class="container" style="margin-top: 5%; margin-bottom: 5%">
-    <h2 class="text-center text-light">Save</h2>
+<div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%">
+    <h2 class="text-center text-info">Save</h2>
     <form method="post" action="/moderation/post" style="margin-top: 3%;">
         <div class="form-group">
-            <input class="form-control" type="text" id="title" name="title">
+            <input class="form-control text-info border-info" type="text" id="title" name="title" placeholder="Title" style="background-color: transparent">
         </div>
         <div class="form-group">
-            <select id="subjects" name="subjectId" class="form-control">
+            <input class="form-control text-info border-info" type="text" id="endpoint" name="endpoint" placeholder="Endpoint" style="background-color: transparent">
+        </div>
+        <div class="form-group">
+            <select id="subjects" name="subjectId" class="form-control text-secondary border-info" style="background-color: transparent" onchange="onSubjectsChanged(this);">
                 <option value="0">Subject</option>
-                <option th:each="s : ${subjects}" th:text="${s.name}" th:value="${s.id}"></option>
+                <option th:each="s : ${subjects}" th:text="${s.name}" th:value="${s.id}" ></option>
             </select>
         </div>
-        <div class="form-group">
-            <textarea class="form-control" id="content" name="content" style="resize: none;overflow: hidden;min-height: 250px;" oninput="auto_grow(this)"></textarea>
+        <div class="form-group text-info border-info" >
+            <textarea class="form-control text-info border-info" id="content" name="content"  style="resize: none;overflow: hidden;min-height: 250px; background-color: transparent;" oninput="auto_grow(this)"></textarea>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="checkbox" th:checked="${post.activated}" name="activated" >
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" name="activated" id="acitivated" style="background-color: transparent;"/>
+            <label for="acitivated" class="form-check-label text-info">Activated </label>
         </div>
-        <button class="btn btn-outline-info" type="submit">Save</button>
+        <button class="btn btn-outline-info" type="submit" style="margin-top: 1%">Save</button>
     </form>
 </div>
 <script>
