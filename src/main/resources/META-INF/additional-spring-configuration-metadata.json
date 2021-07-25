@@ -44,6 +44,11 @@
       "name": "image.rootDirectory",
       "type": "java.lang.String",
       "description": "Description for image.rootDirectory."
+    },
+    {
+      "name": "image.removeIfExists",
+      "type": "java.lang.String",
+      "description": "Description for image.removeIfExists."
     }
   ]
 }

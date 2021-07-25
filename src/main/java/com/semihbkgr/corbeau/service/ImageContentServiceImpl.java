@@ -4,8 +4,10 @@ import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.repository.ImageContentRepository;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.*;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
@@ -78,6 +80,15 @@ public class ImageContentServiceImpl implements ImageContentService {
                                 .size(tuple.getT1().size)
                                 .build()
                 );
+    }
+
+    @Override
+    public Flux<DataBuffer> findByName(String name) {
+        return  imageContentRepository
+                .exists(name)
+                .filter(exists->exists)
+                .switchIfEmpty(Mono.error(IllegalArgumentException::new))
+                .thenMany(imageContentRepository.findByName(name));
     }
 
     @Override

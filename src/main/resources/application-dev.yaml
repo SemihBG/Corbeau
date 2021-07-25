@@ -36,3 +36,8 @@ moderation:
     password: password
     role: prime
   roles: prime,writer,editor,support
+
+image:
+  rootDirectory: images
+  removeIfExists: true
+

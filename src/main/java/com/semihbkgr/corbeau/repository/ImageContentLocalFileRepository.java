@@ -16,24 +16,49 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 @Slf4j
 public class ImageContentLocalFileRepository implements ImageContentRepository {
 
     private final Path rootDirectoryPath;
+    private final String rootDirectory;
+    private final boolean removeIfExists;
 
     @Autowired
-    public ImageContentLocalFileRepository(@Value("${image.rootDirectory}") String rootDirectory) {
+    public ImageContentLocalFileRepository(@Value("${image.rootDirectory}") String rootDirectory,
+                                           @Value("${image.removeIfExists:#{null}}") Boolean removeIfExists) {
+        this.rootDirectory = rootDirectory;
         this.rootDirectoryPath = Path.of(rootDirectory);
+        this.removeIfExists = removeIfExists != null ? removeIfExists : false;
     }
 
     @PostConstruct
     public void createRootFolderIfNotExist() throws IOException {
         if (!Files.isDirectory(rootDirectoryPath)) {
             Files.createDirectory(rootDirectoryPath);
-            log.info("RootFolderPath: {} created successfully", rootDirectoryPath);
-        } else log.info("RootFolderPath: {} already exists", rootDirectoryPath);
+            log.info("RootFolderPath: {} created successfully", rootDirectory);
+        } else {
+            log.info("RootFolderPath: {} already exists", rootDirectory);
+            if (removeIfExists) {
+                var deletedFileCount = new AtomicInteger(0);
+                var failedFileCount = new AtomicInteger(0);
+                log.info("Image RemoveIfExists property is enabled, scanning for exists files");
+                Files.walk(rootDirectoryPath)
+                        .filter(path -> !Files.isDirectory(path))
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                                deletedFileCount.incrementAndGet();
+                            } catch (IOException ignore) {
+                                failedFileCount.incrementAndGet();
+                            }
+                        });
+                log.info("Existing images has been deleted, Deleted file count: {}, Failed file count: {}"
+                        , deletedFileCount.get(), failedFileCount.get());
+            }
+        }
     }
 
     @Override
@@ -43,7 +68,7 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
 
     @Override
     public Flux<DataBuffer> findByName(@NonNull String name) {
-        return DataBufferUtils.read(rootDirectoryPath, new DefaultDataBufferFactory(), 4096);
+        return DataBufferUtils.read(rootDirectoryPath.resolve(name), new DefaultDataBufferFactory(), 4096);
     }
 
     @Override
@@ -53,7 +78,7 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
 
     @Override
     public Mono<Void> delete(@NonNull String name) {
-        return Mono.defer(()->{
+        return Mono.defer(() -> {
             try {
                 Files.delete(rootDirectoryPath.resolve(name));
                 return Mono.empty();
