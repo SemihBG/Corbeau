@@ -19,27 +19,35 @@ import java.util.stream.Collectors;
 public class RolesRecorder implements CommandLineRunner {
 
     public static final String[] DEFAULT_ROLES = new String[]{"prime"};
+    public static final boolean DEFAULT_ENABLED = true;
 
     private final String[] roles;
+    private final boolean enabled;
 
     private final RoleService roleService;
 
     @Autowired
-    public RolesRecorder(@Value("${moderation.roles:#{null}}") String[] roles,
+    public RolesRecorder(@Value("${moderation.roles.enabled:#{null}}") Boolean enabled,
+                         @Value("${moderation.roles:#{null}}") String[] roles,
                          RoleService roleService) {
-        this.roles = roles!=null?roles:DEFAULT_ROLES;
+        this.enabled = enabled != null ? enabled : DEFAULT_ENABLED;
+        this.roles = roles != null ? roles : DEFAULT_ROLES;
         this.roleService = roleService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        var roleList = Arrays.stream(roles)
-                .map(roleName -> Role.builder().name(roleName).build())
-                .collect(Collectors.toList());
-        roleService.saveAll(roleList)
-                .collectList()
-                .subscribe(savedRoleList ->
-                        log.info("Roles has been saved successfully, roles: {}", savedRoleList));
+
+        log.info("Moderation roles start up record: {}", enabled);
+        if (enabled) {
+            var roleList = Arrays.stream(roles)
+                    .map(roleName -> Role.builder().name(roleName).build())
+                    .collect(Collectors.toList());
+            roleService.saveAll(roleList)
+                    .collectList()
+                    .subscribe(savedRoleList ->
+                            log.info("Roles has been saved successfully, roles: {}", savedRoleList));
+        }
     }
 
 }

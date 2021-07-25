@@ -20,24 +20,39 @@ spring:
     reactive:
       max-chunk-size: 8192
 
-
 logging:
   level:
     root: info
 
-data:
-  populator: populator.sql
-  cleaner: cleaner.sql
+#remove data populator if not working of data
+#It is because populator sql execution is increasing start up time.
 
-moderation:
-  prime:
-    enable: true
-    name: admin
-    password: password
-    role: prime
-  roles: prime,writer,editor,support
+#data:
+#  populator: populator.sql
+#  cleaner: cleaner.sql
+#
+#image:
+#  rootDirectory: images
+#  removeIfExists: true
+#
+#moderation:
+#  prime:
+#    enable: true
+#    name: admin
+#    password: password
+#    role: prime
+#  roles: prime,writer,editor,support
+
+
+###Use this properties if you are not working on data###
 
 image:
   rootDirectory: images
-  removeIfExists: true
 
+moderation:
+  prime:
+    enable: false
+  roles:
+    enabled: false
+
+#########################################################

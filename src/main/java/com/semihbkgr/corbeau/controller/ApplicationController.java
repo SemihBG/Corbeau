@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
+@SuppressWarnings("DuplicatedCode")
 @Controller
 @RequiredArgsConstructor
 public class ApplicationController {
@@ -47,7 +48,7 @@ public class ApplicationController {
                             1
                     );
                     model.addAttribute("posts", postsInfoReactiveData);
-                    return postService.countBySubjectId(subjectDeep.getId());
+                    return postService.countBySubjectIdAndActivated(subjectDeep.getId(),true);
                 })
                 .flatMap(count -> {
                     var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);

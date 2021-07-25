@@ -2,89 +2,20 @@
 <!--suppress HtmlUnknownTarget, ThymeleafVariablesResolveInspection, HtmlFormInputWithoutLabel, JSUnresolvedVariable -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Corbeau</title>
+    <title th:text="${'Corbeau '+post.title}"></title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style/content.css" rel="stylesheet" />
-    <link href="/css/style/prism.css" rel="stylesheet" />
+    <link href="/css/content.css" rel="stylesheet" />
+    <link href="/css/prism.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/efb096d4dc.js" crossorigin="anonymous"></script>
-
-    <script>
-        function addComment(comment,addFirst){
-            const commentLI=document.createElement("li");
-            const nameP=document.createElement("p");
-            nameP.innerHTML=comment.name;
-            nameP.classList.add("text-light")
-            const surnameP=document.createElement("p");
-            surnameP.innerHTML=comment.surname;
-            surnameP.classList.add("text-light")
-            const emailP=document.createElement("p");
-            emailP.innerHTML=comment.email;
-            emailP.classList.add("text-light")
-            const contentP=document.createElement("p");
-            contentP.innerHTML=comment.content;
-            contentP.classList.add("text-light")
-            const timeP=document.createElement("p");
-            timeP.innerHTML=(new Date(comment.createdAt)).toLocaleString("en-US", {timeZoneName: "short"});
-            timeP.classList.add("text-light")
-            commentLI.appendChild(nameP);
-            commentLI.appendChild(surnameP);
-            commentLI.appendChild(emailP);
-            commentLI.appendChild(contentP);
-            commentLI.appendChild(timeP);
-            if(addFirst) document.getElementById("comment-list").prepend(commentLI);
-            else document.getElementById("comment-list").append(commentLI);
-        }
-
-
-        function sendComment(){
-            console.log("ok");
-            const form=document.getElementById("send-comment");
-            $.ajax({
-                type: form.method,
-                url: form.action,
-                data: {
-                    name: document.getElementById("name").value,
-                    surname: document.getElementById("surname").value,
-                    email: document.getElementById("email").value,
-                    content: document.getElementById("content").value,
-                    postId: document.getElementById("post-id").value
-                },
-                success: function(data) {
-                    const comment = JSON.parse(JSON.stringify(data));
-                    addComment(comment,true);
-                },
-                error: function(data) {
-                    alert(data.responseText);
-                }
-            });
-        }
-
-
-        function loadComment(){
-            $.ajax({
-                type: "GET",
-                url: "/api/comment/"+document.getElementById("post-id").value,
-                success: function(data) {
-                    const comments = JSON.parse(JSON.stringify(data));
-                    comments.forEach((comment) => {
-                        addComment(comment,false);
-                    });
-                },
-                error: function(data) {
-                    alert(data.responseText);
-                }
-            });
-        }
-
-    </script>
+    <script src="/js/post.js"></script>
 </head>
 <body style="background: #222D32;">
-<script src="/js/style/prism.js"></script>
+<script src="/js/prism.js"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href=javascript:void(0)><i class="fas fa-crow" style="font-size: 18px;"></i>Corbeau</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
@@ -132,9 +63,7 @@
             </form>
         </div>
         <div>
-            <ul id="comment-list">
-
-            </ul>
+            <ul id="comment-list"></ul>
         </div>
     </div>
 </div>

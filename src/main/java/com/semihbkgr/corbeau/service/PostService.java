@@ -26,4 +26,6 @@ public interface PostService {
 
     Mono<Long> countBySubjectId(int subjectId);
 
+    Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
+
 }

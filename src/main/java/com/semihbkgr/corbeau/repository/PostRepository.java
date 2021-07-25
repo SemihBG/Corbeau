@@ -29,4 +29,6 @@ public interface PostRepository {
 
     Mono<Long> countBySubjectId(int subjectId);
 
+    Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
+
 }

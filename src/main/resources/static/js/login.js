@@ -36,6 +36,3 @@ function checkFormValidation() {
     }
 }
 
-document.getElementById("name-warn").style.display = "none";
-document.getElementById("password-warn").style.display = "none";
-

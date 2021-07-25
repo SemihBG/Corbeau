@@ -20,6 +20,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 
+import static org.springframework.data.relational.core.query.Criteria.*;
+import static org.springframework.data.relational.core.query.Query.*;
+
 
 @SuppressWarnings("ConstantConditions")
 @Repository
@@ -140,12 +143,12 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Mono<Post> findById(int id) {
-        return template.selectOne(Query.query(Criteria.where("id").is(id)), Post.class);
+        return template.selectOne(query(where("id").is(id)), Post.class);
     }
 
     @Override
     public Mono<Post> findByTitle(@NonNull String title) {
-        return template.selectOne(Query.query(Criteria.where("title").is(title)), Post.class);
+        return template.selectOne(query(where("title").is(title)), Post.class);
     }
 
     @Override
@@ -237,12 +240,19 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Mono<Long> count() {
-        return template.count(Query.query(CriteriaDefinition.empty()), Post.class);
+        return template.count(query(CriteriaDefinition.empty()), Post.class);
     }
 
     @Override
     public Mono<Long> countBySubjectId(int subjectId) {
-        return template.count(Query.query(Criteria.where("subject_id").is(subjectId)), Post.class);
+        return template.count(query(where("subject_id").is(subjectId)), Post.class);
     }
+
+    @Override
+    public Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated) {
+        return template.count(query(
+                where("subject_id").is(subjectId).and(where("activated").is(activated))), Post.class);
+    }
+
 
 }
