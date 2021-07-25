@@ -13,4 +13,6 @@ public interface ImageContentRepository {
 
     Mono<Boolean> exists(String name);
 
+    Mono<Void> delete(String name);
+
 }

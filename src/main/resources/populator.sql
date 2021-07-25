@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS db.images
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
     updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
-    UNIQUE KEY 'name_extension' ('name', 'extension')
+    UNIQUE KEY name_extension (name, extension)
 );
 CREATE TABLE IF NOT EXISTS db.comments
 (

@@ -67,7 +67,7 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Format</th>
+            <th>Extension</th>
             <th>Resolution</th>
             <th>Size</th>
             <th>CreatedBy</th>
@@ -79,7 +79,7 @@
         <tbody>
         <tr data-th-each="image : ${images}">
             <td th:text="${image.name}"></td>
-            <td th:text="${image.format}"></td>
+            <td th:text="${image.extension}"></td>
             <td th:text="${image.width}+'/'+${image.height}"></td>
             <td th:text="${image.size}"></td>
             <td th:if="${image.createdBy}!=${null}" th:text="${image.getCreatedBy()}"></td>

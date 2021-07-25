@@ -2,7 +2,6 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
-import com.semihbkgr.corbeau.repository.ImageContentRepository;
 import com.semihbkgr.corbeau.service.*;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +30,8 @@ public class ModerationController {
     private final RoleService roleService;
     private final SubjectService subjectService;
     private final PostService postService;
+    private final ImageContentService imageContentService;
     private final ImageService imageService;
-    private final ImageContentRepository imageContentRepository;
-    private final ImageContentService imageContentService
 
     @GetMapping("/login")
     public String login() {
@@ -208,11 +206,10 @@ public class ModerationController {
 
     @PostMapping("/image/save")
     public Mono<String> imageSaveProcess(@RequestPart("name") String name,
-                                         @RequestPart("extension") String extension,
                                          @RequestPart("content") Mono<FilePart> contentMono) {
-        return imageContentRepository
-                .save(name.concat(".").concat(extension), contentMono)
-                .map(imageService::save)
+        return imageContentService
+                .save(name, contentMono)
+                .flatMap(imageService::save)
                 .then(Mono.just("redirect:/moderation/image"));
     }
 

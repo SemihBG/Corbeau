@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.repository;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,18 +37,30 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
     }
 
     @Override
-    public Mono<Void> save(String name, FilePart filePart) {
+    public Mono<Void> save(@NonNull String name, @NonNull FilePart filePart) {
         return filePart.transferTo(rootDirectoryPath.resolve(name));
     }
 
     @Override
-    public Flux<DataBuffer> findByName(String name) {
+    public Flux<DataBuffer> findByName(@NonNull String name) {
         return DataBufferUtils.read(rootDirectoryPath, new DefaultDataBufferFactory(), 4096);
     }
 
     @Override
-    public Mono<Boolean> exists(String name) {
+    public Mono<Boolean> exists(@NonNull String name) {
         return Mono.just(Files.exists(rootDirectoryPath.resolve(name)));
+    }
+
+    @Override
+    public Mono<Void> delete(@NonNull String name) {
+        return Mono.defer(()->{
+            try {
+                Files.delete(rootDirectoryPath.resolve(name));
+                return Mono.empty();
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
     }
 
 }

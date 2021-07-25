@@ -8,6 +8,8 @@ public interface ImageContentService {
 
     Mono<Image> save(String name,Mono<FilePart> filePartMono);
 
-    Mono<Image> update(int id, String name, Mono<FilePart> filePartMono);
+    Mono<Image> update(String fullName,String newName, Mono<FilePart> filePartMono);
+
+    Mono<Void> delete(String fullName);
 
 }
