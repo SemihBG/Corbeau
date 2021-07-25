@@ -14,6 +14,7 @@ public class CorbeauApplication {
     //TODO Html page local bootsrap files
     //TODO remove dto
     //TODO Moderation controller redundant name model attribute
+    //TODO Server side image extension control
     public static void main(String[] args) {
         SpringApplication.run(CorbeauApplication.class, args);
     }

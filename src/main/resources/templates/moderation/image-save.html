@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget, HtmlFormInputWithoutLabel, HtmlUnknownTag -->
+<!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget, HtmlFormInputWithoutLabel, HtmlUnknownTag, JSDeprecatedSymbols -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Corbeau Image Save</title>
+    <title>Corbeau Moderator Panel</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -10,38 +10,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
-
-    <script>
-        function saveImage() {
-            const form = document.getElementById("image-save");
-            form.submit();
-        }
-
-        function setValuesAutomatically() {
-            const fullPath = document.getElementById("content").value;
-            const startIndex = (fullPath.indexOf('\\') >= 0 ?
-                fullPath.lastIndexOf('\\') :
-                fullPath.lastIndexOf('/'));
-            let filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0)
-                filename = filename.substring(1);
-            const extensionIndex = filename.indexOf(".");
-            const name = filename.substring(0, extensionIndex);
-            const extension = filename.substring(extensionIndex + 1);
-            const nameInput = document.getElementById("name");
-            if (nameInput.value === null || nameInput.value==="")
-                nameInput.value = name;
-            const extensionInput = document.getElementById("extension");
-            extensionInput.value = extension;
-        }
-
-    </script>
-
+    <script src="/js/image-save.js"></script>
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
-        Moderator
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>Moderator
         Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
@@ -89,26 +62,25 @@
 </nav>
 
 <div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%">
-    <h2 class="text-center text-light">Image Save</h2>
-    <form action="/moderation/image/save" enctype="multipart/form-data" id="image-save" method="post"
-          onsubmit="event.preventDefault(); saveImage()">
+    <h2 class="text-center text-info">Image Save</h2>
+    <form action="/moderation/image/save" enctype="multipart/form-data" id="image-save" method="post">
         <div class="form-group">
             <label class="text-info" for="name" style="font-size: 20px;">Name:</label>
-            <input class="form-control border-info text-info" id="name" name="name"
-                   style="background-color: transparent;" type="text">
-        </div>
-        <div class="form-group">
-            <label class="text-info" for="extension" style="font-size: 20px;">Extension:</label>
-            <input class="form-control border-info text-info disabled" id="extension" name="extension"
-                   style="background-color: transparent;" type="text" disabled>
+            <input autocomplete="off" class="form-control border-info text-secondary" id="name" name="name"
+                   oninput="onNameTyped(this)" style="background-color: transparent;" type="text">
         </div>
         <div class="form-group custom-file">
-            <input accept="image/png, image/gif, image/jpeg" class="form-control-file custom-file-input border-info text-info" id="content" name="content"
-                   onchange="setValuesAutomatically()" style="background-color: transparent;"
+            <input accept="image/*" class="form-control-file custom-file-input border-info text-info"
+                   id="content" multiple name="content"
+                   onchange="onContentChanged()" style="background-color: transparent;"
                    type="file">
-            <label class="text-info custom-file-label border-info" for="content" style="font-size: 20px; background-color: transparent;" data-browse="Select">Select Image</label>
+            <label class="text-secondary custom-file-label border-info" data-browse="Select" for="content"
+                   id="content-label" style="font-size: 20px; color: transparent; background-color: transparent;">No
+                Image Selected</label>
         </div>
-        <button class="btn btn-outline-info" id="login-button" type="submit" style="margin-top: 2.5%;">Save</button>
+        <button class="btn btn-outline-info disabled" disabled id="save-button" style="margin-top: 2.5%;" type="submit">
+            Save
+        </button>
     </form>
 </div>
 </body>
