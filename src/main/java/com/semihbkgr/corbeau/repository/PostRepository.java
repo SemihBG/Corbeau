@@ -17,7 +17,7 @@ public interface PostRepository {
 
     Mono<Post> findById(int id);
 
-    Mono<Post> findByTitle(String title);
+    Mono<Post> findByEndpoint(String endpoint);
 
     Flux<PostShallow> findAllShallow(Pageable pageable);
 

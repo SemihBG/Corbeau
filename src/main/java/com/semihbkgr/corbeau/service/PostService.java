@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 public interface PostService {
 
-    Mono<Post> findByTitle(String title) throws IllegalValueException;
+    Mono<Post> findByEndpoint(String endpoint) throws IllegalValueException;
 
     Flux<PostShallow> findAllShallow(Pageable pageable);
 

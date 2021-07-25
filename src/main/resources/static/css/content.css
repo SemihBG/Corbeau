@@ -1,41 +1,43 @@
 div.content-text{
-    color: white;
-    opacity: .7;
+    color: #c4c2c2;
+    font-family: Verdana, sans-serif font set;
+    font-size: large;
 }
 h1.content-title-primary{
-    color:white;
-    opacity: .85;
+    color: #e0dede;
+    opacity: 1;
     font-size: xxx-large;
 }
 h1.content-title-secondary{
-    color:white;
-    opacity: .7;
+    color: #e0dede;
+    opacity: 1;
     font-size: xx-large;
 }
 p.content-text-emphasized{
     display: inline;
-    color: yellow;
+    color: #f1ea8d;
 }
 p.content-text-trivial{
     display: inline;
-    color: gray;
+    color: #898585;
 }
 p.content-text-quote{
     display: inline;
-    color: blanchedalmond;
+    color: #a39e58;
 }
 p.content-text-warning{
     display: inline;
-    color: red;
+    color: #b15a5a;
 }
 a.content-link{
-
+    text-decoration: none;
 }
 a.content-fragment{
-
+    text-decoration: none;
+    text-decoration-color: darkcyan;
 }
 div.content-image-inline{
-    display: inline-grid;
+    display: inline;
 }
 img.content-image-left{
     max-width: 70%;

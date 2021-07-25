@@ -21,10 +21,10 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Mono<Post> findByTitle(@PathVariable String title) {
-        return postRepository.findByTitle(title)
+    public Mono<Post> findByEndpoint(@PathVariable String endpoint) {
+        return postRepository.findByEndpoint(endpoint)
                 .switchIfEmpty(Mono.error(()->
-                        new IllegalValueException("No post fond by given title",PostRepository.TABLE_NAME,"title",title)));
+                        new IllegalValueException("No post fond by given title",PostRepository.TABLE_NAME,"enpoint",endpoint)));
     }
 
     @Override

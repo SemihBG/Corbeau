@@ -34,14 +34,16 @@ CREATE TABLE IF NOT EXISTS db.subjects
 CREATE TABLE IF NOT EXISTS db.posts
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
-    title      VARCHAR(128)    NOT NULL UNIQUE,
+    title      VARCHAR(64)     NOT NULL,
     content    LONGTEXT,
     subject_id INT             NOT NULL,
     activated  BOOLEAN                  DEFAULT FALSE,
+    endpoint   VARCHAR(64)     NOT NULL UNIQUE,
     created_by VARCHAR(32),
     updated_by VARCHAR(32),
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
     updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    UNIQUE KEY title_subject (title, subject_id),
     FOREIGN KEY (subject_id) REFERENCES db.subjects (id)
 );
 CREATE TABLE IF NOT EXISTS db.images
@@ -75,34 +77,57 @@ VALUES (1, 'Java'),
        (2, 'Go'),
        (3, 'Kotlin');
 
-INSERT INTO db.posts(title, content, subject_id, created_at, updated_at, activated)
-VALUES ('postJava01', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postGo01', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postKotlin01', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postJava02', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postGo02', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postKotlin02', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postJava03', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postGo03', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postKotlin03', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postJava04', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postGo04', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postKotlin04', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
-       ('postJava05', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postGo05', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postKotlin05', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postJava06', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postGo06', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postKotlin06', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postJava07', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postGo07', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postKotlin07', 'content', 3, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postJava08', 'content', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
-       ('postGo08', 'content', 2, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false);
+INSERT INTO db.posts(title, content, subject_id, endpoint, created_at, updated_at, activated)
+VALUES ('Post Java 01', 'content', 1, 'post-java-01', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Go 01', 'content', 2, 'post-go-01', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        true),
+       ('Post Kotlin 01', 'content', 3, 'post-kotlin-01', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Java 02', 'content', 1, 'post-java-02', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Go 02', 'content', 2, 'post-go-02', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        true),
+       ('Post Kotlin 02', 'content', 3, 'post-kotli-02', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Java 03', 'content', 1, 'post-java-03', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Go 03', 'content', 2, 'post-go-03', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        true),
+       ('Post Kotlin 03', 'content', 3, 'post-kotli-03', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Java 04', 'content', 1, 'post-java-04', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Go0 4', 'content', 2, 'post-go-04', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        true),
+       ('Post Kotlin 04', 'content', 3, 'post-kotli-04', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), true),
+       ('Post Java 05', 'content', 1, 'post-java-05', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Go 05', 'content', 2, 'post-go-05', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        false),
+       ('Post Kotlin 05', 'content', 3, 'post-kotli-05', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Java 06', 'content', 1, 'post-java-06', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Go 06', 'content', 2, 'post-go-06', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        false),
+       ('Post Kotlin 06', 'content', 3, 'post-kotli-06', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Java 07', 'content', 1, 'post-java-7', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Go 07', 'content', 2, 'post-go-07', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        false),
+       ('Post Kotlin 07', 'content', 3, 'post-kotli-07', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Java 08', 'content', 1, 'post-java-08', UNIX_TIMESTAMP() * 1000,
+        UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000), false),
+       ('Post Go 08', 'content', 2, 'post-go-08', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (RAND() * 3600000),
+        false);
 
 
-INSERT INTO db.posts(title, content, subject_id, created_at, updated_at, activated)
-VALUES ('testPost', '
+INSERT INTO db.posts(title, content, subject_id, endpoint, created_at, updated_at, activated)
+VALUES ('Dummy Test Post Sample Written By Lorem Ipsum', '
 <h1 class="content-title-primary">1.0 Title of Something</h1>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id iaculis neque. Phasellus eget odio ut arcu sollicitudin maximus. Donec eget diam eros. Nunc gravida, nunc a blandit porta, sem massa finibus turpis, nec sagittis metus felis sed dolor. Mauris at augue ut ante facilisis laoreet. Suspendisse sit amet turpis ac leo placerat condimentum sit amet sed est. Vestibulum cursus lacus eget ipsum sollicitudin lobortis. Nunc elit dui, hendrerit quis fermentum vitae, euismod sed felis. Nam tempor faucibus tincidunt. Ut condimentum velit sit amet tincidunt viverra. Fusce sed volutpat quam.
 <h1 class="content-title-secondary">1.1 Subtitle of Something</h1>
@@ -177,7 +202,7 @@ public class SubjectServiceImpl implements SubjectService {
 
 }
 </code></pre>
-', 1, UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true);
+', 1, 'dummy-test-post-example', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true);
 
 
 

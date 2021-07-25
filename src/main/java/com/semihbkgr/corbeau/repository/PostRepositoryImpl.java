@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.query.CriteriaDefinition;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -20,8 +18,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
 
-import static org.springframework.data.relational.core.query.Criteria.*;
-import static org.springframework.data.relational.core.query.Query.*;
+import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
 
 
 @SuppressWarnings("ConstantConditions")
@@ -30,31 +28,31 @@ import static org.springframework.data.relational.core.query.Query.*;
 public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_SHALLOW_PAGED_ORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_SHALLOW_PAGED_UNORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_SHALLOW_UNPAGED_ORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "ORDER BY %s %s";
 
     static final String SQL_FIND_ALL_SHALLOW_UNPAGED_UNORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id ";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "WHERE db.posts.activated = ?" +
@@ -62,45 +60,45 @@ public class PostRepositoryImpl implements PostRepository {
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "WHERE db.posts.activated = ?" +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "WHERE db.posts.activated = ?" +
                     "ORDER BY %s %s ";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED =
-            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.subjects.name as subject_name, " +
+            "SELECT db.posts.id, db.posts.title, db.posts.subject_id, db.posts.endpoint, db.subjects.name as subject_name, " +
                     "db.posts.created_by, db.posts.updated_by, db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts LEFT JOIN db.subjects ON db.posts.subject_id=db.subjects.id " +
                     "WHERE db.posts.activated = ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_ORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by, db.posts.endpoint,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
                     "ORDER BY %s %s LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_UNORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by, db.posts.endpoint,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by, db.posts.endpoint,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? " +
                     "ORDER BY %s %s";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED =
-            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by,  db.posts.updated_by, " +
+            "SELECT db.posts.id,  db.posts.title,  db.posts.created_by, db.posts.endpoint,  db.posts.updated_by, " +
                     "db.posts.created_at, db.posts.updated_at " +
                     "FROM db.posts WHERE db.posts.activated = TRUE AND db.posts.subject_id=? ";
 
@@ -110,6 +108,7 @@ public class PostRepositoryImpl implements PostRepository {
                             .id(row.get("id", Integer.class))
                             .title(row.get("title", String.class))
                             .subjectId(row.get("subject_id", Integer.class))
+                            .endpoint(row.get("endpoint", String.class))
                             .subjectName(row.get("subject_name", String.class))
                             .createdBy(row.get("created_by", String.class))
                             .updatedBy(row.get("updated_by", String.class))
@@ -122,6 +121,7 @@ public class PostRepositoryImpl implements PostRepository {
                     PostInfo.builder()
                             .id(row.get("id", Integer.class))
                             .title(row.get("title", String.class))
+                            .endpoint(row.get("endpoint", String.class))
                             .createdBy(row.get("created_by", String.class))
                             .updatedBy(row.get("updated_by", String.class))
                             .createdAt(row.get("created_at", Long.class))
@@ -147,8 +147,8 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Mono<Post> findByTitle(@NonNull String title) {
-        return template.selectOne(query(where("title").is(title)), Post.class);
+    public Mono<Post> findByEndpoint(@NonNull String endpoint) {
+        return template.selectOne(query(where("endpoint").is(endpoint)), Post.class);
     }
 
     @Override
@@ -178,7 +178,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Flux<PostShallow> findAllByActivatedShallow(boolean activated,@NonNull Pageable pageable) {
+    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
@@ -249,7 +249,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated) {
+    public Mono<Long> countBySubjectIdAndActivated(int subjectId, boolean activated) {
         return template.count(query(
                 where("subject_id").is(subjectId).and(where("activated").is(activated))), Post.class);
     }

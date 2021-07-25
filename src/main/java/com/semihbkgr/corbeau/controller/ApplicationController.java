@@ -65,11 +65,11 @@ public class ApplicationController {
                 });
     }
 
-    @GetMapping("/post/{title}")
-    public Mono<String> post(@PathVariable("title") String title, final Model model) {
+    @GetMapping("/post/{endpoint}")
+    public Mono<String> post(@PathVariable("endpoint") String endpoint, final Model model) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
         model.addAttribute("subjects", subjectsReactiveData);
-        return postService.findByTitle(title)
+        return postService.findByEndpoint(endpoint)
                 .flatMap(post -> {
                     model.addAttribute("post", post);
                     return commentService.countByPostId(post.getId());

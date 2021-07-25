@@ -29,6 +29,8 @@ public class Post extends AllAuditable implements Serializable {
     @Column("subject_id")
     private int subjectId;
 
+    private String endpoint;
+
     private boolean activated;
 
     @Transient

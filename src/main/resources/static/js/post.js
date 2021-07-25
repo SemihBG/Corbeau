@@ -62,3 +62,10 @@ function loadComment(){
         }
     });
 }
+
+const shiftWindow = function() { scrollBy(0, -50) };
+function load() { if (window.location.hash) shiftWindow(); }
+
+function initialize(){
+    window.addEventListener("hashchange", shiftWindow);
+}
