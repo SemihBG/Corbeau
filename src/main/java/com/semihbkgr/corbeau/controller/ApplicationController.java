@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
@@ -26,6 +27,7 @@ public class ApplicationController {
     private final SubjectService subjectService;
     private final PostService postService;
     private final CommentService commentService;
+    private final NameSurnameOfferComponent nameSurnameOfferComponent;
 
     @GetMapping
     public String menu(final Model model) {
@@ -76,8 +78,13 @@ public class ApplicationController {
                     model.addAttribute("post", post);
                     return commentService.countByPostId(post.getId());
                 })
-                .map(commentCount -> {
+                .flatMap(commentCount -> {
                     model.addAttribute("commentCount", commentCount);
+                    return nameSurnameOfferComponent.offer();
+                })
+                .map(pair->{
+                    model.addAttribute("offerName",pair.getFirst());
+                    model.addAttribute("offerSurname",pair.getSecond());
                     return "post";
                 });
     }
