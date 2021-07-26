@@ -54,6 +54,11 @@
       "name": "moderation.roles.enabled",
       "type": "java.lang.String",
       "description": "Description for moderation.roles.enabled."
+    },
+    {
+      "name": "name-surname-offer.pairs",
+      "type": "java.lang.String",
+      "description": "Description for name-surname-offer.pairs."
     }
   ]
 }

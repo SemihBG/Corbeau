@@ -56,3 +56,8 @@ moderation:
     enabled: false
 
 #########################################################
+
+
+
+name-surname-offer:
+  pairs: Harry Potter,Severus Snape,Ron Weasley,Hermione Granger
