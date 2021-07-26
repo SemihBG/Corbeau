@@ -41,4 +41,8 @@ public class NameSurnameOfferComponent {
         );
     }
 
+    public List<Pair<String, String>> getNameSurnamePairList() {
+        return nameSurnamePairList;
+    }
+
 }
