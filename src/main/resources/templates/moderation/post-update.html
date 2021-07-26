@@ -6,20 +6,29 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/content.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
-
+    <link href="/css/prism.css" rel="stylesheet"/>
+    <script src="/js/post.js"></script>
     <script>
         function auto_grow(element) {
             element.style.height = "5px";
             element.style.height = (element.scrollHeight) + "px";
         }
-    </script>
 
+        function onReloadCliked(button) {
+            document.getElementById("display-title").innerHTML = document.getElementById("title").value;
+            document.getElementById("display-content").innerHTML = document.getElementById("content").value;
+        }
+
+    </script>
 </head>
 <body style="background: #222D32;">
+<script src="/js/prism.js"></script>
+<script>initialize();</script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
         Moderator
@@ -86,13 +95,15 @@
     </div>
     <div>
         <h2 class="text-info text-center">Update</h2>
+
         <form method="post" th:action="'/moderation/post/'+${post.id}">
             <div class="form-group">
                 <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
                        style="background-color: transparent" th:value="${post.title}" type="text">
             </div>
             <div class="form-group">
-                <input class="form-control text-info border-info" id="endpoint" name="endpoint" placeholder="Endpoint"
+                <input class="form-control text-info border-info" id="endpoint" name="endpoint"
+                       placeholder="Endpoint"
                        style="background-color: transparent" th:value="${post.endpoint}" type="text">
             </div>
             <div class="form-group">
@@ -108,14 +119,23 @@
                           style="resize: none;overflow: hidden;min-height: 250px; background-color: transparent">[[${post.content}]]</textarea>
             </div>
             <div class="form-group form-check">
-                <input class="form-check-input" id="acitivated" name="activated" style="background-color: transparent;"
+                <input class="form-check-input" id="acitivated" name="activated"
+                       style="background-color: transparent;"
                        th:checked="${post.activated}" type="checkbox"/>
                 <label class="form-check-label text-info" for="acitivated">Activated </label>
             </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
     </div>
+    <div style="margin-top: 2%">
+        <a onclick="onReloadCliked(this)" href=javascript:void(0) style="background-color: transparent; text-decoration: none;"><i class="fas fa-sync text-info" style="font-size: 40px;"></i></a>
+        <div class="border-info" style="border-style: solid">
+            <h1 class=" text-center text-info" id="display-title" th:text="${post.title}"></h1>
+            <div class="content-text" id="display-content" th:utext="${post.content}"></div>
+        </div>
+    </div>
 </div>
+
 
 <script>
     auto_grow(document.getElementById('content'));

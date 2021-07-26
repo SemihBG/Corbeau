@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
@@ -70,6 +71,7 @@ public class ApplicationController {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
         model.addAttribute("subjects", subjectsReactiveData);
         return postService.findByEndpoint(endpoint)
+                .filter(Post::isActivated)
                 .flatMap(post -> {
                     model.addAttribute("post", post);
                     return commentService.countByPostId(post.getId());

@@ -213,6 +213,8 @@ public class ModerationController {
                 .then(Mono.just("redirect:/moderation/image"));
     }
 
+
+
     @SuppressWarnings("MVCPathVariableInspection")
     @GetMapping({"", "/", "/{ignore}"})
     public String redirectNotFoundUrl() {
