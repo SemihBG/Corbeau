@@ -10,7 +10,7 @@ public interface CommentRepository extends R2dbcRepository<Comment,Integer> {
 
     String TABLE_NAME="comments";
 
-    Flux<Comment> findAllByPostId(int postId, Pageable pageable);
+    Flux<Comment> findAllByPostIdOrderByCreatedAtDesc(int postId);
 
     Mono<Long> countByPostId(int postId);
 

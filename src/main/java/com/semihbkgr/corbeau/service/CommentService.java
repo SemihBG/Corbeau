@@ -10,7 +10,7 @@ public interface CommentService {
 
     Mono<Comment> save(Comment comment);
 
-    Flux<Comment> findByPostId(int postId, Pageable pageable);
+    Flux<Comment> findByPostId(int postId);
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
 

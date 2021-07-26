@@ -6,14 +6,10 @@ import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.ImageContentService;
 import com.semihbkgr.corbeau.service.ImageService;
-import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,10 +26,8 @@ public class ApiController {
     private final ImageContentService imageContentService;
 
     @GetMapping("/comment/{post_id}")
-    public Flux<Comment> comment(@PathVariable("post_id") int postId,
-                                 @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr) {
-        int index = Math.max(ParameterUtils.parsePageToIndex(pageStr), 0);
-        return commentService.findByPostId(postId, PageRequest.of(index, COMMENT_COUNT, Sort.by("createdAt").descending()));
+    public Flux<Comment> comment(@PathVariable("post_id") int postId) {
+        return commentService.findByPostId(postId);
     }
 
     @PostMapping("/comment")

@@ -22,8 +22,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Flux<Comment> findByPostId(int postId, @NonNull Pageable pageable) {
-        return commentRepository.findAllByPostId(postId,pageable);
+    public Flux<Comment> findByPostId(int postId) {
+        return commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
     }
 
     @Override

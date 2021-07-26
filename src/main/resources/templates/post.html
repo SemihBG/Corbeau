@@ -44,42 +44,41 @@
         <h2 class="text-info">Comments</h2>
         <h3 class="text-light" th:text="${commentCount}"></h3>
         <button class="btn btn-outline-info" onclick="loadComment()" type="submit">Load</button>
-        <div style="margin-top: 2.5%; margin-bottom: 2.5%;">
-            <div>
-                <form action="/api/comment" id="send-comment" method="post"
-                      onsubmit="event.preventDefault();sendComment()">
-                    <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
-                    <div class="form-group">
-                        <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
-                        <input class="form-control text-info border-info" id="name" name="name"
-                               style="background-color: transparent"
-                               type="text">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
-                        <input class="form-control text-info border-info" id="surname" name="surname"
-                               style="background-color: transparent"
-                               type="text">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
-                        <input class="form-control text-info border-info" id="email" name="email"
-                               style="background-color: transparent"
-                               type="text">
-                    </div>
-                    <div class="form-group">
-                        <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
-                        <textarea class="form-control text-info border-info" id="content" name="content"
-                                  style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
-                    </div>
-                    <button class="btn btn-outline-info" type="submit">Send</button>
-                </form>
-            </div>
-            <div>
-                <ul id="comment-list"></ul>
-            </div>
+        <div>
+            <ul id="comment-list"></ul>
         </div>
+        <div style="margin-top: 2.5%; margin-bottom: 2.5%;">
 
+            <form action="/api/comment" id="send-comment" method="post"
+                  onsubmit="event.preventDefault();sendComment()">
+                <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
+                <div class="form-group">
+                    <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
+                    <input class="form-control text-info border-info" id="name" name="name"
+                           style="background-color: transparent"
+                           type="text">
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
+                    <input class="form-control text-info border-info" id="surname" name="surname"
+                           style="background-color: transparent"
+                           type="text">
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
+                    <input class="form-control text-info border-info" id="email" name="email"
+                           style="background-color: transparent"
+                           type="text">
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
+                    <textarea class="form-control text-info border-info" id="content" name="content"
+                              style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
+                </div>
+                <button class="btn btn-outline-info" type="submit">Send</button>
+            </form>
+
+        </div>
     </div>
 </div>
 
