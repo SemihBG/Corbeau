@@ -27,7 +27,7 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
     private final boolean removeIfExists;
 
     @Autowired
-    public ImageContentLocalFileRepository(@Value("${image.rootDirectory}") String rootDirectory,
+    public ImageContentLocalFileRepository(@Value("${image.repository.local.rootDirectory}") String rootDirectory,
                                            @Value("${image.removeIfExists:#{null}}") Boolean removeIfExists) {
         this.rootDirectory = rootDirectory;
         this.rootDirectoryPath = Path.of(rootDirectory);

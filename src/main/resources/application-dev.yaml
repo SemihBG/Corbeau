@@ -47,7 +47,11 @@ logging:
 ###Use this properties if you are not working on data###
 
 image:
-  rootDirectory: images
+  repository:
+    local:
+      rootDirectory: images
+  random:
+    size: 8
 
 moderation:
   prime:

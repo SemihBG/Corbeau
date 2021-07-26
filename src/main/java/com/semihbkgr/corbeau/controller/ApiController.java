@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.controller;
 
 
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
+import com.semihbkgr.corbeau.component.RandomImageGenerator;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
@@ -26,6 +27,7 @@ public class ApiController {
     private final CommentService commentService;
     private final ImageService imageService;
     private final ImageContentService imageContentService;
+    private final RandomImageGenerator randomImageGenerator;
     private final NameSurnameOfferComponent nameSurnameOfferComponent;
 
     @GetMapping("/comment/{post_id}")
@@ -49,8 +51,13 @@ public class ApiController {
     }
 
     @GetMapping("/offer")
-    public Flux<Pair<String,String>> nameSurnameOffer(){
+    public Flux<Pair<String, String>> nameSurnameOffer() {
         return Flux.fromIterable(nameSurnameOfferComponent.getNameSurnamePairList());
+    }
+
+    @GetMapping(value = "/image/random/{seed}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public Mono<DataBuffer> imageRandom(@PathVariable("seed") String seed) {
+        return randomImageGenerator.generate(seed);
     }
 
 }
