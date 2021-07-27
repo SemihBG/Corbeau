@@ -1,33 +1,52 @@
 function addComment(comment,addFirst){
-    const commentLI=document.createElement("li");
-    const nameP=document.createElement("p");
-    nameP.innerHTML=comment.name;
-    nameP.classList.add("text-light")
-    const surnameP=document.createElement("p");
-    surnameP.innerHTML=comment.surname;
-    surnameP.classList.add("text-light")
-    const emailP=document.createElement("p");
-    emailP.innerHTML=comment.email;
-    emailP.classList.add("text-light")
-    const contentP=document.createElement("p");
-    contentP.innerHTML=comment.content;
-    contentP.classList.add("text-light")
-    const timeP=document.createElement("p");
-    timeP.innerHTML=(new Date(comment.createdAt)).toLocaleString("en-US", {timeZoneName: "short"});
-    timeP.classList.add("text-light")
+    const commentP=document.createElement("a");
+    commentP.classList.add("list-group-item");
+    commentP.classList.add("list-group-item-action");
+    commentP.classList.add("bg-dark");
     const imageImg=document.createElement("img");
     imageImg.id="image-"+comment.name;
     imageImg.src="/api/image/random/"+comment.name;
     imageImg.width=50;
     imageImg.height=50;
-    commentLI.appendChild(nameP);
-    commentLI.appendChild(surnameP);
-    commentLI.appendChild(emailP);
-    commentLI.appendChild(contentP);
-    commentLI.appendChild(timeP);
-    commentLI.appendChild(imageImg);
-    if(addFirst) document.getElementById("comment-list").prepend(commentLI);
-    else document.getElementById("comment-list").append(commentLI);
+    imageImg.style.border="3px solid #17a2b8";
+    imageImg.style.display="inline-block";
+    const infoDiv=document.createElement("div");
+    infoDiv.style.display="inline";
+    const nameP=document.createElement("p");
+    nameP.innerHTML=comment.name;
+    nameP.classList.add("text-light");
+    nameP.style.display="inline";
+    nameP.style.fontSize="19px";
+    nameP.style.marginLeft="10px";
+    const surnameP=document.createElement("p");
+    surnameP.innerHTML=comment.surname;
+    surnameP.classList.add("text-light");
+    surnameP.style.display="inline";
+    surnameP.style.fontSize="19px";
+    surnameP.style.marginLeft="10px";
+    const timeP=document.createElement("p");
+    timeP.innerHTML=(new Date(comment.createdAt)).toLocaleString("en-US", {timeZoneName: "short"});
+    timeP.classList.add("text-light");
+    timeP.style.float="right";
+    timeP.style.display="inline";
+    const emailP=document.createElement("p");
+    emailP.innerHTML=comment.email;
+    emailP.classList.add("text-light");
+    emailP.style.fontSize="15px";
+    emailP.style.marginLeft="10px";
+    const contentP=document.createElement("p");
+    contentP.innerHTML=comment.content;
+    contentP.classList.add("text-light");
+    infoDiv.appendChild(nameP);
+    infoDiv.appendChild(surnameP);
+    infoDiv.appendChild(timeP);
+    infoDiv.appendChild(emailP);
+    commentP.appendChild(imageImg);
+    commentP.appendChild(infoDiv);
+    commentP.appendChild(contentP);
+
+    if(addFirst) document.getElementById("comment-div").prepend(commentP);
+    else document.getElementById("comment-div").append(commentP);
 
 }
 
@@ -63,6 +82,7 @@ function loadComment(){
             comments.forEach((comment) => {
                 addComment(comment,false);
             });
+            document.getElementById("comment-load").style.display="none";
         },
         error: function(data) {
             alert(data.responseText);

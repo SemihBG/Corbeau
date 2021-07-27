@@ -43,13 +43,16 @@
     </div>
     <div style="margin-top: 5%;">
         <h2 class="text-info">Comments</h2>
-        <h3 class="text-light" th:text="${commentCount}"></h3>
-        <button class="btn btn-outline-info" onclick="loadComment()" type="submit">Load</button>
-        <div>
-            <ul id="comment-list"></ul>
+        <div th:if="${commentCount}>0" th:id="comment-load">
+            <p class="text-secondary" th:text="'Count: '+${commentCount}" style="display: inline; font-size: 20px;"></p>
+            <button class="btn btn-outline-info" onclick="loadComment()" type="submit">Load</button>
+        </div>
+        <div th:unless="${commentCount}>0">
+            <h3 class="text-light">There is no comment</h3>
+        </div>
+        <div class="list-group" id="comment-div">
         </div>
         <div style="margin-top: 2.5%; margin-bottom: 2.5%;">
-
             <form action="/api/comment" id="send-comment" method="post"
                   onsubmit="event.preventDefault();sendComment()">
                 <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
@@ -78,7 +81,6 @@
                 </div>
                 <button class="btn btn-outline-info" type="submit">Send</button>
             </form>
-
         </div>
     </div>
 </div>
