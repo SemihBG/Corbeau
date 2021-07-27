@@ -8,6 +8,7 @@ import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.ImageContentService;
 import com.semihbkgr.corbeau.service.ImageService;
+import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.util.Pair;
@@ -55,9 +56,12 @@ public class ApiController {
         return Flux.fromIterable(nameSurnameOfferComponent.getNameSurnamePairList());
     }
 
-    @GetMapping(value = "/image/random/{seed}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public Mono<DataBuffer> imageRandom(@PathVariable("seed") String seed) {
-        return randomImageGenerator.generate(seed);
+    @GetMapping(value = "/image/random/{seed}", produces = MediaType.IMAGE_PNG_VALUE)
+    public Mono<DataBuffer> imageRandom(@PathVariable("seed") String seed,
+                                        @RequestParam(value = "s", required = false) String scale) {
+        var scaleBy = ParameterUtils.parseToIntMinBy(scale, 1);
+        if (scaleBy < 1) return randomImageGenerator.generate(seed);
+        else return randomImageGenerator.generate(seed, scaleBy);
     }
 
 }

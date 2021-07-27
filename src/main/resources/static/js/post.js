@@ -15,13 +15,20 @@ function addComment(comment,addFirst){
     const timeP=document.createElement("p");
     timeP.innerHTML=(new Date(comment.createdAt)).toLocaleString("en-US", {timeZoneName: "short"});
     timeP.classList.add("text-light")
+    const imageImg=document.createElement("img");
+    imageImg.id="image-"+comment.name;
+    imageImg.src="/api/image/random/"+comment.name;
+    imageImg.width=50;
+    imageImg.height=50;
     commentLI.appendChild(nameP);
     commentLI.appendChild(surnameP);
     commentLI.appendChild(emailP);
     commentLI.appendChild(contentP);
     commentLI.appendChild(timeP);
+    commentLI.appendChild(imageImg);
     if(addFirst) document.getElementById("comment-list").prepend(commentLI);
     else document.getElementById("comment-list").append(commentLI);
+
 }
 
 function sendComment(){

@@ -15,6 +15,17 @@ public class ParameterUtils {
         }
     }
 
+    public static int parseToIntMinBy(@Nullable String valueStr,int min) {
+        if (valueStr == null) return min-1;
+        try {
+            var value = Integer.parseInt(valueStr);
+            if(value<min) return min-1;
+            return value;
+        } catch (NumberFormatException ignore) {
+            return min-1;
+        }
+    }
+
     public static String extractExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }

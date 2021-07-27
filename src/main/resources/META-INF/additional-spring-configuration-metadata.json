@@ -63,7 +63,7 @@
     {
       "name": "image.random.size",
       "type": "java.lang.String",
-      "description": "Description for image.random.size."
+      "description": "Description for image.random.generation-size."
     }
   ]
 }
