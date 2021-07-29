@@ -49,3 +49,18 @@ img.content-image-right{
     max-height: 350px;
     height: auto;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #877c7c;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #312e2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2a2727;
+}

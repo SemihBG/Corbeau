@@ -30,9 +30,7 @@
 <script src="/js/prism.js"></script>
 <script>initialize();</script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
-        Moderator
-        Panel</a>
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -128,7 +126,9 @@
         </form>
     </div>
     <div style="margin-top: 2%">
-        <a onclick="onReloadCliked(this)" href=javascript:void(0) style="background-color: transparent; text-decoration: none;"><i class="fas fa-sync text-info" style="font-size: 40px;"></i></a>
+        <a href=javascript:void(0) onclick="onReloadCliked(this)"
+           style="background-color: transparent; text-decoration: none;"><i class="fas fa-sync text-info"
+                                                                            style="font-size: 40px;"></i></a>
         <div class="border-info" style="border-style: solid">
             <h1 class=" text-center text-info" id="display-title" th:text="${post.title}"></h1>
             <div class="content-text" id="display-content" th:utext="${post.content}"></div>
