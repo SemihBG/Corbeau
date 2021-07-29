@@ -237,6 +237,11 @@ public class PostRepositoryImpl implements PostRepository {
                 .all();
     }
 
+    @Override
+    public Flux<PostShallow> searchByActivatedShallow(String s, boolean activated, Pageable pageable) {
+        return null;
+    }
+
 
     @Override
     public Mono<Long> count() {

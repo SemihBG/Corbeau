@@ -25,6 +25,8 @@ public interface PostRepository {
 
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
 
+    Flux<PostShallow> searchByActivatedShallow(String s,boolean activated,Pageable pageable);
+
     Mono<Long> count();
 
     Mono<Long> countBySubjectId(int subjectId);
