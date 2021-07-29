@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SuppressWarnings("DuplicatedCode")
@@ -87,6 +88,13 @@ public class ApplicationController {
                     model.addAttribute("offerSurname",pair.getSecond());
                     return "post";
                 });
+    }
+
+    @GetMapping("/search")
+    public Mono<String> search(@RequestParam(value = "s",required = false) String s){
+        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+        if(s==null) return Mono.just("redirect: /");
+        return Mono.just("search");
     }
 
 }

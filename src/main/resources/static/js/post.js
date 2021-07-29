@@ -65,7 +65,6 @@ const EMAIL_MAX_LENGTH = 25;
 const CONTENT_MIN_LENGTH = 5;
 const CONTENT_MAX_LENGTH = 25;
 
-
 function sendComment() {
 
     //display none all warn
