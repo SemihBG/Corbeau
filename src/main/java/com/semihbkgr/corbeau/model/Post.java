@@ -25,7 +25,6 @@ public class Post extends AllAuditable implements Serializable {
     private int id;
 
     @NotNull
-    @Length(min = )
     private String title;
 
     private String content;
