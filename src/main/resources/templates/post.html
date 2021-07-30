@@ -31,9 +31,9 @@
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <form class="form-inline my-2 my-lg-0" action="/search" method="get">
-                    <input class="form-control mr-sm-2 text-info border-info" placeholder="Search"
-                           style="background-color: transparent" type="text" name="s">
+                <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                    <input autocomplete="off" class="form-control mr-sm-2 text-info border-info"
+                           name="s" placeholder="Search" style="background-color: transparent" type="text">
                     <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
                                                                                style="font-size: 18px;"></i></button>
                 </form>
@@ -48,8 +48,8 @@
     </div>
     <div style="margin-top: 5%;">
         <h2 class="text-info">Comments</h2>
-        <div th:if="${commentCount}>0" th:id="comment-load">
-            <p class="text-secondary" th:text="'Count: '+${commentCount}" style="display: inline; font-size: 20px;"></p>
+        <div th:id="comment-load" th:if="${commentCount}>0">
+            <p class="text-secondary" style="display: inline; font-size: 20px;" th:text="'Count: '+${commentCount}"></p>
             <button class="btn btn-outline-info" onclick="loadComment()" type="submit">Load</button>
         </div>
         <div th:unless="${commentCount}>0">
@@ -65,30 +65,30 @@
                     <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
                     <input class="form-control text-info border-info" id="name" name="name"
                            style="background-color: transparent"
-                           type="text" th:placeholder="${offerName}">
-                    <p  class="text-warning" id="name-warn" style="display: none"></p>
+                           th:placeholder="${offerName}" type="text">
+                    <p class="text-warning" id="name-warn" style="display: none"></p>
                 </div>
                 <div class="form-group">
                     <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
                     <input class="form-control text-info border-info" id="surname" name="surname"
                            style="background-color: transparent"
-                           type="text" th:placeholder="${offerSurname}">
-                    <p  class="text-warning" id="surname-warn" style="display: none"></p>
+                           th:placeholder="${offerSurname}" type="text">
+                    <p class="text-warning" id="surname-warn" style="display: none"></p>
                 </div>
                 <div class="form-group">
                     <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
                     <input class="form-control text-info border-info" id="email" name="email"
                            style="background-color: transparent"
                            type="text">
-                    <p  class="text-warning" id="email-warn" style="display: none"></p>
+                    <p class="text-warning" id="email-warn" style="display: none"></p>
                 </div>
                 <div class="form-group">
                     <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
                     <textarea class="form-control text-info border-info" id="content" name="content"
                               style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
-                    <p  class="text-warning" id="content-warn" style="display: none"></p>
+                    <p class="text-warning" id="content-warn" style="display: none"></p>
                 </div>
-                <button class="btn btn-outline-info" type="submit" >Send</button>
+                <button class="btn btn-outline-info" type="submit">Send</button>
             </form>
         </div>
     </div>
