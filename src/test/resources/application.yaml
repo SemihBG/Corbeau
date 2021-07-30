@@ -1,6 +1,9 @@
+server:
+  port: 9999
+  address: 0.0.0.0
 spring:
   r2dbc:
-    url: r2dbc:h2:file:///./testdb
+    url: r2dbc:h2:file:///./testdb;DATABASE_TO_UPPER=false
     username: sa
     password: sa
   h2:

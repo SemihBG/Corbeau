@@ -34,3 +34,4 @@ build/
 
 images
 testdb.mv.db
+testdb.trace.db
