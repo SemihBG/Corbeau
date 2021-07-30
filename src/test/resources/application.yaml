@@ -3,7 +3,7 @@ server:
   address: 0.0.0.0
 spring:
   r2dbc:
-    url: r2dbc:h2:file:///./testdb;DATABASE_TO_UPPER=false
+    url: r2dbc:h2:file:///./testdb;DATABASE_TO_UPPER=false;;AUTO_SERVER=TRUE
     username: sa
     password: sa
   h2:
