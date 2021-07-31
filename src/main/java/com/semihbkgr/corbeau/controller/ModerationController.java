@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @SuppressWarnings("DuplicatedCode")
 @Controller
 @RequestMapping("/moderation")
@@ -82,7 +84,7 @@ public class ModerationController {
     }
 
     @PostMapping("/subject")
-    public Mono<String> subjectSave(@ModelAttribute Subject subject) {
+    public Mono<String> subjectSave(@Valid @ModelAttribute Subject subject) {
         return Mono.from(subjectService.save(subject))
                 .then(Mono.just("redirect:/moderation/subject"));
     }
@@ -150,7 +152,7 @@ public class ModerationController {
     }
 
     @PostMapping("/post")
-    public Mono<String> postSaveProcess(@ModelAttribute Post post, final Model model) {
+    public Mono<String> postSaveProcess(@Valid @ModelAttribute Post post, final Model model) {
         return postService.save(post)
                 .map(savedPost -> {
                     model.addAttribute("post", savedPost);

@@ -5,6 +5,9 @@ import org.springframework.lang.Nullable;
 
 public class ParameterUtils {
 
+    private ParameterUtils() {
+    }
+
     public static int parsePageToIndex(@Nullable String pageStr) {
         if (pageStr == null) return 0;
         try {
@@ -15,14 +18,14 @@ public class ParameterUtils {
         }
     }
 
-    public static int parseToIntMinBy(@Nullable String valueStr,int min) {
-        if (valueStr == null) return min-1;
+    public static int parseToIntMinBy(@Nullable String valueStr, int min) {
+        if (valueStr == null) return min - 1;
         try {
             var value = Integer.parseInt(valueStr);
-            if(value<min) return min-1;
+            if (value < min) return min - 1;
             return value;
         } catch (NumberFormatException ignore) {
-            return min-1;
+            return min - 1;
         }
     }
 
@@ -30,9 +33,9 @@ public class ParameterUtils {
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 
-    public static Pair<String,String> extractNameAndExtension(String fileName){
-        var index=fileName.lastIndexOf('.');
-        return Pair.of(fileName.substring(0,index),fileName.substring(index+1));
+    public static Pair<String, String> extractNameAndExtension(String fileName) {
+        var index = fileName.lastIndexOf('.');
+        return Pair.of(fileName.substring(0, index), fileName.substring(index + 1));
     }
 
 }

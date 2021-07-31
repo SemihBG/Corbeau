@@ -3,6 +3,7 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.component.RandomImageGenerator;
+import com.semihbkgr.corbeau.error.ArtifactExcepiton;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
@@ -62,6 +63,11 @@ public class ApiController {
         var scaleBy = ParameterUtils.parseToIntMinBy(scale, 1);
         if (scaleBy < 1) return randomImageGenerator.generate(seed);
         else return randomImageGenerator.generate(seed, scaleBy);
+    }
+
+    @GetMapping("/error/{status_code}")
+    public Mono<Void> error(@PathVariable("status_code") int statusCode){
+        return Mono.error(new ArtifactExcepiton());
     }
 
 }

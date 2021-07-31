@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.model;
 
 import com.semihbkgr.corbeau.model.base.AllAuditable;
 import com.semihbkgr.corbeau.model.base.TimeAuditable;
+import com.semihbkgr.corbeau.validation.annotation.PostValidation;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -19,12 +20,12 @@ import java.io.Serializable;
 @Builder
 @With
 @Table("posts")
+@PostValidation
 public class Post extends AllAuditable implements Serializable {
 
     @Id
     private int id;
 
-    @NotNull
     private String title;
 
     private String content;
