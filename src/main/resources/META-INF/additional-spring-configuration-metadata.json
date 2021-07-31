@@ -74,6 +74,16 @@
       "name": "server.error.include-cookies",
       "type": "java.lang.Boolean",
       "description": "Description for server.error.include-cookies."
+    },
+    {
+      "name": "validation.message.source.path",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.source.path."
+    },
+    {
+      "name": "validation.message.source.encoding",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.source.encoding."
     }
   ]
 }

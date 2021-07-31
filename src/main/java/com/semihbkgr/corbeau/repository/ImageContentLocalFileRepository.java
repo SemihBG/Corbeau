@@ -38,9 +38,9 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
     public void createRootFolderIfNotExist() throws IOException {
         if (!Files.isDirectory(rootDirectoryPath)) {
             Files.createDirectory(rootDirectoryPath);
-            log.info("RootFolderPath: {} created successfully", rootDirectory);
+            log.info("RootFolderPath: Image root directory created successfully, directory: {}", rootDirectory);
         } else {
-            log.info("RootFolderPath: {} already exists", rootDirectory);
+            log.info("RootFolderPath: Image root directory already exists, directory: {}", rootDirectory);
             if (removeIfExists) {
                 var deletedFileCount = new AtomicInteger(0);
                 var failedFileCount = new AtomicInteger(0);

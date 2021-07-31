@@ -78,5 +78,7 @@ name-surname-offer:
 
 
 validation:
-  post:
-    valid: asd
+  message:
+    source:
+      path: classpath:messages
+      encoding: UTF-8
