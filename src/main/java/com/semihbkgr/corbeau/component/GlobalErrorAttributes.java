@@ -14,8 +14,8 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
     private final boolean includeHeader;
     private final boolean includeCookies;
 
-    public GlobalErrorAttributes(@Value("${server.error.include-headers:#{false}") boolean includeHeader,
-                                 @Value("${server.error.include-cookies:#{false}") boolean includeCookies) {
+    public GlobalErrorAttributes(@Value("${server.error.include-headers:#{false}}") boolean includeHeader,
+                                 @Value("${server.error.include-cookies:#{false}}") boolean includeCookies) {
         this.includeHeader = includeHeader;
         this.includeCookies = includeCookies;
     }

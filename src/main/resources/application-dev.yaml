@@ -74,3 +74,9 @@ moderation:
 
 name-surname-offer:
   pairs: Harry Potter,Severus Snape,Ron Weasley,Hermione Grange r,Draco Malfoy,Albus Dumbledore,Forrest Gump,Lord Voldemort,Sirius Black
+
+
+
+validation:
+  post:
+    valid: asd

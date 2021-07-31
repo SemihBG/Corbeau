@@ -35,7 +35,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
     private Mono<ServerResponse> errorServerResponse(ServerRequest request) {
         var errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         return ServerResponse
-                .status(Objects.requireNonNull(HttpStatus.resolve((Integer) errorPropertiesMap.getOrDefault("error", 500))))
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)//TODO declare specific status code
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(errorPropertiesMap));
     }
