@@ -14,8 +14,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
@@ -33,8 +31,9 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
     private Mono<ServerResponse> errorServerResponse(ServerRequest request) {
         var errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        //TODO declare specific status code
         return ServerResponse
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)//TODO declare specific status code
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(errorPropertiesMap));
     }

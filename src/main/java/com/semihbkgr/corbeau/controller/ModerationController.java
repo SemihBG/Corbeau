@@ -7,6 +7,7 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -214,14 +215,5 @@ public class ModerationController {
                 .flatMap(imageService::save)
                 .then(Mono.just("redirect:/moderation/image"));
     }
-
-
-
-    @SuppressWarnings("MVCPathVariableInspection")
-    @GetMapping({"", "/", "/{ignore}"})
-    public String redirectNotFoundUrl() {
-        return "redirect:/moderation/menu";
-    }
-
 
 }

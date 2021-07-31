@@ -3,7 +3,7 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.component.RandomImageGenerator;
-import com.semihbkgr.corbeau.error.ArtifactExcepiton;
+import com.semihbkgr.corbeau.error.ArtifactException;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
@@ -13,6 +13,7 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -65,9 +66,10 @@ public class ApiController {
         else return randomImageGenerator.generate(seed, scaleBy);
     }
 
-    @GetMapping("/error/{status_code}")
-    public Mono<Void> error(@PathVariable("status_code") int statusCode){
-        return Mono.error(new ArtifactExcepiton());
+    @GetMapping("/error")
+    public Mono<Void> error(@RequestParam(value = "status",required = false,defaultValue = "500") int statusCode,
+                            @RequestParam(value = "message",required = false,defaultValue = "No message") String message){
+        return Mono.error(new ArtifactException(HttpStatus.resolve(statusCode),message));
     }
 
 }

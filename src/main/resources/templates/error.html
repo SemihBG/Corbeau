@@ -13,24 +13,16 @@
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand text-info" href="/moderation/menu"><i class="fas fa-crow" style="font-size: 18px;"></i>
-        Moderator
-        Panel</a>
+    <a class="navbar-brand text-info" href="/">
+        <i class="fas fa-crow" style="font-size: 18px;"></i> Corbeau</a>
 </nav>
-
-<div class="container text-center">
+<div class="container text-center" style="padding-top: 3%;padding-bottom: 3%">
     <img height="auto" src="/image/error-crow.png" width="21%">
     <div class="text-secondary bg-dark" style="padding-top: 5%;padding-bottom: 5%;">
         <h1 th:text="${httpStatusCode}"></h1>
         <h2 th:text="${httpStatus}"></h2>
         <h6 th:text="${handlerMessage}"></h6>
-        <ul class="list-group" th:if="${fieldErrors!=null}">
-            <li class="list-group-item bg-dark" th:each="fieldError : ${fieldErrors}">
-                <p th:text="${fieldError.getFieldName()}+' = '+${fieldError.getRejectedValue()}+' , Message = '+${fieldError.getMessage()}"></p>
-            </li>
-        </ul>
     </div>
 </div>
-
 </body>
 </html>

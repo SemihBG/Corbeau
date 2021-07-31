@@ -6,8 +6,7 @@ server:
     include-stacktrace: always
     include-headers: true
     include-cookies: true
-    whitelabel:
-      enabled: true
+
 spring:
   r2dbc:
     url: r2dbc:pool:mysql://${mysql-hostname:localhost}:${mysql-port:3306}/${mysql-table:db}
