@@ -12,6 +12,7 @@ import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -26,7 +27,20 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
     @Override
     protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-        return RouterFunctions.route(RequestPredicates.all(), this::errorServerResponse);
+        return RouterFunctions.route(new RequestPredicate() {
+            @Override
+            public boolean test(ServerRequest request) {
+                return true;
+            }
+        }, new HandlerFunction<ServerResponse>() {
+            @Override
+            public Mono<ServerResponse> handle(ServerRequest request) {
+                var errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+                if(errorAttributes.getError(request) instanceof ResponseStatusException)
+                    return ServerResponse.ok().bodyValue("error");
+                return errorServerResponse(request);
+            }
+        });
     }
 
     private Mono<ServerResponse> errorServerResponse(ServerRequest request) {
