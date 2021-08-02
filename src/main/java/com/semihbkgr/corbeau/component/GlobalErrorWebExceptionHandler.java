@@ -15,10 +15,12 @@ import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
-    
+
     public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes, WebProperties.Resources resources,
                                           ApplicationContext applicationContext, ServerCodecConfigurer serverCodecConfigurer) {
         super(errorAttributes, resources, applicationContext);
@@ -27,19 +29,13 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
     @Override
     protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-        return RouterFunctions.route(new RequestPredicate() {
-            @Override
-            public boolean test(ServerRequest request) {
-                return true;
-            }
-        }, new HandlerFunction<ServerResponse>() {
-            @Override
-            public Mono<ServerResponse> handle(ServerRequest request) {
-                var errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-                if(errorAttributes.getError(request) instanceof ResponseStatusException)
-                    return ServerResponse.ok().bodyValue("error");
-                return errorServerResponse(request);
-            }
+        return RouterFunctions.route(RequestPredicates.all(), request -> {
+             if(errorAttributes.getError(request) instanceof ResponseStatusException)
+                 if(request.requestPath().toString().startsWith("/moderation/menu"))
+                     return ServerResponse.permanentRedirect(URI.create("/moderation/menu")).build();
+                 else
+                     return ServerResponse.permanentRedirect(URI.create("/")).build();
+            return errorServerResponse(request);
         });
     }
 
