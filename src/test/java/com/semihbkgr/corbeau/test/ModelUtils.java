@@ -1,6 +1,8 @@
 package com.semihbkgr.corbeau.test;
 
 import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.Role;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.base.AllAuditable;
 import reactor.core.publisher.Mono;
 
@@ -83,6 +85,37 @@ public class ModelUtils {
 
     public static Mono<Post> defaultUpdatedPostMono(int id) {
         return Mono.just(defaultUpdatedPost(id));
+    }
+
+    public static Role defaultSaveRole(){
+        return Role.builder()
+                .id(0)
+                .name("role")
+                .build();
+    }
+
+    public static Subject defaultSaveSubject(){
+        var subject = Subject.builder()
+                .id(0)
+                .name("name")
+                .build();
+        return setAuditsOfAuditableModel(subject);
+    }
+
+    public static Subject defaultSavedSubject(){
+        var subject=Subject.builder()
+                .id(1)
+                .name("name")
+                .build();
+        return setAuditsOfAuditableModel(subject);
+    }
+
+    public static Subject defaultUpdateSubject(){
+        var subject= Subject.builder()
+                .id(0)
+                .name("updated-name")
+                .build();
+        return setAuditsOfAuditableModel(subject);
     }
 
 }

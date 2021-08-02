@@ -11,15 +11,15 @@ public interface SubjectRepository {
 
     Mono<Subject> save(Subject subject);
 
-    Flux<Subject> findAll();
-
-    Flux<SubjectDeep> findAllDeep();
+    Mono<Subject> update(Subject subject);
 
     Mono<Subject> findById(int id);
 
     Mono<SubjectDeep> findByNameDeep(String name);
 
-    Mono<Subject> update(Subject subject);
+    Flux<Subject> findAll();
+
+    Flux<SubjectDeep> findAllDeep();
 
     Mono<Void> deleteById(int id);
 

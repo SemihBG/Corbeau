@@ -22,16 +22,16 @@ import java.util.function.BiFunction;
 public class SubjectRepositoryImpl implements SubjectRepository {
 
     static final String SQL_FIND_ALL =
-            "SELECT db.subjects.id, db.subjects.name, db.subjects.created_by, " +
-                    "db.subjects.updated_by,db.subjects.created_at, db.subjects.updated_at,  " +
-                    "(SELECT COUNT(*) FROM db.posts WHERE db.posts.subject_id=subjects.id ) as post_count " +
-                    "FROM db.subjects";
+            "SELECT subjects.id, subjects.name, subjects.created_by, " +
+                    "subjects.updated_by,subjects.created_at, subjects.updated_at,  " +
+                    "(SELECT COUNT(*) FROM posts WHERE posts.subject_id=subjects.id ) as post_count " +
+                    "FROM subjects";
 
     static final String SQL_FIND_BY_ID =
-            "SELECT db.subjects.id, db.subjects.name, db.subjects.created_by, " +
-                    "db.subjects.updated_by,db.subjects.created_at, db.subjects.updated_at,  " +
-                    "(SELECT COUNT(*) FROM db.posts WHERE db.posts.subject_id=subjects.id ) as post_count " +
-                    "FROM db.subjects WHERE db.subjects.name=?";
+            "SELECT subjects.id, subjects.name, subjects.created_by, " +
+                    "subjects.updated_by, subjects.created_at, subjects.updated_at,  " +
+                    "(SELECT COUNT(*) FROM posts WHERE posts.subject_id=subjects.id ) as post_count " +
+                    "FROM subjects WHERE subjects.name=?";
 
     static final BiFunction<Row, RowMetadata, SubjectDeep> SUBJECT_DEEP_MAPPER =
             (row, rowMetadata) ->
@@ -55,15 +55,8 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     }
 
     @Override
-    public Flux<Subject> findAll() {
-        return template.select(Query.query(Criteria.empty()), Subject.class);
-    }
-
-    @Override
-    public Flux<SubjectDeep> findAllDeep() {
-        return template.getDatabaseClient().sql(SQL_FIND_ALL)
-                .map(SUBJECT_DEEP_MAPPER)
-                .all();
+    public Mono<Subject> update(@NonNull Subject subject) {
+        return template.update(subject);
     }
 
     @Override
@@ -81,8 +74,15 @@ public class SubjectRepositoryImpl implements SubjectRepository {
     }
 
     @Override
-    public Mono<Subject> update(@NonNull Subject subject) {
-        return template.update(subject);
+    public Flux<Subject> findAll() {
+        return template.select(Query.query(Criteria.empty()), Subject.class);
+    }
+
+    @Override
+    public Flux<SubjectDeep> findAllDeep() {
+        return template.getDatabaseClient().sql(SQL_FIND_ALL)
+                .map(SUBJECT_DEEP_MAPPER)
+                .all();
     }
 
     @Override

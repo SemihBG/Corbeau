@@ -1,6 +1,7 @@
 package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Role;
+import com.semihbkgr.corbeau.test.ModelUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import reactor.test.StepVerifier;
+
+import static com.semihbkgr.corbeau.test.ModelUtils.defaultSaveRole;
 
 @DataR2dbcTest
 @DisplayName("Role Repository Test")
@@ -31,7 +34,6 @@ class RoleRepositoryTest {
 
     @Autowired
     R2dbcEntityTemplate template;
-
 
     @BeforeEach
     void createRoleTable() {
@@ -64,11 +66,9 @@ class RoleRepositoryTest {
     }
 
     @Test
-    @DisplayName("save returns saved role mono")
-    void saveReturnsSavedRole() {
-        var role = Role.builder()
-                .name("test_role")
-                .build();
+    @DisplayName("save role returns saved role mono")
+    void saveRoleReturnsSavedRole() {
+        var role= defaultSaveRole();
         var roleMono = roleRepository.save(role)
                 .log();
         StepVerifier.create(roleMono)
@@ -79,11 +79,9 @@ class RoleRepositoryTest {
     }
 
     @Test
-    @DisplayName("save and findByName returns saved role mono")
-    void saveAndFindByNameRetrunsSavedRoleMono() {
-        var role = Role.builder()
-                .name("test_role")
-                .build();
+    @DisplayName("save role and findByName returns saved role mono")
+    void saveRoleAndFindByNameRetrunsSavedRoleMono() {
+        var role = defaultSaveRole();
         var roleMono = roleRepository.save(role)
                 .then(roleRepository.findByName(role.getName()))
                 .log();
