@@ -6,10 +6,10 @@ import reactor.core.publisher.Mono;
 
 public class ModelUtils {
 
-    private static final String DEFAULT_CREATE_BY_VALUE="test";
-    private static final String DEFAULT_UPDATED_BY_VALUE="test";
+    private static final String DEFAULT_CREATE_BY_VALUE = "test";
+    private static final String DEFAULT_UPDATED_BY_VALUE = "test";
 
-    public static <A extends AllAuditable> A setAuditsOfAuditableModel (A a){
+    public static <A extends AllAuditable> A setAuditsOfAuditableModel(A a) {
         a.setCreatedBy(DEFAULT_CREATE_BY_VALUE);
         a.setUpdatedBy(DEFAULT_UPDATED_BY_VALUE);
         a.setCreatedAt(System.currentTimeMillis());
@@ -17,38 +17,72 @@ public class ModelUtils {
         return a;
     }
 
-    public static Post defaultPost(){
-        var post= Post.builder()
+    public static Post defaultSavePost() {
+        var post = Post.builder()
                 .id(0)
                 .title("title")
                 .content("content")
                 .subjectId(1)
-                .endpoint("title")
-                .build();
-        return setAuditsOfAuditableModel(post);
-    }
-    public static Post defaultSavedPost(){
-        var post= Post.builder()
-                .id(1)
-                .title("title")
-                .content("content")
-                .subjectId(1)
-                .endpoint("title")
+                .endpoint("endpoint")
+                .activated(false)
+                .viewCount(500)
                 .build();
         return setAuditsOfAuditableModel(post);
     }
 
+    public static Mono<Post> defaultSavePostMono() {
+        return Mono.just(defaultSavePost());
+    }
 
-    public static Mono<Post> defaultSavedPostMono(){
-        var post= Post.builder()
-                .id(1)
+    public static Post defaultSavedPost(int id) {
+        var post = Post.builder()
+                .id(id)
                 .title("title")
                 .content("content")
                 .subjectId(1)
-                .endpoint("title")
+                .endpoint("endpoint")
+                .activated(false)
+                .viewCount(500)
                 .build();
-        return Mono.just(setAuditsOfAuditableModel(post));
+        return setAuditsOfAuditableModel(post);
     }
 
+    public static Mono<Post> defaultSavedPostMono(int id) {
+        return Mono.just(defaultSavedPost(id));
+    }
+
+    public static Post defaultUpdatePost() {
+        var post = Post.builder()
+                .id(0)
+                .title("updated-title")
+                .content("updated-content")
+                .subjectId(2)
+                .endpoint("updated-endpoint")
+                .activated(true)
+                .viewCount(500)
+                .build();
+        return setAuditsOfAuditableModel(post);
+    }
+
+    public static Mono<Post> defaultUpdatePostMono() {
+        return Mono.just(defaultUpdatePost());
+    }
+
+    public static Post defaultUpdatedPost(int id) {
+        var post = Post.builder()
+                .id(id)
+                .title("updated-title")
+                .content("updated-content")
+                .subjectId(2)
+                .endpoint("updated-endpoint")
+                .activated(true)
+                .viewCount(500)
+                .build();
+        return setAuditsOfAuditableModel(post);
+    }
+
+    public static Mono<Post> defaultUpdatedPostMono(int id) {
+        return Mono.just(defaultUpdatedPost(id));
+    }
 
 }

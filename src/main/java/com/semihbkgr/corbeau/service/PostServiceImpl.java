@@ -21,34 +21,18 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Mono<Post> findByEndpoint(@PathVariable String endpoint) {
-        return postRepository.findByEndpoint(endpoint)
-                .switchIfEmpty(Mono.error(()->
-                        new IllegalValueException("No post fond by given title",PostRepository.TABLE_NAME,"enpoint",endpoint)));
-    }
-
-    @Override
-    public Flux<PostShallow> findAllShallow(@NonNull Pageable pageable) {
-        return postRepository.findAllShallow(pageable);
-    }
-
-    @Override
-    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, @NonNull Pageable pageable) {
-        return postRepository.findAllByActivatedShallow(activated,pageable);
-    }
-
-    @Override
-    public Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
-        return postRepository.findAllActivatedBySubjectIdInfo(subjectId,pageable);
-    }
-
-    @Override
-    public Mono<Post> save(@NonNull Post post) {
+    public Mono<Post> save(Post post) {
+        if(post==null)
+            return Mono.error(new NullPointerException("Post parameter cannot be null"));
         return postRepository.save(post);
     }
 
     @Override
     public Mono<Post> update(int id, Post post) {
+        if(post==null)
+            return Mono.error(new NullPointerException("Post parameter cannot be null"));
+        if(id<=0)
+            return Mono.error(new IllegalArgumentException("Id parameter must be positive value"));
         return postRepository.findById(id)
                 .switchIfEmpty(Mono.error(()->
                         new IllegalValueException("No post fond by given id",PostRepository.TABLE_NAME,"id",id)))
@@ -61,6 +45,38 @@ public class PostServiceImpl implements PostService {
                     return postRepository.update(savedPost);
                 });
     }
+
+    @Override
+    public Mono<Post> findByEndpoint(String endpoint) {
+        if (endpoint==null)
+            return Mono.error(new NullPointerException("Endpoint parameter cannot be null"));
+        return postRepository.findByEndpoint(endpoint)
+                .switchIfEmpty(Mono.error(()->
+                        new IllegalValueException("No post fond by given title",PostRepository.TABLE_NAME,"enpoint",endpoint)));
+    }
+
+    @Override
+    public Flux<PostShallow> findAllShallow(Pageable pageable) {
+        if(pageable==null)
+            return Flux.error(new NullPointerException("Pageable parameter cannot be null"));
+        return postRepository.findAllShallow(pageable);
+    }
+
+    @Override
+    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, Pageable pageable) {
+        if(pageable==null)
+            return Flux.error(new NullPointerException("Pageable parameter cannot be null"));
+        return postRepository.findAllByActivatedShallow(activated,pageable);
+    }
+
+    @Override
+    public Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) {
+        return postRepository.findAllActivatedBySubjectIdInfo(subjectId,pageable);
+    }
+
+
+
+
 
     @Override
     public Mono<Long> count() {

@@ -10,6 +10,10 @@ import reactor.core.publisher.Mono;
 
 public interface PostService {
 
+    Mono<Post> save(Post post);
+
+    Mono<Post> update(int id,Post post);
+
     Mono<Post> findByEndpoint(String endpoint) throws IllegalValueException;
 
     Flux<PostShallow> findAllShallow(Pageable pageable);
@@ -17,10 +21,6 @@ public interface PostService {
     Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
 
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
-
-    Mono<Post> save(Post post);
-
-    Mono<Post> update(int id,Post post);
 
     Mono<Long> count();
 
