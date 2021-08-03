@@ -23,7 +23,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     private final ImageContentRepository imageContentRepository;
 
     @Override
-    public Mono<Image> save(@NonNull String name,@NonNull Mono<FilePart> filePartMono) {
+    public Mono<Image> save(@NonNull String name, @NonNull Mono<FilePart> filePartMono) {
         return imageContentRepository
                 .exists(name)
                 .filter(exists -> !exists)
@@ -36,8 +36,8 @@ public class ImageContentServiceImpl implements ImageContentService {
                             .then(Mono.just(Tuples.of(filePart, ext)));
                 })
                 .flatMap(tuple ->
-                           imageMetadataFromFilePart(tuple.getT1())
-                                    .map(imageMetadata -> Tuples.of(imageMetadata, tuple.getT2()))
+                        imageMetadataFromFilePart(tuple.getT1())
+                                .map(imageMetadata -> Tuples.of(imageMetadata, tuple.getT2()))
                 )
                 .map(tuple ->
                         Image.builder()
@@ -51,7 +51,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     }
 
     @Override
-    public Mono<Image> update(@NonNull String fullName,@NonNull String newName,@NonNull Mono<FilePart> filePartMono) {
+    public Mono<Image> update(@NonNull String fullName, @NonNull String newName, @NonNull Mono<FilePart> filePartMono) {
         return imageContentRepository
                 .exists(newName)
                 .filter(exists -> !exists)
@@ -84,9 +84,9 @@ public class ImageContentServiceImpl implements ImageContentService {
 
     @Override
     public Flux<DataBuffer> findByName(@NonNull String name) {
-        return  imageContentRepository
+        return imageContentRepository
                 .exists(name)
-                .filter(exists->exists)
+                .filter(exists -> exists)
                 .switchIfEmpty(Mono.error(IllegalArgumentException::new))
                 .thenMany(imageContentRepository.findByName(name));
     }

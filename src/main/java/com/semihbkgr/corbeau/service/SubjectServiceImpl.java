@@ -24,7 +24,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Mono<Subject> update(int id, @NonNull Subject subject) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter cannot be null");
+            throw new IllegalValueException("id must be positive value", SubjectRepository.TABLE_NAME, "id", id);
         return subjectRepository.findById(id)
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Subject not available by given id", SubjectRepository.TABLE_NAME, "id", id)))
@@ -37,7 +37,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Mono<Subject> findById(int id) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter cannot be null");
+            throw new IllegalValueException("id must be positive value", SubjectRepository.TABLE_NAME, "id", id);
         return subjectRepository.findById(id);
     }
 
@@ -59,7 +59,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Mono<Void> deleteById(int id) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter cannot be null");
+            throw new IllegalValueException("id must be positive value", SubjectRepository.TABLE_NAME, "id", id);
         return subjectRepository.deleteById(id);
     }
 

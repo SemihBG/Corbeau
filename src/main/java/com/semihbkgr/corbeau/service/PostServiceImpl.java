@@ -4,6 +4,7 @@ import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.model.projection.PostShallow;
+import com.semihbkgr.corbeau.repository.ImageRepository;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Mono<Post> update(int id, @NonNull Post post) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter must be positive value");
+            throw new IllegalValueException("id must be positive value", PostRepository.TABLE_NAME,"id",id);
         return postRepository.findById(id)
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("No post fond by given id", PostRepository.TABLE_NAME, "id", id)))
@@ -60,7 +61,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, @NonNull Pageable pageable) throws IllegalValueException {
         if (subjectId <= 0)
-            throw new IllegalArgumentException("SubjectId parameter must be positive value");
+            throw new IllegalValueException("subject_id must be positive value", PostRepository.TABLE_NAME,"subject_id",subjectId);
         return postRepository.findAllActivatedBySubjectIdInfo(subjectId, pageable);
     }
 
@@ -72,14 +73,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public Mono<Long> countBySubjectId(int subjectId) throws IllegalValueException {
         if (subjectId <= 0)
-            throw new IllegalArgumentException("SubjectId parameter must be positive value");
+            throw new IllegalValueException("subject_id must be positive value", PostRepository.TABLE_NAME,"subject_id",subjectId);
         return postRepository.countBySubjectId(subjectId);
     }
 
     @Override
     public Mono<Long> countBySubjectIdAndActivated(int subjectId, boolean activated) throws IllegalValueException {
         if (subjectId <= 0)
-            throw new IllegalArgumentException("SubjectId parameter must be positive value");
+            throw new IllegalValueException("subject_id must be positive value", PostRepository.TABLE_NAME,"subject_id",subjectId);
         return postRepository.countBySubjectIdAndActivated(subjectId, activated);
     }
 

@@ -25,7 +25,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Mono<Image> update(int id, @NonNull Image image) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter must be positive value");
+            throw new IllegalValueException("id must be positive value", ImageRepository.TABLE_NAME, "id", id);
         return imageRepository.findById(id)
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Image not available by given id", ImageRepository.TABLE_NAME, "id", id)))
@@ -60,7 +60,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Mono<Void> deleteById(int id) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter must be positive value");
+            throw new IllegalValueException("id must be positive value", ImageRepository.TABLE_NAME, "id", id);
         return imageRepository.deleteById(id);
     }
 

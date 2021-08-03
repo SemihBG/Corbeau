@@ -21,24 +21,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Flux<Comment> findByPostId(int postId) throws IllegalValueException{
+    public Flux<Comment> findByPostId(int postId) throws IllegalValueException {
         if (postId <= 0)
-            throw new IllegalArgumentException("PostId parameter must be positive value");
+            throw new IllegalValueException("post_id must be positive value", CommentRepository.TABLE_NAME, "post_id", postId);
         return commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
     }
 
 
     @Override
-    public Mono<Long> countByPostId(int postId)  throws IllegalValueException{
+    public Mono<Long> countByPostId(int postId) throws IllegalValueException {
         if (postId <= 0)
-            throw new IllegalArgumentException("PostId parameter must be positive value");
+            throw new IllegalValueException("post_id must be positive value", CommentRepository.TABLE_NAME, "post_id", postId);
         return commentRepository.countByPostId(postId);
     }
 
     @Override
     public Mono<Void> deleteById(int id) throws IllegalValueException {
         if (id <= 0)
-            throw new IllegalArgumentException("Id parameter must be positive value");
+            throw new IllegalValueException("id must be positive value", CommentRepository.TABLE_NAME, "id", id);
         return commentRepository.deleteById(id);
     }
 
