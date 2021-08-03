@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-public class DatasourceUtils {
+public class DataSourceUtils {
 
     public static void executeSQL(String url, String sql) {
         Mono.from(ConnectionFactories.get(url).create())
