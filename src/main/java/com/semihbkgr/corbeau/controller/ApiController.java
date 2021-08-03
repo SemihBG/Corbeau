@@ -4,6 +4,8 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.component.RandomImageGenerator;
 import com.semihbkgr.corbeau.error.ArtifactException;
+import com.semihbkgr.corbeau.error.response.FiledErrorResponse;
+import com.semihbkgr.corbeau.error.response.WebExcahngeBindExceptionResponse;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Image;
 import com.semihbkgr.corbeau.service.CommentService;
@@ -16,8 +18,13 @@ import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.WebExchangeBindException;
+import org.springframework.web.client.HttpClientErrorException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -39,7 +46,7 @@ public class ApiController {
     }
 
     @PostMapping("/comment")
-    public Mono<Comment> commentProcess(@ModelAttribute Comment comment) {
+    public Mono<Comment> commentProcess(@Valid @ModelAttribute Comment comment) {
         return commentService.save(comment);
     }
 
@@ -70,6 +77,26 @@ public class ApiController {
     public Mono<Void> error(@RequestParam(value = "status",required = false,defaultValue = "500") int statusCode,
                             @RequestParam(value = "message",required = false,defaultValue = "No message") String message){
         return Mono.error(new ArtifactException(HttpStatus.resolve(statusCode),message));
+    }
+
+    @ExceptionHandler(WebExchangeBindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Mono<WebExcahngeBindExceptionResponse> handleWebExchangeBindExcepiton(WebExchangeBindException e){
+        return Mono.just(
+                WebExcahngeBindExceptionResponse.builder()
+                        .httpStatusCode(HttpStatus.BAD_REQUEST.value())
+                        .httpStats("BAD REQUEST")
+                        .fieldErrors(e.getBindingResult()
+                                .getFieldErrors()
+                                .stream()
+                                .map(fieldError -> FiledErrorResponse.builder()
+                                        .fieldName(fieldError.getField())
+                                        .rejectedValue(fieldError.getRejectedValue())
+                                        .message(fieldError.getDefaultMessage())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build()
+        );
     }
 
 }

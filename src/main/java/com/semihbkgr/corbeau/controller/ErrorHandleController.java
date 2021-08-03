@@ -8,7 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.WebExchangeBindException;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import reactor.netty.http.server.HttpServerRequest;
 
 import java.util.stream.Collectors;
 
@@ -16,7 +19,8 @@ import java.util.stream.Collectors;
 public class ErrorHandleController {
 
     @ExceptionHandler(WebExchangeBindException.class)
-    public String handleValidationException(WebExchangeBindException e, Model model) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleValidationException(WebExchangeBindException e, Model model, ServerRequest request) {
         var fieldErrorList = e.getBindingResult()
                 .getFieldErrors()
                 .stream()

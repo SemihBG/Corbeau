@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS db.comments
     content    VARCHAR(256)    NOT NULL,
     post_id    INT             NOT NULL,
     created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
     FOREIGN KEY (post_id) REFERENCES db.posts (id)
 );
 
