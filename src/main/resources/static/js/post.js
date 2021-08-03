@@ -54,18 +54,20 @@ function addComment(comment, addFirst) {
 
 const nameRegex = RegExp(/^[A-Za-z]+$/);
 const surnameRegex = RegExp(/^[A-Za-z]+$/);
-const emailRegex = RegExp(/^[A-Za-z]+$/);
-const contentRegex = RegExp(/^[A-Za-z]+$/);
-const NAME_MIN_LENGTH = 5;
-const NAME_MAX_LENGTH = 25;
-const SURNAME_MIN_LENGTH = 5;
-const SURNAME_MAX_LENGTH = 25;
-const EMAIL_MIN_LENGTH = 5;
-const EMAIL_MAX_LENGTH = 25;
-const CONTENT_MIN_LENGTH = 5;
-const CONTENT_MAX_LENGTH = 25;
+const emailRegex = RegExp(/\S+@\S+\.\S+/);
+const NAME_MIN_LENGTH = 4;
+const NAME_MAX_LENGTH = 32;
+const SURNAME_MIN_LENGTH = 4;
+const SURNAME_MAX_LENGTH = 32;
+const EMAIL_MIN_LENGTH = 4;
+const EMAIL_MAX_LENGTH = 64;
+const CONTENT_MIN_LENGTH = 4;
+const CONTENT_MAX_LENGTH = 256;
 
 function sendComment() {
+
+    const commentWarn=document.getElementById("comment-warn");
+    commentWarn.style.display="none";
 
     //display none all warn
     const nameWarn = document.getElementById("name-warn");
@@ -80,11 +82,11 @@ function sendComment() {
     const form = document.getElementById("send-comment");
 
     //get values
-    const name = document.getElementById("name").value;
-    const surname = document.getElementById("surname").value;
-    const email = document.getElementById("email").value;
-    const content = document.getElementById("content").value;
-    const postId = document.getElementById("post-id").value;
+    const name = document.getElementById("name").value.trim();
+    const surname = document.getElementById("surname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const content = document.getElementById("content").value.trim();
+    const postId = document.getElementById("post-id").value.trim();
 
     //-values validation
     let allValid = true;
@@ -120,7 +122,7 @@ function sendComment() {
         emailWarn.style.display = "block";
         allValid = false;
     } else if (!emailRegex.test(email)) {
-        emailWarn.innerHTML = "Email contains illegal character";
+        emailWarn.innerHTML = "Invalid email";
         emailWarn.style.display = "block";
         allValid = false;
     }
@@ -128,11 +130,7 @@ function sendComment() {
     //check content validation
     if (content.length < CONTENT_MIN_LENGTH || content.length > CONTENT_MAX_LENGTH) {
         contentWarn.innerHTML = "Content must be between " +
-            NAME_MIN_LENGTH + " - " + NAME_MAX_LENGTH;
-        contentWarn.style.display = "block";
-        allValid = false;
-    } else if (!contentRegex.test(content)) {
-        contentWarn.innerHTML = "Content contains illegal character";
+            CONTENT_MIN_LENGTH + " - " + CONTENT_MAX_LENGTH;
         contentWarn.style.display = "block";
         allValid = false;
     }
@@ -155,7 +153,11 @@ function sendComment() {
             addComment(comment, true);
         },
         error: function (data) {
-            alert(data.responseText);
+            const errorResonse = JSON.parse(JSON.stringify(data.responseJSON));
+            commentWarn.style.display="block";
+            errorResonse.fieldErrors.forEach((fieldError)=>{
+                commentWarn.innerHTML+=commentWarn.innerHTML+fieldError.message;
+            })
         }
     });
 
