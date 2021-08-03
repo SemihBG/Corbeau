@@ -23,7 +23,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     private final ImageContentRepository imageContentRepository;
 
     @Override
-    public Mono<Image> save(@NonNull String name, @NonNull Mono<FilePart> filePartMono) {
+    public Mono<Image> save(@NonNull String name,@NonNull Mono<FilePart> filePartMono) {
         return imageContentRepository
                 .exists(name)
                 .filter(exists -> !exists)
@@ -51,7 +51,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     }
 
     @Override
-    public Mono<Image> update(@NonNull String fullName, @NonNull String newName, @NonNull Mono<FilePart> filePartMono) {
+    public Mono<Image> update(@NonNull String fullName,@NonNull String newName,@NonNull Mono<FilePart> filePartMono) {
         return imageContentRepository
                 .exists(newName)
                 .filter(exists -> !exists)
@@ -83,7 +83,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     }
 
     @Override
-    public Flux<DataBuffer> findByName(String name) {
+    public Flux<DataBuffer> findByName(@NonNull String name) {
         return  imageContentRepository
                 .exists(name)
                 .filter(exists->exists)
@@ -92,7 +92,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     }
 
     @Override
-    public Mono<Void> delete(String fullName) {
+    public Mono<Void> delete(@NonNull String fullName) {
         return imageContentRepository
                 .exists(fullName)
                 .filter(exists -> !exists)
@@ -139,6 +139,5 @@ public class ImageContentServiceImpl implements ImageContentService {
         private long size;
 
     }
-
 
 }

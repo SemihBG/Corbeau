@@ -8,8 +8,8 @@ public interface ModeratorService {
 
     Mono<Moderator> save(Moderator moderator);
 
-    Flux<Moderator> findAll();
-
     Mono<Moderator> findByName(String name);
+
+    Flux<Moderator> findAll();
 
 }

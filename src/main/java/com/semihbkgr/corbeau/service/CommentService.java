@@ -10,10 +10,10 @@ public interface CommentService {
 
     Mono<Comment> save(Comment comment);
 
-    Flux<Comment> findByPostId(int postId);
+    Flux<Comment> findByPostId(int postId) throws IllegalValueException;
+
+    Mono<Long> countByPostId(int postId) throws IllegalValueException;
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
-
-    Mono<Long> countByPostId(int postId);
 
 }

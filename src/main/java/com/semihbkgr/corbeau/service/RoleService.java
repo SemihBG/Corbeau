@@ -7,12 +7,12 @@ import reactor.core.publisher.Mono;
 
 public interface RoleService {
 
-    Flux<Role> findAll();
-
-    Mono<Role> findById(int id);
-
-    Mono<Role> findByName(String name) throws IllegalValueException;
-
     Flux<Role> saveAll(Iterable<Role> roleIterable);
+
+    Mono<Role> findById(int id) throws IllegalValueException;
+
+    Mono<Role> findByName(String name);
+
+    Flux<Role> findAll();
 
 }

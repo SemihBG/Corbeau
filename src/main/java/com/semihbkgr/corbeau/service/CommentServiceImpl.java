@@ -5,7 +5,6 @@ import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.repository.CommentRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,21 +21,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Flux<Comment> findByPostId(int postId) {
+    public Flux<Comment> findByPostId(int postId) throws IllegalValueException{
+        if (postId <= 0)
+            throw new IllegalArgumentException("PostId parameter must be positive value");
         return commentRepository.findAllByPostIdOrderByCreatedAtDesc(postId);
     }
 
+
     @Override
-    public Mono<Void> deleteById(int id) throws IllegalValueException{
-        return commentRepository.findById(id)
-                .switchIfEmpty(Mono.error(()->
-                        new IllegalValueException("No comment found by given id",CommentRepository.TABLE_NAME,"id",id)))
-                .then(commentRepository.deleteById(id));
+    public Mono<Long> countByPostId(int postId)  throws IllegalValueException{
+        if (postId <= 0)
+            throw new IllegalArgumentException("PostId parameter must be positive value");
+        return commentRepository.countByPostId(postId);
     }
 
     @Override
-    public Mono<Long> countByPostId(int postId) {
-        return commentRepository.countByPostId(postId);
+    public Mono<Void> deleteById(int id) throws IllegalValueException {
+        if (id <= 0)
+            throw new IllegalArgumentException("Id parameter must be positive value");
+        return commentRepository.deleteById(id);
     }
 
 }

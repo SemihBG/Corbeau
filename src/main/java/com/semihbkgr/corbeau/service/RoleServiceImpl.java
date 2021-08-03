@@ -16,26 +16,25 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public Flux<Role> findAll() {
-        return roleRepository.findAll();
-    }
-
-    @Override
-    public Mono<Role> findById(int id) {
-        return roleRepository.findById(id);
-    }
-
-    @Override
-    public Mono<Role> findByName(@NonNull String name) throws IllegalValueException {
-        return roleRepository.findByName(name)
-                .switchIfEmpty(Mono.error(() ->
-                        new IllegalValueException("Role no found by given name", RoleRepository.TABLE_NAME, "name", name)));
-    }
-
-    @Override
     public Flux<Role> saveAll(@NonNull Iterable<Role> roleIterable) {
         return roleRepository.saveAll(roleIterable);
     }
 
+    @Override
+    public Mono<Role> findById(int id) throws IllegalValueException {
+        if(id<=1)
+            throw new IllegalArgumentException("Id parameter cannot be null");
+        return roleRepository.findById(id);
+    }
+
+    @Override
+    public Mono<Role> findByName(@NonNull String name) {
+        return roleRepository.findByName(name);
+    }
+
+    @Override
+    public Flux<Role> findAll() {
+        return roleRepository.findAll();
+    }
 
 }

@@ -24,10 +24,26 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Mono<Image> update(int id, @NonNull Image image) throws IllegalValueException {
+        if (id <= 0)
+            throw new IllegalArgumentException("Id parameter must be positive value");
         return imageRepository.findById(id)
                 .switchIfEmpty(Mono.error(() ->
-                        new IllegalValueException("Image not available by given id", imageRepository.TABLE_NAME, "id", id)))
-                .then(imageRepository.save(image.withId(id)));
+                        new IllegalValueException("Image not available by given id", ImageRepository.TABLE_NAME, "id", id)))
+                .map(savedImage -> {
+                    savedImage.setName(image.getName());
+                    savedImage.setExtension(image.getExtension());
+                    savedImage.setWidth(image.getWidth());
+                    savedImage.setHeight(image.getHeight());
+                    savedImage.setSize(image.getSize());
+                    return savedImage;
+                })
+                .flatMap(imageRepository::save);
+    }
+
+    @Override
+    public Mono<Image> findByFullName(@NonNull String fullName) {
+        var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
+        return imageRepository.findOneByNameAndExtension(nameExtPair.getFirst(), nameExtPair.getSecond());
     }
 
     @Override
@@ -35,23 +51,17 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findAllBy(pageable);
     }
 
-    @Override
-    public Mono<Image> findByFullName(String fullName) {
-        var nameExtPair= ParameterUtils.extractNameAndExtension(fullName);
-        return imageRepository.findOneByNameAndExtension(nameExtPair.getFirst(),nameExtPair.getSecond());
-    }
-
-    @Override
-    public Mono<Void> deleteById(int id) throws IllegalValueException {
-        return imageRepository.findById(id)
-                .switchIfEmpty(Mono.error(() ->
-                        new IllegalValueException("Image not available by given id", imageRepository.TABLE_NAME, "id", id)))
-                .then(imageRepository.deleteById(id));
-    }
 
     @Override
     public Mono<Long> count() {
         return imageRepository.count();
+    }
+
+    @Override
+    public Mono<Void> deleteById(int id) throws IllegalValueException {
+        if (id <= 0)
+            throw new IllegalArgumentException("Id parameter must be positive value");
+        return imageRepository.deleteById(id);
     }
 
 }

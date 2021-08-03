@@ -20,14 +20,13 @@ public class ModeratorServiceImpl implements ModeratorService {
     }
 
     @Override
-    public Flux<Moderator> findAll() {
-        return moderatorRepository.findAll();
-    }
-
-    @Override
     public Mono<Moderator> findByName(@NonNull String name) {
         return moderatorRepository.findByName(name);
     }
 
+    @Override
+    public Flux<Moderator> findAll() {
+        return moderatorRepository.findAll();
+    }
 
 }

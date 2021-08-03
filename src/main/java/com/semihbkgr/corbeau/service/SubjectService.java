@@ -10,15 +10,15 @@ public interface SubjectService {
 
     Mono<Subject> save(Subject subject);
 
-    Flux<Subject> findAll();
-
-    Flux<SubjectDeep> findAllDeep();
+    Mono<Subject> update(int id, Subject subject) throws IllegalValueException;
 
     Mono<Subject> findById(int id) throws IllegalValueException;
 
-    Mono<SubjectDeep> findByNameDeep(String name) throws IllegalValueException;
+    Mono<SubjectDeep> findByNameDeep(String name);
 
-    Mono<Subject> update(int id, Subject subject) throws IllegalValueException;
+    Flux<Subject> findAll();
+
+    Flux<SubjectDeep> findAllDeep();
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
 

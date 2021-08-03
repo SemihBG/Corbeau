@@ -12,20 +12,20 @@ public interface PostService {
 
     Mono<Post> save(Post post);
 
-    Mono<Post> update(int id,Post post);
+    Mono<Post> update(int id,Post post) throws IllegalValueException;
 
-    Mono<Post> findByEndpoint(String endpoint) throws IllegalValueException;
+    Mono<Post> findByEndpoint(String endpoint);
 
     Flux<PostShallow> findAllShallow(Pageable pageable);
 
     Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
 
-    Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
+    Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable) throws IllegalValueException ;
 
     Mono<Long> count();
 
-    Mono<Long> countBySubjectId(int subjectId);
+    Mono<Long> countBySubjectId(int subjectId) throws IllegalValueException ;
 
-    Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
+    Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated) throws IllegalValueException ;
 
 }
