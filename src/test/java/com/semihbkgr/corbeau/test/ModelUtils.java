@@ -90,7 +90,7 @@ public class ModelUtils {
     public static Role defaultSaveRole(){
         return Role.builder()
                 .id(0)
-                .name("role")
+                .name("role-name")
                 .build();
     }
 

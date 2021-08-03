@@ -4,10 +4,7 @@ import com.semihbkgr.corbeau.model.Role;
 import com.semihbkgr.corbeau.test.DataSourceExtension;
 import com.semihbkgr.corbeau.test.ModelUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
@@ -29,9 +26,44 @@ class RoleRepositoryTest {
     R2dbcEntityTemplate template;
 
     @Test
-    @DisplayName("findByName returns empty mono")
-    void findByNameReturnsEmptyFlux() {
-        var roleMono = roleRepository.findByName("name")
+    @DisplayName("save(Role) Role.id = 0, return Mono<Role> saved Role")
+    void saveRole_RoleIdIs0_ReturnsSavedRoleMono() {
+        var role= defaultSaveRole();
+        var roleMono = roleRepository.save(role)
+                .log();
+        StepVerifier.create(roleMono)
+                .expectSubscription()
+                .expectNextMatches(savedRole->
+                        savedRole.getName().equals(role.getName())
+                                &&
+                        savedRole.getId()>0
+                )
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("save(Role) Role.id != 0 , return Mono<Role> saved Role")
+    void saveRole_RoleIdIsNot0_ReturnsSavedRoleMono() {
+        var role= Role.builder()
+                .id(1)
+                .name("role-name")
+                .build();
+        var roleMono = roleRepository.save(role)
+                .log();
+        StepVerifier.create(roleMono)
+                .expectSubscription()
+                .expectNextMatches(savedRole->
+                        savedRole.getName().equals(role.getName())
+                                &&
+                                savedRole.getId()>0
+                )
+                .verifyComplete();
+    }
+
+    @Test
+    @DisplayName("findByName(Role.name) Role.name = any , return Mono<Role> empty mono")
+    void findByNameRoleNAmeIsAnyReturnsEmptyMono() {
+        var roleMono = roleRepository.findByName("any")
                 .log();
         StepVerifier.create(roleMono)
                 .expectSubscription()
@@ -39,17 +71,13 @@ class RoleRepositoryTest {
     }
 
     @Test
-    @DisplayName("save role returns saved role mono")
-    void saveRoleReturnsSavedRole() {
-        var role= defaultSaveRole();
-        var roleMono = roleRepository.save(role)
-                .log();
-        StepVerifier.create(roleMono)
-                .expectSubscription()
-                .expectNextMatches(savedRole ->
-                        savedRole.getName().equals(role.getName()))
-                .verifyComplete();
+    @DisplayName("findByName(Role.name) Role.name = null , throw NullPointerExcetion")
+    void findByNameReturnsEmptyFlux() {
+        Assertions.assertThrows(NullPointerException.class,()->{
+            var roleMono = roleRepository.findByName(null);
+        });
     }
+
 
     @Test
     @DisplayName("save role and findByName returns saved role mono")
