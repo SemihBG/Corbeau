@@ -30,11 +30,12 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
     @Override
     protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
         return RouterFunctions.route(RequestPredicates.all(), request -> {
-             if(errorAttributes.getError(request) instanceof ResponseStatusException)
-                 if(request.requestPath().toString().startsWith("/moderation/menu"))
-                     return ServerResponse.permanentRedirect(URI.create("/moderation/menu")).build();
-                 else
-                     return ServerResponse.permanentRedirect(URI.create("/")).build();
+            if (errorAttributes.getError(request) instanceof ResponseStatusException) {
+                if (request.requestPath().toString().startsWith("/moderation"))
+                    return ServerResponse.permanentRedirect(URI.create("/moderation/menu")).build();
+                else
+                    return ServerResponse.permanentRedirect(URI.create("/")).build();
+            }
             return errorServerResponse(request);
         });
     }

@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .pathMatchers("/moderation/login").permitAll()
+                .pathMatchers("/moderation/login","/moderation").permitAll()
                 .pathMatchers("/moderation/**").authenticated()
                 .anyExchange().permitAll()
                 .and()
@@ -36,11 +36,6 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -57,6 +52,11 @@ public class SecurityConfig {
             response.getCookies().remove("JSESSIONID");
             return exchange.getExchange().getSession().flatMap(WebSession::invalidate);
         };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

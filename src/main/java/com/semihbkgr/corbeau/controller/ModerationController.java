@@ -36,6 +36,11 @@ public class ModerationController {
     private final ImageContentService imageContentService;
     private final ImageService imageService;
 
+    @GetMapping()
+    public String moderation(){
+        return "moderation/index";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "/moderation/login";
