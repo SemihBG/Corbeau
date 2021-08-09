@@ -10,9 +10,15 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@SuppressWarnings("ConstantConditions")
 @Repository
 @RequiredArgsConstructor
 public class TagRepositoryImpl implements TagRepository {
+
+    private static final String SQL_SELECT_ALL_BY_POST_ID =
+            "SELECT tags.id, tags.name FROM tags_posts_join " +
+                    "LEFT JOIN tags ON tags.id=tags_posts_join.tag_id " +
+                    "WHERE tags_posts_join.post_id=?";
 
     private final R2dbcEntityTemplate template;
 
@@ -27,13 +33,31 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
+    public Mono<Tag> findById(int id) {
+        return template.selectOne(Query.query(Criteria.where("id").is(id)), Tag.class);
+    }
+
+    @Override
     public Flux<Tag> findAll() {
-        return template.select(Query.query(Criteria.empty()),Tag.class);
+        return template.select(Query.query(Criteria.empty()), Tag.class);
+    }
+
+    @Override
+    public Flux<Tag> findAllByPostId(int portId) {
+        return template.getDatabaseClient()
+                .sql(SQL_SELECT_ALL_BY_POST_ID)
+                .bind(0, portId)
+                .map((row, rowMetadata) ->
+                        Tag.builder()
+                                .id(row.get("id", Integer.class))
+                                .name(row.get("name", String.class))
+                                .build())
+                .all();
     }
 
     @Override
     public Mono<Integer> deleteById(int id) {
-        return template.delete(Query.query(Criteria.where("id").is(id)),Tag.class);
+        return template.delete(Query.query(Criteria.where("id").is(id)), Tag.class);
     }
 
 }

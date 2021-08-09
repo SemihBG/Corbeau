@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS db.comments;
+DROP TABLE IF EXISTS db.tags_posts_join;
 DROP TABLE IF EXISTS db.posts;
+DROP TABLE IF EXISTS db.tags;
 DROP TABLE IF EXISTS db.subjects;
 DROP TABLE IF EXISTS db.images;
 DROP TABLE IF EXISTS db.moderators;
@@ -44,6 +46,18 @@ CREATE TABLE IF NOT EXISTS db.posts
     updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
     UNIQUE KEY title_subject (title, subject_id),
     FOREIGN KEY (subject_id) REFERENCES db.subjects (id)
+);
+CREATE TABLE IF NOT EXISTS db.tags
+(
+    id   INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS db.tags_posts_join
+(
+    tag_id  INT nOT NULL,
+    post_id INT NOT NULL,
+    UNIQUE KEY tag_post (tag_id, post_id)
 );
 CREATE TABLE IF NOT EXISTS db.images
 (
