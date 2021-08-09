@@ -49,13 +49,17 @@ CREATE TABLE IF NOT EXISTS db.posts
 );
 CREATE TABLE IF NOT EXISTS db.tags
 (
-    id   INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(32) NOT NULL
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    name       VARCHAR(32)     NOT NULL,
+    created_by VARCHAR(32),
+    updated_by VARCHAR(32),
+    created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS db.tags_posts_join
 (
-    tag_id  INT nOT NULL,
+    tag_id  INT NOT NULL,
     post_id INT NOT NULL,
     UNIQUE KEY tag_post (tag_id, post_id)
 );
@@ -140,8 +144,8 @@ VALUES ('Post Java 01', 'content', 1, 'post-java-01', UNIX_TIMESTAMP() * 1000,
         false);
 
 
-INSERT INTO db.posts(title, content, subject_id, endpoint, created_at, updated_at, activated)
-VALUES ('Dummy Test Post Sample Written By Lorem Ipsum', '
+INSERT INTO db.posts(id, title, content, subject_id, endpoint, created_at, updated_at, activated)
+VALUES (50, 'Dummy Test Post Sample Written By Lorem Ipsum', '
 <h1 class="content-title-primary">1.0 Title of Something</h1>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id iaculis neque. Phasellus eget odio ut arcu sollicitudin maximus. Donec eget diam eros. Nunc gravida, nunc a blandit porta, sem massa finibus turpis, nec sagittis metus felis sed dolor. Mauris at augue ut ante facilisis laoreet. Suspendisse sit amet turpis ac leo placerat condimentum sit amet sed est. Vestibulum cursus lacus eget ipsum sollicitudin lobortis. Nunc elit dui, hendrerit quis fermentum vitae, euismod sed felis. Nam tempor faucibus tincidunt. Ut condimentum velit sit amet tincidunt viverra. Fusce sed volutpat quam.
 <h1 class="content-title-secondary">1.1 Subtitle of Something</h1>
@@ -219,4 +223,12 @@ public class SubjectServiceImpl implements SubjectService {
 ', 1, 'dummy-test-post-example', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true);
 
 
+INSERT INTO db.tags (id, name)
+VALUES (1, 'tag1'),
+       (2, 'tag2'),
+       (3, 'tag3');
+
+INSERT INTO db.tags_posts_join
+VALUES (50, 1),
+       (50, 2);
 

@@ -11,7 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @Builder
 @With
-@Table("subjects")
+@Table("tags")
 public class Tag extends AllAuditable {
 
     @Id

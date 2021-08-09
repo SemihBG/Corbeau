@@ -7,7 +7,6 @@ import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -33,11 +32,12 @@ public class ModerationController {
     private final RoleService roleService;
     private final SubjectService subjectService;
     private final PostService postService;
+    private final TagService tagService;
     private final ImageContentService imageContentService;
     private final ImageService imageService;
 
     @GetMapping()
-    public String moderation(){
+    public String moderation() {
         return "moderation/index";
     }
 
@@ -100,6 +100,19 @@ public class ModerationController {
         return Mono
                 .from(subjectService.update(id, subject))
                 .then(Mono.just("redirect:/moderation/subject"));
+    }
+
+
+    @GetMapping("/tag")
+    public Mono<String> tag(Model model) {
+        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAll(), 1);
+        model.addAttribute("tags", tagsReactiveData);
+        return ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name", authentication.getName());
+                    return "/moderation/tag";
+                });
     }
 
     @GetMapping("/post")
