@@ -41,10 +41,6 @@ logging:
 #  populator: populator.sql
 #  cleaner: cleaner.sql
 #
-#image:
-#  rootDirectory: images
-#  removeIfExists: true
-#
 #moderation:
 #  prime:
 #    enable: true
@@ -53,15 +49,7 @@ logging:
 #    role: prime
 #  roles: prime,writer,editor,support
 
-
 ###Use this properties if you are not working on data###
-
-image:
-  repository:
-    local:
-      rootDirectory: images
-  random:
-    size: 8
 
 moderation:
   prime:
@@ -71,10 +59,17 @@ moderation:
 
 #########################################################
 
+image:
+  rootDirectory: images
+  removeIfExists: true
+  repository:
+    local:
+      rootDirectory: images
+  random:
+    size: 8
+
 name-surname-offer:
   pairs: Harry Potter,Severus Snape,Ron Weasley,Hermione Grange r,Draco Malfoy,Albus Dumbledore,Forrest Gump,Lord Voldemort,Sirius Black
-
-
 
 validation:
   message:

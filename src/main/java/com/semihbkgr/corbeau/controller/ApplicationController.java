@@ -5,18 +5,17 @@ import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
+import com.semihbkgr.corbeau.service.TagService;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SuppressWarnings("DuplicatedCode")
@@ -28,14 +27,20 @@ public class ApplicationController {
 
     private final SubjectService subjectService;
     private final PostService postService;
+    private final TagService tagService;
     private final CommentService commentService;
     private final NameSurnameOfferComponent nameSurnameOfferComponent;
 
     @GetMapping
-    public String menu(final Model model) {
-        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        model.addAttribute("subjects", subjectsReactiveData);
-        return "menu";
+    public Mono<String> menu(final Model model) {
+        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllDeep(), 1);
+        model.addAttribute("tags", tagsReactiveData);
+        return subjectService.findAll()
+                .collectList()
+                .map(subjectList -> {
+                    model.addAttribute("subjects", subjectList);
+                    return "menu";
+                });
     }
 
     @GetMapping("/subject/{subject_name}")
@@ -53,7 +58,7 @@ public class ApplicationController {
                             1
                     );
                     model.addAttribute("posts", postsInfoReactiveData);
-                    return postService.countBySubjectIdAndActivated(subjectDeep.getId(),true);
+                    return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
                     var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
@@ -84,20 +89,19 @@ public class ApplicationController {
                     model.addAttribute("commentCount", commentCount);
                     return nameSurnameOfferComponent.offer();
                 })
-                .map(pair->{
-                    model.addAttribute("offerName",pair.getFirst());
-                    model.addAttribute("offerSurname",pair.getSecond());
+                .map(pair -> {
+                    model.addAttribute("offerName", pair.getFirst());
+                    model.addAttribute("offerSurname", pair.getSecond());
                     return "post";
                 });
     }
 
     @GetMapping("/search")
-    public Mono<String> search(@RequestParam(value = "s",required = false) String s){
+    public Mono<String> search(@RequestParam(value = "s", required = false) String s) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
-        if(s==null) return Mono.just("redirect: /");
+        if (s == null) return Mono.just("redirect: /");
         return Mono.just("search");
     }
-
 
 
 }

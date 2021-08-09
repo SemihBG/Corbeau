@@ -1,0 +1,8 @@
+div.tag{
+    font-size: xx-large;
+    position: absolute;
+    text-align: center;
+}
+div.container{
+    min-height: 500px;
+}

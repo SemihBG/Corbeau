@@ -37,10 +37,10 @@ public class Comment extends TimeAuditable {
 
     @NotEmpty(message = "{comment.email.notEmpty}")
     @Length(min=4,max=64,message = "{comment.email.length}")
-    @Email(regexp = "^(.+)@(.+)$")
+    @Email(regexp = "^(.+)@(.+)$",message = "{comment.email.emil}")
     private String email;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "{comment.postId.positiveOrZero}")
     @Column("post_id")
     private int postId;
 
