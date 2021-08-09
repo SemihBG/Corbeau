@@ -25,8 +25,8 @@ function shuffle(count){
         var rW=getRandomNumber(0,width);
         if(matrix[rH][rW]!=0) continue;
         else matrix[rH][rW]=1
-        tagList[locatedCount].style.top = rH*heightPixel+heightAdditional+getRandomNumber(0,heightPixel/2) +"px";
-        tagList[locatedCount].style.left = rW*widthPixel+widthAdditional+getRandomNumber(0,widthPixel/2) +"px";
+        tagList[locatedCount].style.top = rH*heightPixel+heightAdditional+((heightPixel-tagList[locatedCount].offsetHeight)/2) +"px";
+        tagList[locatedCount].style.left = rW*widthPixel+widthAdditional+((widthPixel-tagList[locatedCount].offsetWidth)/2) +"px";
         locatedCount++;
     }
 }

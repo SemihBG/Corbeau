@@ -40,9 +40,13 @@
 </nav>
 <div class="container" style="margin-top: 5%; margin-bottom: 5%;" id="tag-div">
     <div data-th-each="tag: ${tags}"  class="text-light tag">
-        <p th:text="${tag.name}"></p>
+        <a th:href="'tag/'+${tag.name}" class="tag" style="display: inline">
+            <i class="fas fa-adjust" style="display: inline"></i>
+            <p th:text="${tag.name}+' ('+${tag.postCount}+') '" style="display: inline"></p>
+        </a>
     </div>
 </div>
+
 <script>
     shuffle(4)
 </script>

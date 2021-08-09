@@ -2,6 +2,14 @@ div.tag{
     font-size: xx-large;
     position: absolute;
     text-align: center;
+    border-radius: 25px;
+    border: solid white 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+div.tag:hover{
+    text-align: center;
+    border: solid red 3px;
 }
 div.container{
     min-height: 500px;
