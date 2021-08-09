@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Tag;
+import com.semihbkgr.corbeau.model.projection.TagDeep;
 import com.semihbkgr.corbeau.repository.TagRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,11 @@ public class TagServiceImpl implements TagService {
         if (postId <= 0)
             throw new IllegalValueException("postId must be positive value", TagRepository.JOIN_TABLE_NAME, "post_id", postId);
         return tagRepository.findAllByPostId(postId);
+    }
+
+    @Override
+    public Flux<TagDeep> findAllDeep() {
+        return tagRepository.findAllDeep();
     }
 
     @Override

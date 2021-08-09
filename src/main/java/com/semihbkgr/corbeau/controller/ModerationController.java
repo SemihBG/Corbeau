@@ -105,8 +105,8 @@ public class ModerationController {
 
     @GetMapping("/tag")
     public Mono<String> tag(Model model) {
-        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAll(), 1);
-        model.addAttribute("tags", tagsReactiveData);
+        var tagsDeepReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllDeep(), 1);
+        model.addAttribute("tags", tagsDeepReactiveData);
         return ReactiveSecurityContextHolder.getContext()
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {

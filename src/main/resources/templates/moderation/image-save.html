@@ -28,6 +28,9 @@
                 <a class="nav-link" href="/moderation/subject">Subject</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/moderation/tag">Tag</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/moderation/post">Post</a>
             </li>
             <li class="nav-item">
@@ -36,13 +39,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="/moderation/comment">Comment</a>
             </li>
-        </ul>
-        <ul class="nav navbar-nav" style="position: absolute; left: 50%; transform: translateX(-50%);">
-            <form class="form-inline my-2 my-lg-0 justify-content-center">
-                <input class="form-control mr-sm-2" placeholder="Search" type="text">
-                <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
-                                                                           style="font-size: 18px;"></i></button>
-            </form>
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
@@ -56,6 +52,14 @@
                 <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden"></form>
                 <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i
                         class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline my-2 my-lg-0" action="/search" method="get">
+                    <input class="form-control mr-sm-2 text-info border-info" placeholder="Search"
+                           style="background-color: transparent" type="text" name="s" autocomplete="off">
+                    <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
+                                                                               style="font-size: 18px;"></i></button>
+                </form>
             </li>
         </ul>
     </div>

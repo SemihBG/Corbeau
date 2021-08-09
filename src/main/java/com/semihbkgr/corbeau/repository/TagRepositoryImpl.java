@@ -1,6 +1,7 @@
 package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Tag;
+import com.semihbkgr.corbeau.model.projection.TagDeep;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
@@ -15,10 +16,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class TagRepositoryImpl implements TagRepository {
 
-    private static final String SQL_SELECT_ALL_BY_POST_ID =
+    static final String SQL_SELECT_ALL_BY_POST_ID =
             "SELECT tags.id, tags.name FROM tags_posts_join " +
                     "LEFT JOIN tags ON tags.id=tags_posts_join.tag_id " +
                     "WHERE tags_posts_join.post_id=?";
+
+    static final String SQL_SELECT_ALL_TAG_DEEP =
+            "SELECT tags.id, tags.name, tags.created_by, tags.updated_by, tags.created_at,tags.updated_at, (SELECT COUNT(*) FROM db.tags_posts_join WHERE post_id=id) as post_count FROM db.tags";
 
     private final R2dbcEntityTemplate template;
 
@@ -52,6 +56,24 @@ public class TagRepositoryImpl implements TagRepository {
                                 .id(row.get("id", Integer.class))
                                 .name(row.get("name", String.class))
                                 .build())
+                .all();
+    }
+
+    @Override
+    public Flux<TagDeep> findAllDeep() {
+        return template.getDatabaseClient()
+                .sql(SQL_SELECT_ALL_TAG_DEEP)
+                .map((row, rowMetadata) ->
+                        TagDeep.builder()
+                                .id(row.get("id", Integer.class))
+                                .name(row.get("name", String.class))
+                                .createdBy(row.get("created_by", String.class))
+                                .updatedBy(row.get("updated_by", String.class))
+                                .createdAt(row.get("created_at", Long.class))
+                                .updatedAt(row.get("updated_at", Long.class))
+                                .postCount(row.get("post_count", Long.class))
+                                .build()
+                )
                 .all();
     }
 
