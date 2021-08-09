@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
+import com.semihbkgr.corbeau.model.Tag;
 import com.semihbkgr.corbeau.service.*;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
@@ -99,7 +100,7 @@ public class ModerationController {
     public Mono<String> subjectUpdate(@PathVariable("id") int id, @ModelAttribute Subject subject) {
         return Mono
                 .from(subjectService.update(id, subject))
-                .then(Mono.just("redirect:/moderation/subject"));
+                .thenReturn("redirect:/moderation/subject");
     }
 
 
@@ -113,6 +114,18 @@ public class ModerationController {
                     model.addAttribute("name", authentication.getName());
                     return "/moderation/tag";
                 });
+    }
+
+    @PostMapping("/tag")
+    public Mono<String> tagSave(@ModelAttribute Tag tag){
+        return tagService.save(tag)
+                .thenReturn("redirect:/moderation/tag");
+    }
+
+    @PostMapping("/tag/{id}")
+    public Mono<String> tagUpdate(@PathVariable("id") int id,@ModelAttribute Tag tag){
+        return tagService.update(id,tag)
+                .thenReturn("redirect:/moderation/tag");
     }
 
     @GetMapping("/post")

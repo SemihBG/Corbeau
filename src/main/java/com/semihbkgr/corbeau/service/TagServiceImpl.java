@@ -31,7 +31,7 @@ public class TagServiceImpl implements TagService {
                 )
                 .flatMap(savedTag -> {
                     savedTag.setName(tag.getName());
-                    return tagRepository.save(savedTag);
+                    return tagRepository.update(savedTag);
                 });
     }
 
