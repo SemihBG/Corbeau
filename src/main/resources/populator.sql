@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS db.posts
     activated          BOOLEAN                  DEFAULT FALSE,
     endpoint           VARCHAR(64)     NOT NULL UNIQUE,
     thumbnail_endpoint VARCHAR(64)              DEFAULT NULL,
+    description        VARCHAR(256)             DEFAULT NULL,
     created_by         VARCHAR(32),
     updated_by         VARCHAR(32),
     created_at         BIGINT UNSIGNED NOT NULL DEFAULT 0,
@@ -145,7 +146,7 @@ VALUES ('Post Java 01', 'content', 1, 'post-java-01', UNIX_TIMESTAMP() * 1000,
         false);
 
 
-INSERT INTO db.posts(id, title, content, subject_id, endpoint, created_at, updated_at, activated)
+INSERT INTO db.posts(id, title, content, subject_id, endpoint, created_at, updated_at, activated,description)
 VALUES (50, 'Dummy Test Post Sample Written By Lorem Ipsum', '
 <h1 class="content-title-primary">1.0 Title of Something</h1>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id iaculis neque. Phasellus eget odio ut arcu sollicitudin maximus. Donec eget diam eros. Nunc gravida, nunc a blandit porta, sem massa finibus turpis, nec sagittis metus felis sed dolor. Mauris at augue ut ante facilisis laoreet. Suspendisse sit amet turpis ac leo placerat condimentum sit amet sed est. Vestibulum cursus lacus eget ipsum sollicitudin lobortis. Nunc elit dui, hendrerit quis fermentum vitae, euismod sed felis. Nam tempor faucibus tincidunt. Ut condimentum velit sit amet tincidunt viverra. Fusce sed volutpat quam.
@@ -221,7 +222,7 @@ public class SubjectServiceImpl implements SubjectService {
 
 }
 </code></pre>
-', 1, 'dummy-test-post-example', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true);
+', 1, 'dummy-test-post-example', UNIX_TIMESTAMP() * 1000, UNIX_TIMESTAMP() * 1000 + (3600000), true,'Description of test post, it is a awesome post for testing how it looks like.');
 
 
 INSERT INTO db.tags (id, name)

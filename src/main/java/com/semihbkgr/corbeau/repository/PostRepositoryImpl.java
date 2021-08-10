@@ -29,7 +29,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_SHALLOW_PAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "ORDER BY %s %s " +
@@ -37,27 +37,27 @@ public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_SHALLOW_PAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_SHALLOW_UNPAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "ORDER BY %s %s";
 
     static final String SQL_FIND_ALL_SHALLOW_UNPAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id ";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "WHERE posts.activated = ?" +
@@ -66,7 +66,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED =
             "SELECT posts.id, db.posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "WHERE posts.activated = ?" +
@@ -74,7 +74,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "WHERE posts.activated = ?" +
@@ -82,31 +82,31 @@ public class PostRepositoryImpl implements PostRepository {
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
-                    "posts.thumbnail_endpoint, subjects.name as subject_name, " +
+                    "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "WHERE posts.activated = ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_ORDERED =
-            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, " +
+            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, posts.description, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=? " +
                     "ORDER BY %s %s LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_PAGED_UNORDERED =
-            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, " +
+            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, posts.description, " +
                     "posts.created_by,  posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=? " +
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_ORDERED =
-            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, " +
+            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, posts.description, " +
                     "posts.created_by,  posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=? " +
                     "ORDER BY %s %s";
 
     static final String SQL_FIND_ALL_ACTIVATED_BY_SUBJECT_ID_INFO_UNPAGED_UNORDERED =
-            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, " +
+            "SELECT posts.id,  posts.title, posts.endpoint, posts.thumbnail_endpoint, posts.description, " +
                     "posts.created_by,  posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=?";
 
@@ -118,6 +118,7 @@ public class PostRepositoryImpl implements PostRepository {
                             .subjectId(row.get("subject_id", Integer.class))
                             .endpoint(row.get("endpoint", String.class))
                             .thumbnailEndpoint(row.get("thumbnail_endpoint", String.class))
+                            .description(row.get("description", String.class))
                             .subjectName(row.get("subject_name", String.class))
                             .createdBy(row.get("created_by", String.class))
                             .updatedBy(row.get("updated_by", String.class))
@@ -132,6 +133,7 @@ public class PostRepositoryImpl implements PostRepository {
                             .title(row.get("title", String.class))
                             .endpoint(row.get("endpoint", String.class))
                             .thumbnailEndpoint(row.get("thumbnail_endpoint", String.class))
+                            .description(row.get("description", String.class))
                             .createdBy(row.get("created_by", String.class))
                             .updatedBy(row.get("updated_by", String.class))
                             .createdAt(row.get("created_at", Long.class))

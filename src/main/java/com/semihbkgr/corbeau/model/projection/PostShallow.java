@@ -14,6 +14,7 @@ public class PostShallow {
     private String endpoint;
     private boolean activated;
     private String thumbnailEndpoint;
+    private String description;
     private String subjectName;
     private String createdBy;
     private String updatedBy;

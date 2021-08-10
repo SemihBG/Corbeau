@@ -46,6 +46,8 @@ public class Post extends AllAuditable implements Serializable {
 
     private String thumbnailEndpoint;
 
+    private String description;
+
     @Transient
     private int viewCount;
 
