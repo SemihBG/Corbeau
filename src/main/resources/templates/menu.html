@@ -39,12 +39,14 @@
     </div>
 </nav>
 <div class="container" style="margin-top: 5%; margin-bottom: 5%;" id="tag-div">
-    <div data-th-each="tag: ${tags}"  class="text-light tag">
-        <a th:href="'tag/'+${tag.name}" class="tag" style="display: inline">
-            <i class="fas fa-adjust" style="display: inline"></i>
+    <a data-th-each="tag: ${tags}" th:href="'tag/'+${tag.name}">
+        <div  class="text-light tag">
+            <div style="display: inline">
+                <canvas class="icon" width="20" height="20"/>
+            </div>
             <p th:text="${tag.name}+' ('+${tag.postCount}+') '" style="display: inline"></p>
-        </a>
-    </div>
+        </div>
+    </a>
 </div>
 
 <script>

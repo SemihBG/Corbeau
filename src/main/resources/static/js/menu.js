@@ -25,12 +25,38 @@ function shuffle(count){
         var rW=getRandomNumber(0,width);
         if(matrix[rH][rW]!=0) continue;
         else matrix[rH][rW]=1
-        tagList[locatedCount].style.top = rH*heightPixel+heightAdditional+((heightPixel-tagList[locatedCount].offsetHeight)/2) +"px";
-        tagList[locatedCount].style.left = rW*widthPixel+widthAdditional+((widthPixel-tagList[locatedCount].offsetWidth)/2) +"px";
+        let tagDiv = tagList[locatedCount];
+        tagDiv.style.top = rH*heightPixel+heightAdditional+((heightPixel-tagDiv.offsetHeight)/2) +"px";
+        tagDiv.style.left = rW*widthPixel+widthAdditional+((widthPixel-tagDiv.offsetWidth)/2) +"px";
+        randomCircle(tagDiv.getElementsByTagName("canvas")[0])
         locatedCount++;
     }
+
 }
 
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
+
+
+function randomCircle(canvas) {
+    //grain is basically level of detail. higher = finer.
+    var w = canvas.width;
+    var h = canvas.height;
+    var context = canvas.getContext('2d');
+    context.beginPath();
+    context.arc(w/2, h/2, w/2, 0, 2 * Math.PI, false);
+    context.fillStyle = getDarkColor()
+    context.fill();
+}
+
+function getDarkColor() {
+    var h = rand(1, 360);
+    var s = rand(0, 100);
+    var l = rand(0, 100);
+    return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+}
+function rand(min, max) {
+    return min + Math.random() * (max - min);
+}
+
