@@ -44,6 +44,8 @@
     <div class="list-group">
         <a class="list-group-item list-group-item-action bg-dark" style="margin-top: 1%"
            th:each="post : ${posts}" th:href="'/post/'+${post.endpoint}">
+            <img th:if="${post.thumbnailEndpoint}!=null" th:src="'/image/'+${post.thumbnailEndpoint}" alt="thumbnail" width="120" height="70">
+            <img th:unless="${post.thumbnailEndpoint}!=null" src="/image/image-not-found.png" alt="thumbnail"  width="120" height="70">
             <h4 class="text-secondary" style="display: inline" th:text="${post.title}"></h4>
             <h5 class="text-secondary" style="display: inline; float: right"
                 th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h5>

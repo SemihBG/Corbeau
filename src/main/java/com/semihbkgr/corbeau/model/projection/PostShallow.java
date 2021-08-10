@@ -13,6 +13,7 @@ public class PostShallow {
     private int subjectId;
     private String endpoint;
     private boolean activated;
+    private String thumbnailEndpoint;
     private String subjectName;
     private String createdBy;
     private String updatedBy;

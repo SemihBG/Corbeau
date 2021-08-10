@@ -14,6 +14,7 @@ public class PostInfo {
     private int id;
     private String title;
     private String endpoint;
+    private String thumbnailEndpoint;
     private boolean activated;
     private String createdBy;
     private String updatedBy;

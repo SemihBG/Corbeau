@@ -34,16 +34,17 @@ CREATE TABLE IF NOT EXISTS db.subjects
 );
 CREATE TABLE IF NOT EXISTS db.posts
 (
-    id         INT PRIMARY KEY AUTO_INCREMENT,
-    title      VARCHAR(64)     NOT NULL,
-    content    LONGTEXT,
-    subject_id INT             NOT NULL,
-    activated  BOOLEAN                  DEFAULT FALSE,
-    endpoint   VARCHAR(64)     NOT NULL UNIQUE,
-    created_by VARCHAR(32),
-    updated_by VARCHAR(32),
-    created_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
-    updated_at BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    id                 INT PRIMARY KEY AUTO_INCREMENT,
+    title              VARCHAR(64)     NOT NULL,
+    content            LONGTEXT,
+    subject_id         INT             NOT NULL,
+    activated          BOOLEAN                  DEFAULT FALSE,
+    endpoint           VARCHAR(64)     NOT NULL UNIQUE,
+    thumbnail_endpoint VARCHAR(64)              DEFAULT NULL,
+    created_by         VARCHAR(32),
+    updated_by         VARCHAR(32),
+    created_at         BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at         BIGINT UNSIGNED NOT NULL DEFAULT 0,
     UNIQUE KEY title_subject (title, subject_id),
     FOREIGN KEY (subject_id) REFERENCES db.subjects (id)
 );
