@@ -22,7 +22,10 @@ public class TagRepositoryImpl implements TagRepository {
                     "WHERE tags_posts_join.post_id=?";
 
     static final String SQL_SELECT_ALL_TAG_DEEP =
-            "SELECT tags.id, tags.name, tags.created_by, tags.updated_by, tags.created_at,tags.updated_at, (SELECT COUNT(*) FROM db.tags_posts_join WHERE post_id=id) as post_count FROM db.tags";
+            "SELECT tags.id, tags.name, tags.created_by, tags.updated_by, " +
+                    "tags.created_at,tags.updated_at, " +
+                    "(SELECT COUNT(*) FROM db.tags_posts_join WHERE tag_id=id) as post_count " +
+                    "FROM db.tags";
 
     private final R2dbcEntityTemplate template;
 

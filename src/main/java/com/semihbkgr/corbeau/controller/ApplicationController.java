@@ -81,13 +81,16 @@ public class ApplicationController {
                             Model model){
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/tag/" + tagName + "?p=" + 1);
-        var postsReactiveData=new ReactiveDataDriverContextVariable(
-                tagService.findByName(tagName)
-                        .flatMapMany(tag-> postService.findAllByTagIdAndActivatedShallow(tag.getId(),true,
-                                PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())))
-        ,1);
-        model.addAttribute("posts",postsReactiveData);
-        return subjectService.findAll()
+        return tagService.findByName(tagName)
+                .doOnNext(tag-> {
+                    model.addAttribute("tag",tag);
+                    var postsReactiveData=new ReactiveDataDriverContextVariable(
+                            postService.findAllByTagIdAndActivatedShallow(tag.getId(), true,
+                                                PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
+                            ,1);
+                    model.addAttribute("posts",postsReactiveData);
+                })
+                .thenMany(subjectService.findAll())
                 .collectList()
                 .map(subjectList -> {
                     model.addAttribute("subjects", subjectList);
