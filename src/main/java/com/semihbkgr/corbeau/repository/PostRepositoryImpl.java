@@ -154,6 +154,9 @@ public class PostRepositoryImpl implements PostRepository {
                     "JOIN subjects ON subjects.id=posts.subject_id " +
                     "WHERE tag_id = ? AND activated = ?";
 
+    static final String SQL_COUNT_BY_POST_ID_AND_ACTIVATED=
+            "SELECT COUNT(*) FROM tags_posts_join JOIN posts ON posts.id=post_id WHERE tag_id=? AND posts.activated=?";
+
     static final BiFunction<Row, RowMetadata, PostShallow> POST_SHALLOW_MAPPER =
             (row, rowMetadata) ->
                     PostShallow.builder()
@@ -343,9 +346,23 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public Mono<Long> countByTagIdAndActivated(int tagId, boolean activated) {
+        return template.getDatabaseClient()
+                .sql(SQL_COUNT_BY_POST_ID_AND_ACTIVATED)
+                .bind(0,tagId)
+                .bind(1,activated)
+                .map((row, rowMetadata) -> {
+                    return row.get(0,Long.class);
+                })
+                .all()
+                .single();
+    }
+
+    @Override
     public Mono<Long> countBySubjectIdAndActivated(int subjectId, boolean activated) {
         return template.count(query(
-                where("subject_id").is(subjectId).and(where("activated").is(activated))), Post.class);
+                where("subject_id").is(subjectId).and(where("activated").is(activated))
+        ), Post.class);
     }
 
     private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException{

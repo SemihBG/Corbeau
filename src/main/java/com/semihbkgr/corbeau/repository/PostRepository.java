@@ -33,6 +33,8 @@ public interface PostRepository {
 
     Mono<Long> countBySubjectId(int subjectId);
 
+    Mono<Long> countByTagIdAndActivated(int tagId, boolean activated);
+
     Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
 
 }
