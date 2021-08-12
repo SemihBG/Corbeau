@@ -110,6 +110,50 @@ public class PostRepositoryImpl implements PostRepository {
                     "posts.created_by,  posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=?";
 
+
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_ORDERED=
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
+                    "posts.activated, posts.thumbnail_endpoint, posts.description, " +
+                    "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
+                    "posts.created_at, posts.updated_at " +
+                    "FROM tags_posts_join " +
+                    "JOIN posts ON posts.id=post_id " +
+                    "JOIN subjects ON subjects.id=posts.subject_id " +
+                    "WHERE tag_id = ? AND activated = ? " +
+                    "ORDER BY %s %s LIMIT ? OFFSET ?";
+
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_UNORDERED=
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
+                    "posts.activated, posts.thumbnail_endpoint, posts.description, " +
+                    "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
+                    "posts.created_at, posts.updated_at " +
+                    "FROM tags_posts_join " +
+                    "JOIN posts ON posts.id=post_id " +
+                    "JOIN subjects ON subjects.id=posts.subject_id " +
+                    "WHERE tag_id = ? AND activated = ? " +
+                    "LIMIT ? OFFSET ?";
+
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_ORDERED=
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
+                    "posts.activated, posts.thumbnail_endpoint, posts.description, " +
+                    "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
+                    "posts.created_at, posts.updated_at " +
+                    "FROM tags_posts_join " +
+                    "JOIN posts ON posts.id=post_id " +
+                    "JOIN subjects ON subjects.id=posts.subject_id " +
+                    "WHERE tag_id = ? AND activated = ? " +
+                    "ORDER BY %s %s ";
+
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_UNORDERED=
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
+                    "posts.activated, posts.thumbnail_endpoint, posts.description, " +
+                    "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
+                    "posts.created_at, posts.updated_at " +
+                    "FROM tags_posts_join " +
+                    "JOIN posts ON posts.id=post_id " +
+                    "JOIN subjects ON subjects.id=posts.subject_id " +
+                    "WHERE tag_id = ? AND activated = ?";
+
     static final BiFunction<Row, RowMetadata, PostShallow> POST_SHALLOW_MAPPER =
             (row, rowMetadata) ->
                     PostShallow.builder()
@@ -200,21 +244,54 @@ public class PostRepositoryImpl implements PostRepository {
                     .bind(0, String.valueOf(activated))
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
-        } else if (pageable.isPaged() && pageable.getSort().isUnsorted())
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED)
+        } else if (pageable.isPaged() && pageable.getSort().isUnsorted()) {
+            ges = template.getDatabaseClient()
+                    .sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED)
                     .bind(0, String.valueOf(activated))
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
-        else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
+        }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
                     .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, String.valueOf(activated));
-        } else
+        } else {
             ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED)
                     .bind(0, String.valueOf(activated));
+        }
+        return ges.map(POST_SHALLOW_MAPPER)
+                .all();
+    }
 
+    @Override
+    public Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId, boolean activated,@NonNull Pageable pageable) {
+        DatabaseClient.GenericExecuteSpec ges;
+        if (pageable.isPaged() && pageable.getSort().isSorted()) {
+            ges=template.getDatabaseClient()
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_ORDERED,pageable.getSort()))
+                    .bind(0,tagId)
+                    .bind(1,activated)
+                    .bind(2, pageable.getPageSize())
+                    .bind(3, pageable.getOffset());
+        } else if (pageable.isPaged() && pageable.getSort().isUnsorted()){
+            ges=template.getDatabaseClient()
+                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_UNORDERED)
+                    .bind(0,tagId)
+                    .bind(1,activated)
+                    .bind(2, pageable.getPageSize())
+                    .bind(3, pageable.getOffset());
+        }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
+            ges=template.getDatabaseClient()
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_ORDERED,pageable.getSort()))
+                    .bind(0,tagId)
+                    .bind(1,activated);
+        }else{
+            ges=template.getDatabaseClient()
+                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_UNORDERED)
+                    .bind(0,tagId)
+                    .bind(1,activated);
+        }
         return ges.map(POST_SHALLOW_MAPPER)
                 .all();
     }
@@ -271,5 +348,12 @@ public class PostRepositoryImpl implements PostRepository {
                 where("subject_id").is(subjectId).and(where("activated").is(activated))), Post.class);
     }
 
+    private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException{
+        var order = sort.stream()
+                .findFirst()
+                .orElseThrow(()->new IllegalArgumentException("Sort parameter has no order"));
+        return String.format(query,order.getProperty(),
+                order.isAscending() ? Sort.Direction.ASC.name() : Sort.Direction.DESC.name());
+    }
 
 }

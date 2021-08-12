@@ -23,6 +23,8 @@ public interface PostRepository {
 
     Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
 
+    Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId,boolean activated,Pageable pageable);
+
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
 
     Flux<PostShallow> searchByActivatedShallow(String s,boolean activated,Pageable pageable);

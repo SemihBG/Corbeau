@@ -63,6 +63,8 @@ CREATE TABLE IF NOT EXISTS db.tags_posts_join
 (
     tag_id  INT NOT NULL,
     post_id INT NOT NULL,
+    FOREIGN KEY (tag_id) REFERENCES db.tags(id),
+    FOREIGN KEY (post_id) REFERENCES db.posts(id),
     UNIQUE KEY tag_post (tag_id, post_id)
 );
 CREATE TABLE IF NOT EXISTS db.images
@@ -231,6 +233,11 @@ VALUES (1, 'tag1'),
        (3, 'tag3');
 
 INSERT INTO db.tags_posts_join
-VALUES (50, 1),
-       (50, 2);
+VALUES (1,50),
+       (2,50),
+       (1,1),
+       (1,2),
+       (1,3),
+       (1,4),
+       (1,5);
 

@@ -75,6 +75,26 @@ public class ApplicationController {
                 });
     }
 
+    @GetMapping("/tag/{tag_name}")
+    public Mono<String> tag(@PathVariable("tag_name")String tagName,
+                            @RequestParam(value = "p",required = false,defaultValue = "1") String  pageStr,
+                            Model model){
+        var index = ParameterUtils.parsePageToIndex(pageStr);
+        if (index == -1) return Mono.just("redirect:/tag/" + tagName + "?p=" + 1);
+        var postsReactiveData=new ReactiveDataDriverContextVariable(
+                tagService.findByName(tagName)
+                        .flatMapMany(tag-> postService.findAllByTagIdAndActivatedShallow(tag.getId(),true,
+                                PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())))
+        ,1);
+        model.addAttribute("posts",postsReactiveData);
+        return subjectService.findAll()
+                .collectList()
+                .map(subjectList -> {
+                    model.addAttribute("subjects", subjectList);
+                    return "tag";
+                });
+    }
+
     @GetMapping("/post/{endpoint}")
     public Mono<String> post(@PathVariable("endpoint") String endpoint, final Model model) {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);

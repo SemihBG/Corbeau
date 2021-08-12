@@ -20,6 +20,8 @@ public interface PostService {
 
     Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
 
+    Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId,boolean activated,Pageable pageable)throws IllegalValueException ;
+
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable) throws IllegalValueException ;
 
     Mono<Long> count();

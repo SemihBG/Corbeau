@@ -36,6 +36,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Mono<Tag> findByName(@NonNull String name) {
+        return tagRepository.findByName(name);
+    }
+
+    @Override
     public Flux<Tag> findAll() {
         return tagRepository.findAll();
     }
@@ -43,7 +48,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Flux<Tag> findAllByPostId(int postId) throws IllegalValueException{
         if (postId <= 0)
-            throw new IllegalValueException("postId must be positive value", TagRepository.JOIN_TABLE_NAME, "post_id", postId);
+            throw new IllegalValueException("postId must be positive value", TagRepository.TABLE_NAME, "post_id", postId);
         return tagRepository.findAllByPostId(postId);
     }
 

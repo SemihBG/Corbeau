@@ -42,6 +42,11 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
+    public Mono<Tag> findByName(@NonNull String name) {
+        return template.selectOne(Query.query(Criteria.where("name").is(name)),Tag.class);
+    }
+
+    @Override
     public Flux<Tag> findAll() {
         return template.select(Query.query(Criteria.empty()), Tag.class);
     }

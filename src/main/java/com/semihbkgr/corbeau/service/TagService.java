@@ -12,6 +12,8 @@ public interface TagService {
 
     Mono<Tag> update(int id, Tag tag) throws IllegalValueException;
 
+    Mono<Tag> findByName(String name);
+
     Flux<Tag> findAll();
 
     Flux<Tag> findAllByPostId(int postId) throws IllegalValueException;
