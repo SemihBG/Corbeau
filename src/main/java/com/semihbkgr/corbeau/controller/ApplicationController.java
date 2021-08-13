@@ -2,6 +2,7 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.projection.combine.PostInfoTagListCombine;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
@@ -52,12 +53,16 @@ public class ApplicationController {
         return subjectService.findByNameDeep(subjectName)
                 .flatMap(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
-                    var postsInfoReactiveData = new ReactiveDataDriverContextVariable(
+                    var postsInfoTagListCombinesReactiveData = new ReactiveDataDriverContextVariable(
                             postService.findAllActivatedBySubjectIdInfo(subjectDeep.getId(),
-                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())),
+                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
+                            .flatMap(postInfo ->
+                                    tagService.findAllByPostId(postInfo.getId())
+                                    .collectList()
+                                    .map(list->new PostInfoTagListCombine(postInfo,list))),
                             1
                     );
-                    model.addAttribute("posts", postsInfoReactiveData);
+                    model.addAttribute("postTagCombines", postsInfoTagListCombinesReactiveData);
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
