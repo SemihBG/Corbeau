@@ -10,6 +10,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+    </style>
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -45,16 +50,18 @@
         <a class="list-group-item list-group-item-action bg-dark" style="margin-top: 1%"
            th:each="post : ${posts}" th:href="'/post/'+${post.endpoint}">
             <div class="row">
-                <div class="col-sm-2" >
-                    <img th:if="${post.thumbnailEndpoint}!=null" th:src="'/image/'+${post.thumbnailEndpoint}" alt="thumbnail" width="120" height="70">
-                    <img th:unless="${post.thumbnailEndpoint}!=null" src="/image/image-not-found.png" alt="thumbnail"  width="150" height="100">
+                <div class="col-sm-2">
+                    <img alt="thumbnail" height="70"
+                         th:if="${post.thumbnailEndpoint}!=null" th:src="'/image/'+${post.thumbnailEndpoint}" width="120">
+                    <img alt="thumbnail" height="100" src="/image/image-not-found.png"
+                         th:unless="${post.thumbnailEndpoint}!=null" width="150">
                 </div>
                 <div class="col-sm-10">
                     <h4 class="text-secondary" style="display: inline; float: right"
-                                          th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h4>
+                        th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h4>
                     <h3 class="text-secondary" style="display: inline" th:text="${post.title}"></h3>
-                    <p th:if="${post.description}!=null" th:text="${post.description}" style="font-size: larger"></p>
-                    <p th:unless="${post.description}!=null" th:text="'(no description)'" style="font-size: larger"></p>
+                    <p style="font-size: larger" th:if="${post.description}!=null" th:text="${post.description}"></p>
+                    <p style="font-size: larger" th:text="'(no description)'" th:unless="${post.description}!=null"></p>
                 </div>
             </div>
         </a>

@@ -61,12 +61,7 @@ public class ApplicationController {
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
-                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
-                    model.addAttribute("count", count);
-                    model.addAttribute("page", index + 1);
-                    model.addAttribute("pageCount", pageCount);
-                    model.addAttribute("hasPrevious", index > 0);
-                    model.addAttribute("hasNext", index + 1 < pageCount);
+                    addPabeAttributedToModel(model,count,index, POST_PAGE_SIZE);
                     return subjectService.findAll().collectList();
                 })
                 .map(subjectList -> {
@@ -84,14 +79,7 @@ public class ApplicationController {
         return tagService.findByNameAndPostActivatedDeep(tagName,true)
                 .doOnNext(tagDeep-> {
                     model.addAttribute("tag",tagDeep);
-                    var count=tagDeep.getPostCount();
-                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
-                    model.addAttribute("count", count);
-                    model.addAttribute("count", count);
-                    model.addAttribute("page", index + 1);
-                    model.addAttribute("pageCount", pageCount);
-                    model.addAttribute("hasPrevious", index > 0);
-                    model.addAttribute("hasNext", index + 1 < pageCount);
+                    addPabeAttributedToModel(model, tagDeep.getPostCount(), index, POST_PAGE_SIZE);
                     var postsReactiveData=new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
@@ -132,6 +120,16 @@ public class ApplicationController {
         var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
         if (s == null) return Mono.just("redirect: /");
         return Mono.just("search");
+    }
+
+    private void addPabeAttributedToModel(Model model,long count,int pageIndex,int pageSize){
+        var pageCount = (int) Math.ceil((double) count / pageSize);
+        model.addAttribute("count", count);
+        model.addAttribute("count", count);
+        model.addAttribute("page", pageIndex + 1);
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("hasPrevious", pageIndex > 0);
+        model.addAttribute("hasNext", pageIndex + 1 < pageCount);
     }
 
 }
