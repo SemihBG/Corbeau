@@ -81,17 +81,23 @@ public class ApplicationController {
                             Model model){
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/tag/" + tagName + "?p=" + 1);
-        return tagService.findByName(tagName)
-                .flatMap(tag-> {
-                    model.addAttribute("tag",tag);
+        return tagService.findByNameAndPostActivatedDeep(tagName,true)
+                .doOnNext(tagDeep-> {
+                    model.addAttribute("tag",tagDeep);
+                    var count=tagDeep.getPostCount();
+                    var pageCount = (int) Math.ceil((double) count / POST_PAGE_SIZE);
+                    model.addAttribute("count", count);
+                    model.addAttribute("count", count);
+                    model.addAttribute("page", index + 1);
+                    model.addAttribute("pageCount", pageCount);
+                    model.addAttribute("hasPrevious", index > 0);
+                    model.addAttribute("hasNext", index + 1 < pageCount);
                     var postsReactiveData=new ReactiveDataDriverContextVariable(
-                            postService.findAllByTagIdAndActivatedShallow(tag.getId(), true,
+                            postService.findAllByTagIdAndActivatedShallow(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
                             ,1);
                     model.addAttribute("posts",postsReactiveData);
-                    return postService.countBySubjectIdAndActivated(tag.getId(),true);
                 })
-                .doOnNext(count-> model.addAttribute("count",count))
                 .thenMany(subjectService.findAll())
                 .collectList()
                 .map(subjectList -> {
@@ -127,6 +133,5 @@ public class ApplicationController {
         if (s == null) return Mono.just("redirect: /");
         return Mono.just("search");
     }
-
 
 }

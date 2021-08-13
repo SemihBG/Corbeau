@@ -58,6 +58,41 @@
     </a>
   </div>
 </div>
-
+<p class="text-secondary" th:text="'All Images: '+${count}"></p>
+<div class="text-center" style="margin-top: 3%; margin-bottom: 5%" th:if="${count>0}">
+  <!--DoubleLeft-->
+  <a style="text-decoration: none; margin-left: 5px;" th:href="'/tag/'+${tag.name}+'?p=1'"
+     th:if="${hasPrevious}">
+    <i class="fas fa-angle-double-left text-info" style="font-size: 35px"></i>
+  </a>
+  <a href=javascript:void(0) style="text-decoration: none; margin-left: 5px;" th:unless="${hasPrevious}">
+    <i class="fas fa-angle-double-left text-info" style="font-size: 35px; opacity: .5;"></i>
+  </a>
+  <!--Left-->
+  <a style="text-decoration: none;" th:href="'/tag/'+${tag.name}+'?p='+(${page}-1)"
+     th:if="${hasPrevious}">
+    <i class="fas fa-angle-left text-info" style="font-size: 35px"></i>
+  </a>
+  <a href=javascript:void(0) style="text-decoration: none;" th:unless="${hasPrevious}">
+    <i class="fas fa-angle-left text-info" style="font-size: 35px; opacity: .5;"></i>
+  </a>
+  <!--Page-->
+  <p class="text-info" style="font-size: 35px; display: inline" th:text="${page}+'/'+${pageCount}"></p>
+  <!--Right-->
+  <a style="text-decoration: none;" th:href="'/tag/'+${tag.name}+'?p='+(${page}+1)" th:if="${hasNext}">
+    <i class="fas fa-angle-right text-info" style="font-size: 35px"></i>
+  </a>
+  <a href=javascript:void(0) style="text-decoration: none;" th:unless="${hasNext}">
+    <i class="fas fa-angle-right text-info" style="font-size: 35px; opacity: .5;"></i>
+  </a>
+  <!--DoubleRight-->
+  <a style="text-decoration: none; margin-right: 5px" th:href="'/tag/'+${tag.name}+'?p='+${pageCount}"
+     th:if="${hasNext}">
+    <i class="fas fa-angle-double-right text-info" style="font-size: 35px"></i>
+  </a>
+  <a href=javascript:void(0) style="text-decoration: none; margin-right: 5px" th:unless="${hasNext}">
+    <i class="fas fa-angle-double-right text-info" style="font-size: 35px; opacity: .5;"></i>
+  </a>
+</div>
 </body>
 </html>

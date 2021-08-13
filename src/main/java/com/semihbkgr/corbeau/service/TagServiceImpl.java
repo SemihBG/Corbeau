@@ -41,6 +41,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Mono<TagDeep> findByNameAndPostActivatedDeep(@NonNull String name, boolean activated) {
+        return tagRepository.findByNameAndPostActivatedDeep(name,activated);
+    }
+
+    @Override
     public Flux<Tag> findAllByPostId(int postId) throws IllegalValueException{
         if (postId <= 0)
             throw new IllegalValueException("postId must be positive value", TagRepository.TABLE_NAME, "post_id", postId);

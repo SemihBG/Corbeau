@@ -13,6 +13,8 @@ public interface TagRepository {
 
     Mono<Tag> update(Tag tag);
 
+    Mono<TagDeep> findByNameAndPostActivatedDeep(String name, boolean activated);
+
     Mono<Tag> findById(int id);
 
     Mono<Tag> findByName(String name);

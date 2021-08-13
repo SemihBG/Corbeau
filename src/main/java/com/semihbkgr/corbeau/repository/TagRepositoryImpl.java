@@ -40,6 +40,15 @@ public class TagRepositoryImpl implements TagRepository {
                     "AND activated = ?) as post_count " +
                     "FROM tags";
 
+    static final String SQL_SELECT_TAG_BY_NAME_AND_POST_ACTIVATED_DEEP =
+            "SELECT tags.id,tags.name,tags.created_by,tags.updated_by, " +
+                    "tags.created_at, tags.updated_at, " +
+                    "(SELECT COUNT(*) FROM tags_posts_join " +
+                    "JOIN posts ON posts.id = post_id " +
+                    "WHERE tag_id = tags.id " +
+                    "AND activated = ?) as post_count " +
+                    "FROM tags WHERE name=?";
+
     static final BiFunction<Row, RowMetadata, TagDeep> TAG_DEEP_MAPPER = (row, rowMetadata) ->
             TagDeep.builder()
                     .id(row.get("id", Integer.class))
@@ -61,6 +70,17 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Mono<Tag> update(Tag tag) {
         return template.update(tag);
+    }
+
+    @Override
+    public Mono<TagDeep> findByNameAndPostActivatedDeep(String name, boolean activated) {
+        return template.getDatabaseClient()
+                .sql(SQL_SELECT_TAG_BY_NAME_AND_POST_ACTIVATED_DEEP)
+                .bind(0,activated)
+                .bind(1,name)
+                .map(TAG_DEEP_MAPPER)
+                .all()
+                .single();
     }
 
     @Override
@@ -93,7 +113,6 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public Flux<TagDeep> findAllDeep() {
-
         return template.getDatabaseClient()
                 .sql(SQL_SELECT_ALL_TAG_DEEP)
                 .map(TAG_DEEP_MAPPER)

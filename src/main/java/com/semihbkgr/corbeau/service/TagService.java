@@ -14,6 +14,8 @@ public interface TagService {
 
     Mono<Tag> findByName(String name);
 
+    Mono<TagDeep> findByNameAndPostActivatedDeep(String name, boolean activated);
+
     Flux<Tag> findAllByPostId(int postId) throws IllegalValueException;
 
     Flux<TagDeep> findAllDeep();
