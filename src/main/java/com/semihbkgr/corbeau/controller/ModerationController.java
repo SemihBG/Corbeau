@@ -132,7 +132,7 @@ public class ModerationController {
     public Mono<String> post(final Model model, @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr) {
         int index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/moderation/post?p=1");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllShallow(PageRequest.of(index, POST_COUNT).withSort(Sort.by("updated_at").descending())), 1);
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.findAllDeep(PageRequest.of(index, POST_COUNT).withSort(Sort.by("updated_at").descending())), 1);
         model.addAttribute("posts", postsReactiveData);
         return postService.count()
                 .flatMap(count -> {

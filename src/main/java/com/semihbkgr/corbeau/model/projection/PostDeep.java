@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PostShallow {
+public class PostDeep {
 
     private int id;
     private String title;

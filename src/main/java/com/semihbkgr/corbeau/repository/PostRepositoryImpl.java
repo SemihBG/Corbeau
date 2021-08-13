@@ -2,7 +2,7 @@ package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.projection.PostInfo;
-import com.semihbkgr.corbeau.model.projection.PostShallow;
+import com.semihbkgr.corbeau.model.projection.PostDeep;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import lombok.NonNull;
@@ -27,7 +27,7 @@ import static org.springframework.data.relational.core.query.Query.query;
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepository {
 
-    static final String SQL_FIND_ALL_SHALLOW_PAGED_ORDERED =
+    static final String SQL_FIND_ALL_DEEP_PAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
@@ -35,27 +35,27 @@ public class PostRepositoryImpl implements PostRepository {
                     "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_SHALLOW_PAGED_UNORDERED =
+    static final String SQL_FIND_ALL_DEEP_PAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_SHALLOW_UNPAGED_ORDERED =
+    static final String SQL_FIND_ALL_DEEP_UNPAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
                     "ORDER BY %s %s";
 
-    static final String SQL_FIND_ALL_SHALLOW_UNPAGED_UNORDERED =
+    static final String SQL_FIND_ALL_DEEP_UNPAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id ";
 
-    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED =
+    static final String SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
@@ -64,7 +64,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED =
+    static final String SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_UNORDERED =
             "SELECT posts.id, db.posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
@@ -72,7 +72,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "WHERE posts.activated = ?" +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED =
+    static final String SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
@@ -80,7 +80,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "WHERE posts.activated = ?" +
                     "ORDER BY %s %s ";
 
-    static final String SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED =
+    static final String SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
@@ -111,7 +111,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "FROM posts WHERE posts.activated = TRUE AND posts.subject_id=?";
 
 
-    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_ORDERED=
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.activated, posts.thumbnail_endpoint, posts.description, " +
                     "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
@@ -122,7 +122,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "WHERE tag_id = ? AND activated = ? " +
                     "ORDER BY %s %s LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_UNORDERED=
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.activated, posts.thumbnail_endpoint, posts.description, " +
                     "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
@@ -133,7 +133,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "WHERE tag_id = ? AND activated = ? " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_ORDERED=
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_ORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.activated, posts.thumbnail_endpoint, posts.description, " +
                     "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
@@ -144,7 +144,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "WHERE tag_id = ? AND activated = ? " +
                     "ORDER BY %s %s ";
 
-    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_UNORDERED=
+    static final String SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_UNORDERED =
             "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.activated, posts.thumbnail_endpoint, posts.description, " +
                     "subjects.name as subject_name, posts.created_by, posts.updated_by, " +
@@ -157,9 +157,9 @@ public class PostRepositoryImpl implements PostRepository {
     static final String SQL_COUNT_BY_POST_ID_AND_ACTIVATED=
             "SELECT COUNT(*) FROM tags_posts_join JOIN posts ON posts.id=post_id WHERE tag_id=? AND posts.activated=?";
 
-    static final BiFunction<Row, RowMetadata, PostShallow> POST_SHALLOW_MAPPER =
+    static final BiFunction<Row, RowMetadata, PostDeep> POST_DEEP_MAPPER =
             (row, rowMetadata) ->
-                    PostShallow.builder()
+                    PostDeep.builder()
                             .id(row.get("id", Integer.class))
                             .title(row.get("title", String.class))
                             .subjectId(row.get("subject_id", Integer.class))
@@ -211,91 +211,91 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Flux<PostShallow> findAllShallow(@NonNull Pageable pageable) {
+    public Flux<PostDeep> findAllDeep(@NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_SHALLOW_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_DEEP_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, pageable.getPageSize())
                     .bind(1, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted())
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_SHALLOW_PAGED_UNORDERED)
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_DEEP_PAGED_UNORDERED)
                     .bind(0, pageable.getPageSize())
                     .bind(1, pageable.getOffset());
         else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_SHALLOW_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_DEEP_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC));
         } else
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_SHALLOW_UNPAGED_UNORDERED);
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_DEEP_UNPAGED_UNORDERED);
 
-        return ges.map(POST_SHALLOW_MAPPER)
+        return ges.map(POST_DEEP_MAPPER)
                 .all();
     }
 
     @Override
-    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, @NonNull Pageable pageable) {
+    public Flux<PostDeep> findAllByActivatedDeep(boolean activated, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, String.valueOf(activated))
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted()) {
             ges = template.getDatabaseClient()
-                    .sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_PAGED_UNORDERED)
+                    .sql(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_UNORDERED)
                     .bind(0, String.valueOf(activated))
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, String.valueOf(activated));
         } else {
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_SHALLOW_UNPAGED_UNORDERED)
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_UNORDERED)
                     .bind(0, String.valueOf(activated));
         }
-        return ges.map(POST_SHALLOW_MAPPER)
+        return ges.map(POST_DEEP_MAPPER)
                 .all();
     }
 
     @Override
-    public Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId, boolean activated,@NonNull Pageable pageable) {
+    public Flux<PostDeep> findAllByTagIdAndActivatedDeep(int tagId, boolean activated, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             ges=template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_ORDERED,pageable.getSort()))
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_ORDERED,pageable.getSort()))
                     .bind(0,tagId)
                     .bind(1,activated)
                     .bind(2, pageable.getPageSize())
                     .bind(3, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted()){
             ges=template.getDatabaseClient()
-                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_PAGED_UNORDERED)
+                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_UNORDERED)
                     .bind(0,tagId)
                     .bind(1,activated)
                     .bind(2, pageable.getPageSize())
                     .bind(3, pageable.getOffset());
         }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             ges=template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_ORDERED,pageable.getSort()))
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_ORDERED,pageable.getSort()))
                     .bind(0,tagId)
                     .bind(1,activated);
         }else{
             ges=template.getDatabaseClient()
-                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_SHALLOW_UNPAGED_UNORDERED)
+                    .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_UNORDERED)
                     .bind(0,tagId)
                     .bind(1,activated);
         }
-        return ges.map(POST_SHALLOW_MAPPER)
+        return ges.map(POST_DEEP_MAPPER)
                 .all();
     }
 
@@ -330,7 +330,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Flux<PostShallow> searchByActivatedShallow(String s, boolean activated, Pageable pageable) {
+    public Flux<PostDeep> searchByActivatedDeep(String s, boolean activated, Pageable pageable) {
         return null;
     }
 

@@ -2,7 +2,7 @@ package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.projection.PostInfo;
-import com.semihbkgr.corbeau.model.projection.PostShallow;
+import com.semihbkgr.corbeau.model.projection.PostDeep;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,15 +19,15 @@ public interface PostRepository {
 
     Mono<Post> findByEndpoint(String endpoint);
 
-    Flux<PostShallow> findAllShallow(Pageable pageable);
+    Flux<PostDeep> findAllDeep(Pageable pageable);
 
-    Flux<PostShallow> findAllByActivatedShallow(boolean activated,Pageable pageable);
+    Flux<PostDeep> findAllByActivatedDeep(boolean activated, Pageable pageable);
 
-    Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId,boolean activated,Pageable pageable);
+    Flux<PostDeep> findAllByTagIdAndActivatedDeep(int tagId, boolean activated, Pageable pageable);
 
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable);
 
-    Flux<PostShallow> searchByActivatedShallow(String s,boolean activated,Pageable pageable);
+    Flux<PostDeep> searchByActivatedDeep(String s, boolean activated, Pageable pageable);
 
     Mono<Long> count();
 

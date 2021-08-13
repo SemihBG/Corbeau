@@ -3,7 +3,7 @@ package com.semihbkgr.corbeau.service;
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.projection.PostInfo;
-import com.semihbkgr.corbeau.model.projection.PostShallow;
+import com.semihbkgr.corbeau.model.projection.PostDeep;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import com.semihbkgr.corbeau.repository.TagRepository;
 import lombok.NonNull;
@@ -49,20 +49,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Flux<PostShallow> findAllShallow(@NonNull Pageable pageable) {
-        return postRepository.findAllShallow(pageable);
+    public Flux<PostDeep> findAllDeep(@NonNull Pageable pageable) {
+        return postRepository.findAllDeep(pageable);
     }
 
     @Override
-    public Flux<PostShallow> findAllByActivatedShallow(boolean activated, @NonNull Pageable pageable) {
-        return postRepository.findAllByActivatedShallow(activated, pageable);
+    public Flux<PostDeep> findAllByActivatedDeep(boolean activated, @NonNull Pageable pageable) {
+        return postRepository.findAllByActivatedDeep(activated, pageable);
     }
 
     @Override
-    public Flux<PostShallow> findAllByTagIdAndActivatedShallow(int tagId, boolean activated, @NonNull Pageable pageable) throws IllegalValueException {
+    public Flux<PostDeep> findAllByTagIdAndActivatedDeep(int tagId, boolean activated, @NonNull Pageable pageable) throws IllegalValueException {
         if (tagId <= 0)
             throw new IllegalValueException("tag_id must be positive value", TagRepository.TABLE_NAME, "id", tagId);
-        return postRepository.findAllByTagIdAndActivatedShallow(tagId, activated, pageable);
+        return postRepository.findAllByTagIdAndActivatedDeep(tagId, activated, pageable);
     }
 
     @Override

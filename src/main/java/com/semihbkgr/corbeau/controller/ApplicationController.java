@@ -93,7 +93,7 @@ public class ApplicationController {
                     model.addAttribute("hasPrevious", index > 0);
                     model.addAttribute("hasNext", index + 1 < pageCount);
                     var postsReactiveData=new ReactiveDataDriverContextVariable(
-                            postService.findAllByTagIdAndActivatedShallow(tagDeep.getId(), true,
+                            postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
                             ,1);
                     model.addAttribute("posts",postsReactiveData);
