@@ -60,7 +60,7 @@
                     <h4 class="text-secondary" style="display: inline; float: right"
                         th:text="${#dates.format(postTagCombine.post.updatedAt, 'dd-MM-yyyy')}"></h4>
                     <h3 class="text-secondary" style="display: inline" th:text="${postTagCombine.post.title}"></h3>
-                    <h4 class="text-secondary" style="display: inline" th:text="${postTagCombine.post.title}"></h4>
+                    <h4 class="text-secondary" style="display: inline" th:each="tag:${postTagCombine.tags}" th:text="${tag.name}"></h4>
                     <p style="font-size: larger" th:if="${postTagCombine.post.description}!=null" th:text="${postTagCombine.post.description}"></p>
                     <p style="font-size: larger" th:text="'(no description)'" th:unless="${postTagCombine.post.description}!=null"></p>
                 </div>
