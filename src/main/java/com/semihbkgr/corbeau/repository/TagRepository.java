@@ -23,6 +23,8 @@ public interface TagRepository {
 
     Flux<TagDeep> findAllDeep();
 
+    Flux<TagDeep> findAllByActivatedDeep(boolean activated);
+
     Mono<Integer> deleteById(int id);
 
 }

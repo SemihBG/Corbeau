@@ -41,11 +41,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Flux<Tag> findAll() {
-        return tagRepository.findAll();
-    }
-
-    @Override
     public Flux<Tag> findAllByPostId(int postId) throws IllegalValueException{
         if (postId <= 0)
             throw new IllegalValueException("postId must be positive value", TagRepository.TABLE_NAME, "post_id", postId);
@@ -55,6 +50,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public Flux<TagDeep> findAllDeep() {
         return tagRepository.findAllDeep();
+    }
+
+    @Override
+    public Flux<TagDeep> findAllByActivatedDeep(boolean activated) {
+        return tagRepository.findAllByActivatedDeep(activated);
     }
 
     @Override

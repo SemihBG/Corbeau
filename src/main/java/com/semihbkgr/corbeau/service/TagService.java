@@ -14,11 +14,11 @@ public interface TagService {
 
     Mono<Tag> findByName(String name);
 
-    Flux<Tag> findAll();
-
     Flux<Tag> findAllByPostId(int postId) throws IllegalValueException;
 
     Flux<TagDeep> findAllDeep();
+
+    Flux<TagDeep> findAllByActivatedDeep(boolean activated);
 
     Mono<Integer> deleteById(int id) throws IllegalValueException;
 

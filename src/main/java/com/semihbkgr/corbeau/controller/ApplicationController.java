@@ -33,7 +33,7 @@ public class ApplicationController {
 
     @GetMapping
     public Mono<String> menu(final Model model) {
-        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllDeep(), 1);
+        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllByActivatedDeep(true), 1);
         model.addAttribute("tags", tagsReactiveData);
         return subjectService.findAll()
                 .collectList()
