@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
-@SuppressWarnings("DuplicatedCode")
+
 @Controller
 @RequiredArgsConstructor
 public class ApplicationController {
@@ -35,9 +35,23 @@ public class ApplicationController {
 
     @GetMapping
     public Mono<String> menu(final Model model) {
-        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllByActivatedDeep(true), 1);
-        model.addAttribute("tags", tagsReactiveData);
-        return subjectService.findAll()
+        var postDeepTagListCombinationsReactiveData=new ReactiveDataDriverContextVariable(
+                postService.findAllByActivatedDeep(
+                        true,
+                        PageRequest.of(0, POST_PAGE_SIZE, Sort.by("updated_at").descending())
+                        )
+                        .flatMapSequential(postDeep->
+                                tagService.findAllByPostId(postDeep.getId())
+                                        .collectList()
+                                        .map(list->new PostDeepTagList(postDeep,list)))
+                , 1);
+        model.addAttribute("postDeepTagListCombinations",postDeepTagListCombinationsReactiveData);
+        return tagService.findAllByActivatedDeep(true)
+                .collectList()
+                .flatMapMany(tagDeepList->{
+                    model.addAttribute("tags",tagDeepList);
+                    return subjectService.findAll();
+                })
                 .collectList()
                 .map(subjectList -> {
                     model.addAttribute("subjects", subjectList);

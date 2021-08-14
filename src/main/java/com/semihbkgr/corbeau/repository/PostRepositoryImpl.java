@@ -60,7 +60,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
-                    "WHERE posts.activated = ?" +
+                    "WHERE posts.activated = ? " +
                     "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
@@ -250,11 +250,9 @@ public class PostRepositoryImpl implements PostRepository {
     public Flux<PostDeep> findAllByActivatedDeep(boolean activated, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
-            var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
-                            Sort.Direction.ASC : Sort.Direction.DESC))
-                    .bind(0, String.valueOf(activated))
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED,pageable.getSort()))
+                    .bind(0, activated)
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted()) {
@@ -264,11 +262,9 @@ public class PostRepositoryImpl implements PostRepository {
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
         } else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
-            var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
-                            Sort.Direction.ASC : Sort.Direction.DESC))
-                    .bind(0, String.valueOf(activated));
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED,pageable.getSort()))
+                    .bind(0, activated);
         } else {
             ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_UNORDERED)
                     .bind(0, String.valueOf(activated));
