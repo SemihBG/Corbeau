@@ -126,9 +126,11 @@ public class ApplicationController {
     }
 
     @GetMapping("/search")
-    public Mono<String> search(@RequestParam(value = "s", required = false) String s) {
-        var subjectsReactiveData = new ReactiveDataDriverContextVariable(subjectService.findAll(), 1);
+    public Mono<String> search(@RequestParam(value = "s", required = false) String s,
+                               Model model) {
         if (s == null) return Mono.just("redirect: /");
+        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.searchByTitleAndActivatedDeep(s,true), 1);
+        model.addAttribute("posts",postsReactiveData);
         return Mono.just("search");
     }
 

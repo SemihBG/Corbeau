@@ -1,8 +1,8 @@
 package com.semihbkgr.corbeau.repository;
 
 import com.semihbkgr.corbeau.model.Post;
-import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.model.projection.PostDeep;
+import com.semihbkgr.corbeau.model.projection.PostInfo;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import lombok.NonNull;
@@ -154,7 +154,17 @@ public class PostRepositoryImpl implements PostRepository {
                     "JOIN subjects ON subjects.id=posts.subject_id " +
                     "WHERE tag_id = ? AND activated = ?";
 
-    static final String SQL_COUNT_BY_POST_ID_AND_ACTIVATED=
+    static final String SQL_SEARCH_BY_TITLE_AND_ACTIVATED_DEEP =
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
+                    "posts.thumbnail_endpoint, posts.description, " +
+                    "subjects.name as subject_name, " +
+                    "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
+                    "FROM db.posts " +
+                    "JOIN subjects ON subjects.id=subject_id " +
+                    "WHERE activated=? AND MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE)>0.1";
+
+
+    static final String SQL_COUNT_BY_POST_ID_AND_ACTIVATED =
             "SELECT COUNT(*) FROM tags_posts_join JOIN posts ON posts.id=post_id WHERE tag_id=? AND posts.activated=?";
 
     static final BiFunction<Row, RowMetadata, PostDeep> POST_DEEP_MAPPER =
@@ -253,7 +263,7 @@ public class PostRepositoryImpl implements PostRepository {
                     .bind(0, String.valueOf(activated))
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
-        }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
+        } else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
                     .sql(String.format(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
@@ -271,29 +281,29 @@ public class PostRepositoryImpl implements PostRepository {
     public Flux<PostDeep> findAllByTagIdAndActivatedDeep(int tagId, boolean activated, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
-            ges=template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_ORDERED,pageable.getSort()))
-                    .bind(0,tagId)
-                    .bind(1,activated)
+            ges = template.getDatabaseClient()
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_ORDERED, pageable.getSort()))
+                    .bind(0, tagId)
+                    .bind(1, activated)
                     .bind(2, pageable.getPageSize())
                     .bind(3, pageable.getOffset());
-        } else if (pageable.isPaged() && pageable.getSort().isUnsorted()){
-            ges=template.getDatabaseClient()
+        } else if (pageable.isPaged() && pageable.getSort().isUnsorted()) {
+            ges = template.getDatabaseClient()
                     .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_PAGED_UNORDERED)
-                    .bind(0,tagId)
-                    .bind(1,activated)
+                    .bind(0, tagId)
+                    .bind(1, activated)
                     .bind(2, pageable.getPageSize())
                     .bind(3, pageable.getOffset());
-        }else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
-            ges=template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_ORDERED,pageable.getSort()))
-                    .bind(0,tagId)
-                    .bind(1,activated);
-        }else{
-            ges=template.getDatabaseClient()
+        } else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
+            ges = template.getDatabaseClient()
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_ORDERED, pageable.getSort()))
+                    .bind(0, tagId)
+                    .bind(1, activated);
+        } else {
+            ges = template.getDatabaseClient()
                     .sql(SQL_FIND_ALL_POST_ID_AND_ACTIVATED_DEEP_UNPAGED_UNORDERED)
-                    .bind(0,tagId)
-                    .bind(1,activated);
+                    .bind(0, tagId)
+                    .bind(1, activated);
         }
         return ges.map(POST_DEEP_MAPPER)
                 .all();
@@ -330,8 +340,13 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Flux<PostDeep> searchByActivatedDeep(String s, boolean activated, Pageable pageable) {
-        return null;
+    public Flux<PostDeep> searchByTitleAndActivatedDeep(@NonNull String title, boolean activated) {
+        return template.getDatabaseClient()
+                .sql(SQL_SEARCH_BY_TITLE_AND_ACTIVATED_DEEP)
+                .bind(0, activated)
+                .bind(1, title)
+                .map(POST_DEEP_MAPPER)
+                .all();
     }
 
 
@@ -349,11 +364,9 @@ public class PostRepositoryImpl implements PostRepository {
     public Mono<Long> countByTagIdAndActivated(int tagId, boolean activated) {
         return template.getDatabaseClient()
                 .sql(SQL_COUNT_BY_POST_ID_AND_ACTIVATED)
-                .bind(0,tagId)
-                .bind(1,activated)
-                .map((row, rowMetadata) -> {
-                    return row.get(0,Long.class);
-                })
+                .bind(0, tagId)
+                .bind(1, activated)
+                .map((row, rowMetadata) -> row.get(0, Long.class))
                 .all()
                 .single();
     }
@@ -365,11 +378,11 @@ public class PostRepositoryImpl implements PostRepository {
         ), Post.class);
     }
 
-    private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException{
+    private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException {
         var order = sort.stream()
                 .findFirst()
-                .orElseThrow(()->new IllegalArgumentException("Sort parameter has no order"));
-        return String.format(query,order.getProperty(),
+                .orElseThrow(() -> new IllegalArgumentException("Sort parameter has no order"));
+        return String.format(query, order.getProperty(),
                 order.isAscending() ? Sort.Direction.ASC.name() : Sort.Direction.DESC.name());
     }
 

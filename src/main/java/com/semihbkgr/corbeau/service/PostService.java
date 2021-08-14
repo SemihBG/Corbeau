@@ -24,6 +24,8 @@ public interface PostService {
 
     Flux<PostInfo> findAllActivatedBySubjectIdInfo(int subjectId, Pageable pageable) throws IllegalValueException ;
 
+    Flux<PostDeep> searchByTitleAndActivatedDeep(String title,boolean acitavated);
+
     Mono<Long> count();
 
     Mono<Long> countBySubjectId(int subjectId) throws IllegalValueException ;

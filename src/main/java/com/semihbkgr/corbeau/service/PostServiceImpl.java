@@ -2,8 +2,8 @@ package com.semihbkgr.corbeau.service;
 
 import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Post;
-import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.model.projection.PostDeep;
+import com.semihbkgr.corbeau.model.projection.PostInfo;
 import com.semihbkgr.corbeau.repository.PostRepository;
 import com.semihbkgr.corbeau.repository.TagRepository;
 import lombok.NonNull;
@@ -70,6 +70,11 @@ public class PostServiceImpl implements PostService {
         if (subjectId <= 0)
             throw new IllegalValueException("subject_id must be positive value", PostRepository.TABLE_NAME, "subject_id", subjectId);
         return postRepository.findAllActivatedBySubjectIdInfo(subjectId, pageable);
+    }
+
+    @Override
+    public Flux<PostDeep> searchByTitleAndActivatedDeep(@NonNull String title, boolean acitavated) {
+        return postRepository.searchByTitleAndActivatedDeep(title, acitavated);
     }
 
     @Override
