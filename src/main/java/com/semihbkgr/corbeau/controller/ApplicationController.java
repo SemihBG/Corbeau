@@ -57,11 +57,11 @@ public class ApplicationController {
                     var postsInfoTagListCombinesReactiveData = new ReactiveDataDriverContextVariable(
                             postService.findAllActivatedBySubjectIdInfo(subjectDeep.getId(),
                                     PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
-                            .flatMap(postInfo ->
+                            .flatMapSequential(postInfo ->
                                     tagService.findAllByPostId(postInfo.getId())
                                     .collectList()
-                                    .map(list->new PostInfoTagList(postInfo,list))),
-                            1
+                                    .map(list->new PostInfoTagList(postInfo,list))
+                            ), 1
                     );
                     model.addAttribute("postInfoTagListCombinations", postsInfoTagListCombinesReactiveData);
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
@@ -89,11 +89,11 @@ public class ApplicationController {
                     var postsReactiveData=new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
-                            .flatMap(postDeep->
+                            .flatMapSequential(postDeep->
                                     tagService.findAllByPostId(postDeep.getId())
                                     .collectList()
-                                    .map(list->new PostDeepTagList(postDeep,list)))
-                            ,1);
+                                    .map(list->new PostDeepTagList(postDeep,list))
+                            ), 1);
                     model.addAttribute("postDeepTagListCombinations",postsReactiveData);
                 })
                 .thenMany(subjectService.findAll())
