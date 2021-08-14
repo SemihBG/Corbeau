@@ -54,16 +54,17 @@ public class ApplicationController {
         return subjectService.findByNameDeep(subjectName)
                 .flatMap(subjectDeep -> {
                     model.addAttribute("subject", subjectDeep);
-                    var postsInfoTagListCombinesReactiveData = new ReactiveDataDriverContextVariable(
-                            postService.findAllActivatedBySubjectIdInfo(subjectDeep.getId(),
-                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
-                            .flatMapSequential(postInfo ->
+                    var postsInfoTagListCombinationsReactiveData = new ReactiveDataDriverContextVariable(
+                            postService.findAllActivatedBySubjectIdInfo(
+                                    subjectDeep.getId(),
+                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())
+                            ).flatMapSequential(postInfo ->
                                     tagService.findAllByPostId(postInfo.getId())
                                     .collectList()
-                                    .map(list->new PostInfoTagList(postInfo,list))
-                            ), 1
+                                    .map(list->new PostInfoTagList(postInfo,list)))
+                            , 1
                     );
-                    model.addAttribute("postInfoTagListCombinations", postsInfoTagListCombinesReactiveData);
+                    model.addAttribute("postInfoTagListCombinations", postsInfoTagListCombinationsReactiveData);
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
@@ -86,15 +87,15 @@ public class ApplicationController {
                 .doOnNext(tagDeep-> {
                     model.addAttribute("tag",tagDeep);
                     addPabeAttributedToModel(model, tagDeep.getPostCount(), index, POST_PAGE_SIZE);
-                    var postsReactiveData=new ReactiveDataDriverContextVariable(
+                    var postDeepTagListCombinationsReactiveData=new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
                             .flatMapSequential(postDeep->
                                     tagService.findAllByPostId(postDeep.getId())
                                     .collectList()
-                                    .map(list->new PostDeepTagList(postDeep,list))
-                            ), 1);
-                    model.addAttribute("postDeepTagListCombinations",postsReactiveData);
+                                    .map(list->new PostDeepTagList(postDeep,list)))
+                            , 1);
+                    model.addAttribute("postDeepTagListCombinations",postDeepTagListCombinationsReactiveData);
                 })
                 .thenMany(subjectService.findAll())
                 .collectList()
@@ -129,9 +130,21 @@ public class ApplicationController {
     public Mono<String> search(@RequestParam(value = "s", required = false) String s,
                                Model model) {
         if (s == null) return Mono.just("redirect: /");
-        var postsReactiveData = new ReactiveDataDriverContextVariable(postService.searchByTitleAndActivatedDeep(s,true), 1);
-        model.addAttribute("posts",postsReactiveData);
-        return Mono.just("search");
+        var postDeepTagListCombinationReactiveData = new ReactiveDataDriverContextVariable(
+                postService.searchByTitleAndActivatedDeep(s,true)
+                .flatMapSequential(postDeep ->
+                    tagService.findAllByPostId(postDeep.getId())
+                            .collectList()
+                            .map(list->new PostDeepTagList(postDeep,list))
+                )
+                , 1);
+        model.addAttribute("postDeepTagListCombinations",postDeepTagListCombinationReactiveData);
+        return subjectService.findAll()
+                .collectList()
+                .map(subjectList -> {
+                    model.addAttribute("subjects", subjectList);
+                    return "search";
+                });
     }
 
     private void addPabeAttributedToModel(Model model,long count,int pageIndex,int pageSize){
