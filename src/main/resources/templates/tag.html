@@ -45,21 +45,22 @@
     <h2 class="text-info text-center" th:text="${tag.name}"></h2>
     <div class="list-group">
         <a class="list-group-item list-group-item-action bg-dark" style="margin-top: 1%"
-           th:each="post : ${posts}" th:href="'/post/'+${post.endpoint}">
+           th:each="postTagCombination : ${postDeepTagListCombinations}" th:href="'/post/'+${postTagCombination.post.endpoint}">
             <div class="row">
                 <div class="col-sm-2">
                     <img alt="thumbnail" height="70"
-                         th:if="${post.thumbnailEndpoint}!=null" th:src="'/image/'+${post.thumbnailEndpoint}"
+                         th:if="${postTagCombination.post.thumbnailEndpoint}!=null" th:src="'/image/'+${postTagCombination.post.thumbnailEndpoint}"
                          width="120">
                     <img alt="thumbnail" height="100" src="/image/image-not-found.png"
-                         th:unless="${post.thumbnailEndpoint}!=null" width="150">
+                         th:unless="${postTagCombination.post.thumbnailEndpoint}!=null" width="150">
                 </div>
                 <div class="col-sm-10">
                     <h4 class="text-secondary" style="display: inline; float: right"
-                        th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h4>
-                    <h3 class="text-secondary" style="display: inline" th:text="${post.title}"></h3>
-                    <p style="font-size: larger" th:if="${post.description}!=null" th:text="${post.description}"></p>
-                    <p style="font-size: larger" th:text="'(no description)'" th:unless="${post.description}!=null"></p>
+                        th:text="${#dates.format(postTagCombination.post.updatedAt, 'dd-MM-yyyy')}"></h4>
+                    <h3 class="text-secondary" style="display: inline" th:text="${postTagCombination.post.title}"></h3><br>
+                    <h5 class="text-secondary" style="display: inline" th:each="tag:${postTagCombination.tags}" th:text="${tag.name}"></h5>
+                    <p style="font-size: larger" th:if="${postTagCombination.post.description}!=null" th:text="${postTagCombination.post.description}"></p>
+                    <p style="font-size: larger" th:text="'(no description)'" th:unless="${postTagCombination.post.description}!=null"></p>
                 </div>
             </div>
         </a>

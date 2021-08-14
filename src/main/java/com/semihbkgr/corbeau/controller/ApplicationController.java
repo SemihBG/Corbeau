@@ -2,7 +2,8 @@ package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
-import com.semihbkgr.corbeau.model.projection.combine.PostInfoTagListCombine;
+import com.semihbkgr.corbeau.model.projection.combination.PostDeepTagList;
+import com.semihbkgr.corbeau.model.projection.combination.PostInfoTagList;
 import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
@@ -59,10 +60,10 @@ public class ApplicationController {
                             .flatMap(postInfo ->
                                     tagService.findAllByPostId(postInfo.getId())
                                     .collectList()
-                                    .map(list->new PostInfoTagListCombine(postInfo,list))),
+                                    .map(list->new PostInfoTagList(postInfo,list))),
                             1
                     );
-                    model.addAttribute("postTagCombines", postsInfoTagListCombinesReactiveData);
+                    model.addAttribute("postInfoTagListCombinations", postsInfoTagListCombinesReactiveData);
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
@@ -88,8 +89,12 @@ public class ApplicationController {
                     var postsReactiveData=new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
+                            .flatMap(postDeep->
+                                    tagService.findAllByPostId(postDeep.getId())
+                                    .collectList()
+                                    .map(list->new PostDeepTagList(postDeep,list)))
                             ,1);
-                    model.addAttribute("posts",postsReactiveData);
+                    model.addAttribute("postDeepTagListCombinations",postsReactiveData);
                 })
                 .thenMany(subjectService.findAll())
                 .collectList()

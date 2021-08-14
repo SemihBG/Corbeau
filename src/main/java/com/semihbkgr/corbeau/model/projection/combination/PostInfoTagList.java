@@ -1,7 +1,6 @@
-package com.semihbkgr.corbeau.model.projection.combine;
+package com.semihbkgr.corbeau.model.projection.combination;
 
 import com.semihbkgr.corbeau.model.Tag;
-import com.semihbkgr.corbeau.model.projection.PostDeep;
 import com.semihbkgr.corbeau.model.projection.PostInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostInfoTagListCombine {
+public class PostInfoTagList {
 
     private PostInfo post;
     private List<Tag> tags;
