@@ -113,7 +113,10 @@ public class ApplicationController {
                 .filter(Post::isActivated)
                 .flatMap(post -> {
                     model.addAttribute("post", post);
-                    return commentService.countByPostId(post.getId());
+                    return tagService.findAllByPostId(post.getId())
+                            .collectList()
+                            .map(tagList->model.addAttribute("tags",tagList))
+                            .then(commentService.countByPostId(post.getId()));
                 })
                 .flatMap(commentCount -> {
                     model.addAttribute("commentCount", commentCount);
