@@ -61,7 +61,7 @@ moderation:
 
 image:
   rootDirectory: images
-  removeIfExists: true
+  removeIfExists: false
   repository:
     local:
       rootDirectory: images

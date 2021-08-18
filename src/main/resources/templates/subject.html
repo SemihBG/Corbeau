@@ -14,6 +14,9 @@
         :root {
             color-scheme: dark;
         }
+        img {
+            border: 2px solid black;
+        }
     </style>
 </head>
 <body style="background: #222D32;">
@@ -51,8 +54,8 @@
            th:each="postTagCombination : ${postInfoTagListCombinations}" th:href="'/post/'+${postTagCombination.post.endpoint}">
             <div class="row">
                 <div class="col-sm-2">
-                    <img alt="thumbnail" height="70"
-                         th:if="${postTagCombination.post.thumbnailEndpoint}!=null" th:src="'/image/'+${postTagCombination.post.thumbnailEndpoint}" width="120">
+                    <img alt="thumbnail" height="100"
+                         th:if="${postTagCombination.post.thumbnailEndpoint}!=null" th:src="'/api/image/content/'+${postTagCombination.post.thumbnailEndpoint}" width="150">
                     <img alt="thumbnail" height="100" src="/image/image-not-found.png"
                          th:unless="${postTagCombination.post.thumbnailEndpoint}!=null" width="150">
                 </div>
