@@ -8,3 +8,7 @@
 - Better search
 - Subject and tag order
 - Delete api
+- Wrong subject, post, tag error handling
+- Unactivated post error handling
+- Moderation menu page
+- Test cases

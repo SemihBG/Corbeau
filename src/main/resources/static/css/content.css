@@ -42,5 +42,6 @@ a.content-fragment{
     color: lightblue;
 }
 img{
+    cursor: zoom-in;
     max-width: 50%;
 }

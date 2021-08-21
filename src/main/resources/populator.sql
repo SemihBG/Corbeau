@@ -94,6 +94,8 @@ CREATE TABLE IF NOT EXISTS db.comments
     FOREIGN KEY (post_id) REFERENCES db.posts (id)
 );
 
+ALTER TABLE db.posts ADD FULLTEXT (title);
+
 INSERT INTO db.subjects (id, name)
 VALUES (1, 'Java'),
        (2, 'Go'),
