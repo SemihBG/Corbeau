@@ -1,53 +1,8 @@
-const SUBJECT_NAME_MIN_LENGTH = 5;
-const SUBJECT_NAME_MAX_LENGTH = 25;
-const SUBJECT_NAME_REGEX = new RegExp(/^[0-9a-z_]+$/i);
-const SUBJECT_UPDATE_ROOT_URL = "/moderation/subject";
-
-let selectedSubjectName;
-
-function isSubjectNameValid(name) {
-    return name.length >= SUBJECT_NAME_MIN_LENGTH &&
-        name.length <= SUBJECT_NAME_MAX_LENGTH &&
-        SUBJECT_NAME_REGEX.test(name);
-}
+const COMMENT_UPDATE_ROOT_URL="/moderation/comment";
 
 function initialize(){
 
-    const saveName = document.getElementById('save-name');
-    const saveButton = document.getElementById('save-button');
-    saveName.addEventListener("input", function () {
-        const isValid = isSubjectNameValid(this.value);
-        if (isValid && saveButton.disabled) {
-            saveButton.classList.remove('disabled');
-            saveName.classList.remove('text-secondary');
-            saveName.classList.add('text-info');
-            saveButton.disabled = false;
-        } else if (!isValid && !saveButton.disabled) {
-            saveButton.classList.add('disabled');
-            saveName.classList.add('text-secondary');
-            saveName.classList.remove('text-info');
-            saveButton.disabled = true;
-        }
-    });
-
-    const updateName = document.getElementById('update-name');
-    const updateButton = document.getElementById('update-button');
-    updateName.addEventListener("input",function (){
-        const isValid = isSubjectNameValid(this.value);
-        if(this.value!==selectedSubjectName && isValid && updateButton.disabled){
-            updateButton.classList.remove('disabled');
-            updateName.classList.remove('text-secondary');
-            updateName.classList.add('text-info');
-            updateButton.disabled = false;
-        }else if (this.value===selectedSubjectName || (!isValid && !updateButton.disabled)) {
-            updateButton.classList.add('disabled');
-            updateName.classList.add('text-secondary');
-            updateName.classList.remove('text-info');
-            updateButton.disabled = true;
-        }
-    });
-
-    let table = document.getElementById("subject-table");
+    let table = document.getElementById("comment-table");
     let rows = table.getElementsByTagName("tr");
     for (i = 0; i < rows.length; i++) {
         let currentRow = table.rows[i];
@@ -55,17 +10,36 @@ function initialize(){
             return function () {
                 let id = row.getElementsByTagName("td")[0].innerHTML;
                 let name = row.getElementsByTagName("td")[1].innerHTML;
-                selectedSubjectName = name;
-                document.getElementById("update").action = SUBJECT_UPDATE_ROOT_URL + "/" + id;
-                document.getElementById("update-current-name").innerHTML = name;
+                let surname = row.getElementsByTagName("td")[2].innerHTML;
+                let email = row.getElementsByTagName("td")[3].innerHTML;
+                let content = row.getElementsByTagName("td")[4].innerHTML;
+                document.getElementById("update").action = COMMENT_UPDATE_ROOT_URL + "/" + id;
                 let updateName = document.getElementById("update-name");
+                let updateSurname = document.getElementById("update-surname");
+                let updateEmail = document.getElementById("update-email");
+                let updateContent = document.getElementById("update-content");
                 updateName.value = name;
                 updateName.placeholder = name;
                 updateName.readOnly = false;
-                updateName.focus();
+                updateSurname.value = surname;
+                updateSurname.placeholder = surname;
+                updateSurname.readOnly = false;
+                updateEmail.value = email;
+                updateEmail.placeholder = email;
+                updateEmail.readOnly = false;
+                updateContent.value = content;
+                updateContent.placeholder = content;
+                updateContent.readOnly = false;
+                updateContent.focus();
+                document.getElementById("update-button").classList.remove("disabled");
+                document.getElementById("update-button").disabled=false;
+                document.getElementById("delete-button").classList.remove("disabled");
+                document.getElementById("delete-button").disabled=false;
             };
         };
         currentRow.onclick = createClickHandler(currentRow);
     }
 
+
 }
+

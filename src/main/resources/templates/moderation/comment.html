@@ -10,13 +10,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
-
+    <script src="/js/comment.js"></script>
     <style>
         :root {
             color-scheme: dark;
         }
     </style>
-
 </head>
 <body style="background: #222D32;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -91,6 +90,7 @@
             <td th:text="${comment.name}"></td>
             <td th:text="${comment.surname}"></td>
             <td th:text="${comment.email}"></td>
+            <td style="display:none;" th:text="${comment.content}"></td>
             <td th:if="${comment.createdAt}>0" th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy')}"></td>
             <td th:unless="${comment.createdAt}>0">None</td>
             <td th:if="${comment.createdAt}!=${comment.updatedAt}"
@@ -99,25 +99,30 @@
         </tr>
         </tbody>
     </table>
-
     <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0; ">
-        <form action="/moderation/subject/{id}" id="update" method="post">
-            <p class="text-light" id="update-current-name"></p>
+        <form action="/moderation/comment/{id}" id="update" method="post">
             <div class="form-group">
-                <input autocomplete=off class="form-control border-info text-secondary" id="update-name"
+                <label for="update-name" class="text-light">Name</label>
+                <input autocomplete=off class="form-control border-info text-light" id="update-name"
                        name="name" style="background-color: transparent;" type="text" readonly>
             </div>
-            <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
-        </form>
-    </div>
-
-    <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0;">
-        <form action="/moderation/subject" id="save" method="post" style="padding: 0; margin: 0">
             <div class="form-group">
-                <input autocomplete=off class="form-control border-info text-secondary" id="save-name"
-                       name="name" style="background-color: transparent;" type="text">
+                <label for="update-name" class="text-light">Surname</label>
+                <input autocomplete=off class="form-control border-info text-light" id="update-surname"
+                       name="name" style="background-color: transparent;" type="text" readonly>
             </div>
-            <button class="btn btn-outline-info disabled" disabled id="save-button" type="submit">Save</button>
+            <div class="form-group">
+                <label for="update-name" class="text-light">Email</label>
+                <input autocomplete=off class="form-control border-info text-light" id="update-email"
+                       name="name" style="background-color: transparent;" type="text" readonly>
+            </div>
+            <div class="form-group">
+                <label for="update-name" class="text-light">Content</label>
+                <textarea class="form-control border-info text-light" id="update-content" name="name"
+                          style="background-color: transparent; min-height: 100px; max-height: 250px;" readonly></textarea>
+            </div>
+            <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
+            <button class="btn btn-outline-info disabled" disabled id="delete-button">Delete</button>
         </form>
     </div>
 </div>
