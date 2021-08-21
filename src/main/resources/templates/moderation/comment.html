@@ -102,27 +102,30 @@
     <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0; ">
         <form action="/moderation/comment/{id}" id="update" method="post">
             <div class="form-group">
-                <label for="update-name" class="text-light">Name</label>
+                <label class="text-light" for="update-name">Name</label>
                 <input autocomplete=off class="form-control border-info text-light" id="update-name"
-                       name="name" style="background-color: transparent;" type="text" readonly>
+                       name="name" readonly style="background-color: transparent;" type="text">
             </div>
             <div class="form-group">
-                <label for="update-name" class="text-light">Surname</label>
+                <label class="text-light" for="update-name">Surname</label>
                 <input autocomplete=off class="form-control border-info text-light" id="update-surname"
-                       name="name" style="background-color: transparent;" type="text" readonly>
+                       name="surname" readonly style="background-color: transparent;" type="text">
             </div>
             <div class="form-group">
-                <label for="update-name" class="text-light">Email</label>
+                <label class="text-light" for="update-name">Email</label>
                 <input autocomplete=off class="form-control border-info text-light" id="update-email"
-                       name="name" style="background-color: transparent;" type="text" readonly>
+                       name="email" readonly style="background-color: transparent;" type="text">
             </div>
             <div class="form-group">
-                <label for="update-name" class="text-light">Content</label>
-                <textarea class="form-control border-info text-light" id="update-content" name="name"
-                          style="background-color: transparent; min-height: 100px; max-height: 250px;" readonly></textarea>
+                <label class="text-light" for="update-name">Content</label>
+                <textarea class="form-control border-info text-light" id="update-content" name="content"
+                          readonly
+                          style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
             </div>
             <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
-            <button class="btn btn-outline-info disabled" disabled id="delete-button">Delete</button>
+        </form>
+        <form action="/moderation/comment/{id}" id="delete" method="post" style="margin-top: 25px">
+            <button class="btn btn-outline-danger disabled" disabled id="delete-button" type="submit">Delete</button>
         </form>
     </div>
 </div>

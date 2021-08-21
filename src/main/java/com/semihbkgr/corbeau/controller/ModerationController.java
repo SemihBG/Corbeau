@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.Tag;
@@ -268,5 +269,16 @@ public class ModerationController {
                 });
     }
 
+    @PostMapping("/comment/{id}")
+    public Mono<String> commentUpdate(@PathVariable("id") int id, @ModelAttribute Comment comment){
+        return commentService.update(id,comment)
+                .thenReturn("redirect:/moderation/comment");
+    }
+
+    @PostMapping("/comment/delete/{id}")
+    public Mono<String> commentUpdate(@PathVariable("id") int id){
+        return commentService.deleteById(id)
+                .thenReturn("redirect:/moderation/comment");
+    }
 
 }

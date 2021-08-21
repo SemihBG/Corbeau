@@ -15,6 +15,8 @@ public interface CommentRepository {
 
     Mono<Comment> update(Comment comment);
 
+    Mono<Comment> findById(int id);
+
     Flux<Comment> findAllByPostId(int postId,Pageable pageable);
 
     Flux<CommentDeep> findAllDeep(Pageable pageable);

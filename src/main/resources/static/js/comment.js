@@ -1,4 +1,5 @@
 const COMMENT_UPDATE_ROOT_URL="/moderation/comment";
+const COMMENT_DELETE_ROOT_URL="/moderation/comment/delete";
 
 function initialize(){
 
@@ -35,11 +36,11 @@ function initialize(){
                 document.getElementById("update-button").disabled=false;
                 document.getElementById("delete-button").classList.remove("disabled");
                 document.getElementById("delete-button").disabled=false;
+                document.getElementById("delete").action=COMMENT_DELETE_ROOT_URL + "/" + id;
             };
         };
         currentRow.onclick = createClickHandler(currentRow);
     }
-
 
 }
 

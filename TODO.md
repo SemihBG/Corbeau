@@ -14,3 +14,6 @@
 - Test cases
 - Review database queries
 - Review projection models
+- Redirect attribute
+- Better delete url
+- Page panel update

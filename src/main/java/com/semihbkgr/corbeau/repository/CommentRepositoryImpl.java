@@ -116,6 +116,11 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public Mono<Comment> findById(int id) {
+        return template.selectOne(Query.query(Criteria.where("id").is(id)),Comment.class);
+    }
+
+    @Override
     public Flux<Comment> findAllByPostId(int postId, @NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {

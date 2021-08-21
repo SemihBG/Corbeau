@@ -4,6 +4,7 @@ import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.projection.CommentDeep;
 import com.semihbkgr.corbeau.repository.CommentRepository;
+import com.semihbkgr.corbeau.repository.SubjectRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,16 @@ public class CommentServiceImpl implements CommentService {
     public Mono<Comment> update(int id, @NonNull Comment comment) throws IllegalValueException {
         if (id <= 0)
             throw new IllegalValueException("post_id must be positive value", CommentRepository.TABLE_NAME, "id", id);
-        return commentRepository.save(comment.withId(id));
+        return commentRepository.findById(id)
+                .switchIfEmpty(Mono.error(() ->
+                        new IllegalValueException("Comment not available by given id", CommentRepository.TABLE_NAME, "id", id)))
+                .flatMap(savedComment->{
+                   savedComment.setName(comment.getName());
+                   savedComment.setSurname(comment.getSurname());
+                   savedComment.setEmail(comment.getEmail());
+                   savedComment.setContent(comment.getContent());
+                   return commentRepository.update(savedComment);
+                });
     }
 
     @Override
