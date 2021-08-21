@@ -64,6 +64,10 @@ const EMAIL_MAX_LENGTH = 64;
 const CONTENT_MIN_LENGTH = 4;
 const CONTENT_MAX_LENGTH = 256;
 
+var loadCount=0;
+var loadComment=0;
+
+
 function sendComment() {
 
     const commentWarn=document.getElementById("comment-warn");
@@ -163,16 +167,19 @@ function sendComment() {
 
 }
 
-function loadComment() {
+function loadComments(count) {
     $.ajax({
         type: "GET",
-        url: "/api/comment/" + document.getElementById("post-id").value,
+        url: "/api/comment/" + document.getElementById("post-id").value+"?p="+(loadCount+1),
         success: function (data) {
             const comments = JSON.parse(JSON.stringify(data));
             comments.forEach((comment) => {
                 addComment(comment, false);
+                loadComment++;
             });
-            document.getElementById("comment-load").style.display = "none";
+            loadCount++;
+            if(count==loadComment)
+                document.getElementById("comment-load").style.display = "none";
         },
         error: function (data) {
             alert(data.responseText);

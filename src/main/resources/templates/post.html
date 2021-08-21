@@ -49,23 +49,32 @@
     <div>
         <h1 class=" text-center text-light" th:text="${post.title}"></h1>
         <ul class="list-inline tag-list text-center">
-            <li class="list-inline-item tag" th:each="tag : ${tags}" >
-                <a class="social-icon text-xs-center text-secondary" th:href="'/tag/'+${tag.name}" style="margin: 0 10px 0 10px; text-decoration:none;">
+            <li class="list-inline-item tag" th:each="tag : ${tags}">
+                <a class="social-icon text-xs-center text-secondary"
+                   style="margin: 0 10px 0 10px; text-decoration:none;"
+                   th:href="'/tag/'+${tag.name}">
                     <i class="fas fa-tag text-secondary" style="font-size: large"></i>
-                    <p th:text="${tag.name}"  style="font-size: xx-large; display: inline"></p>
+                    <p style="font-size: xx-large; display: inline" th:text="${tag.name}"></p>
                 </a>
             </li>
         </ul>
+        <div>
+            <p class="text-right text-secondary" th:if="${post.createdAt}>0"
+               th:text="'Created At: '+${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></p>
+            <p class="text-right text-secondary"
+               th:if="${post.createdAt}!=${post.updatedAt}"
+               th:text="'Updated At: '+${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></p>
+        </div>
         <div class="content-text" th:utext="${post.content}"></div>
     </div>
     <div style="margin-top: 5%;">
         <h2 class="text-light">Comments</h2>
         <div th:id="comment-load" th:if="${commentCount}>0">
             <p class="text-secondary" style="display: inline; font-size: 20px;" th:text="'Count: '+${commentCount}"></p>
-            <button class="btn btn-outline-info" onclick="loadComment()" type="submit">Load</button>
+            <button class="btn btn-outline-info" th:onclick="'loadComments('+${commentCount}+')'" type="submit">Load</button>
         </div>
         <div th:unless="${commentCount}>0">
-            <p style="font-size: x-large" class="text-secondary">There is no comment</p>
+            <p class="text-secondary" style="font-size: x-large">There is no comment</p>
         </div>
         <div class="list-group" id="comment-div">
         </div>
@@ -102,7 +111,7 @@
                 </div>
                 <button class="btn btn-outline-info" type="submit">Send</button>
                 <div>
-                    <p id="comment-warn" class="text-warning" style="display: none"></p>
+                    <p class="text-warning" id="comment-warn" style="display: none"></p>
                 </div>
             </form>
         </div>
