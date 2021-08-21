@@ -37,25 +37,25 @@ logging:
 #remove data populator if not working of data
 #It is because populator sql execution is increasing start up time.
 
-data:
-  populator: populator.sql
-  cleaner: cleaner.sql
-
-moderation:
-  prime:
-    enable: true
-    name: admin
-    password: password
-    role: prime
-  roles: prime,writer,editor,support
+#data:
+#  populator: populator.sql
+#  cleaner: cleaner.sql
+#
+#moderation:
+#  prime:
+#    enable: true
+#    name: admin
+#    password: password
+#    role: prime
+#  roles: prime,writer,editor,support
 
 ###Use this properties if you are not working on data###
 
-#moderation:
-#  prime:
-#    enable: false
-#  roles:
-#    enabled: false
+moderation:
+  prime:
+    enable: false
+  roles:
+    enabled: false
 
 #########################################################
 

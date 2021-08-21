@@ -12,3 +12,5 @@
 - Unactivated post error handling
 - Moderation menu page
 - Test cases
+- Review database queries
+- Review projection models

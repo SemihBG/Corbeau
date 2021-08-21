@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection, HtmlUnknownTarget, HtmlFormInputWithoutLabel, HtmlUnknownTag -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Corbeau Moderator Panel</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
+
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+    </style>
+
+</head>
+<body style="background: #222D32;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
+        Moderator
+        Panel</a>
+    <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navb">
+        <ul class="nav navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/menu">Menu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/subject">Subject</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/tag">Tag</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/post">Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/image">Image</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link activ" href=javascript:void(0)>Comment</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i class="fas fa-user"
+                                                                                style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell" style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden"></form>
+                <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i
+                        class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                    <input autocomplete="off" class="form-control mr-sm-2 text-info border-info"
+                           name="s" placeholder="Search" style="background-color: transparent" type="text">
+                    <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
+                                                                               style="font-size: 18px;"></i></button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container" style="margin-top: 2.5%;">
+    <h2 class="text-center text-light" th:text="Comments"></h2>
+    <table class="table table-dark table-hover" id="comment-table">
+        <thead>
+        <tr>
+            <th style="display:none;">Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th style="display: none">Content</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="comment : ${comments}">
+            <td style="display:none;" th:text="${comment.id}"></td>
+            <td th:text="${comment.name}"></td>
+            <td th:text="${comment.surname}"></td>
+            <td th:text="${comment.email}"></td>
+            <td th:if="${comment.createdAt}>0" th:text="${#dates.format(comment.createdAt, 'dd-MM-yyyy')}"></td>
+            <td th:unless="${comment.createdAt}>0">None</td>
+            <td th:if="${comment.createdAt}!=${comment.updatedAt}"
+                th:text="${#dates.format(comment.updatedAt, 'dd-MM-yyyy')}"></td>
+            <td th:unless="${comment.createdAt}!=${comment.updatedAt}">None</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0; ">
+        <form action="/moderation/subject/{id}" id="update" method="post">
+            <p class="text-light" id="update-current-name"></p>
+            <div class="form-group">
+                <input autocomplete=off class="form-control border-info text-secondary" id="update-name"
+                       name="name" style="background-color: transparent;" type="text" readonly>
+            </div>
+            <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
+        </form>
+    </div>
+
+    <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0;">
+        <form action="/moderation/subject" id="save" method="post" style="padding: 0; margin: 0">
+            <div class="form-group">
+                <input autocomplete=off class="form-control border-info text-secondary" id="save-name"
+                       name="name" style="background-color: transparent;" type="text">
+            </div>
+            <button class="btn btn-outline-info disabled" disabled id="save-button" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+<script>initialize()</script>
+</body>
+</html>

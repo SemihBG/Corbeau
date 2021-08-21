@@ -17,7 +17,7 @@ public interface CommentRepository {
 
     Flux<Comment> findAllByPostId(int postId,Pageable pageable);
 
-    Flux<CommentDeep> findAllCommentDeep(Pageable pageable);
+    Flux<CommentDeep> findAllDeep(Pageable pageable);
 
     Mono<Integer> deleteById(int id);
 

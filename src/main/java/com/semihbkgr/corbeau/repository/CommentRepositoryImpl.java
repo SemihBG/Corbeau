@@ -46,7 +46,7 @@ public class CommentRepositoryImpl implements CommentRepository {
                     "FROM comments " +
                     "WHERE post_id = ? ";
 
-    static final String SQL_FIND_ALL_BY_POST_ID_DEEP_PAGED_ORDERED=
+    static final String SQL_FIND_ALL_DEEP_PAGED_ORDERED =
             "SELECT comments.id, comments.name, comments.surname, comments.email, comments.post_id, " +
                     "comments.content, comments.created_at, comments.updated_at, posts.title as post_title " +
                     "FROM comments " +
@@ -54,21 +54,21 @@ public class CommentRepositoryImpl implements CommentRepository {
                     "ORDER BY %s %s " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_BY_POST_ID_DEEP_PAGED_UNORDERED=
+    static final String SQL_FIND_ALL_DEEP_PAGED_UNORDERED =
             "SELECT comments.id, comments.name, comments.surname, comments.email, comments.post_id, " +
                     "comments.content, comments.created_at, comments.updated_at, posts.title as post_title " +
                     "FROM comments " +
                     "JOIN posts on comments.post_id = posts.id " +
                     "LIMIT ? OFFSET ?";
 
-    static final String SQL_FIND_ALL_BY_POST_ID_DEEP_UNPAGED_ORDERED=
+    static final String SQL_FIND_ALL_DEEP_UNPAGED_ORDERED =
             "SELECT comments.id, comments.name, comments.surname, comments.email, comments.post_id, " +
                     "comments.content, comments.created_at, comments.updated_at, posts.title as post_title " +
                     "FROM comments " +
                     "JOIN posts on comments.post_id = posts.id " +
                     "ORDER BY %s %s";
 
-    static final String SQL_FIND_ALL_BY_POST_ID_DEEP_UNPAGED_UNORDERED=
+    static final String SQL_FIND_ALL_DEEP_UNPAGED_UNORDERED =
             "SELECT comments.id, comments.name, comments.surname, comments.email, comments.post_id, " +
                     "comments.content, comments.created_at, comments.updated_at, posts.title as post_title " +
                     "FROM comments " +
@@ -81,7 +81,7 @@ public class CommentRepositoryImpl implements CommentRepository {
                         .name(row.get("name", String.class))
                         .surname(row.get("surname", String.class))
                         .email(row.get("email", String.class))
-                        .content(row.get("comment", String.class))
+                        .content(row.get("content", String.class))
                         .postId(row.get("post_id", Integer.class))
                         .build();
                 comment.setCreatedAt(row.get("created_at", Long.class));
@@ -96,7 +96,7 @@ public class CommentRepositoryImpl implements CommentRepository {
                         .name(row.get("name", String.class))
                         .surname(row.get("surname", String.class))
                         .email(row.get("email", String.class))
-                        .content(row.get("comment", String.class))
+                        .content(row.get("content", String.class))
                         .postId(row.get("post_id", Integer.class))
                         .createdAt(row.get("created_at", Long.class))
                         .updatedAt(row.get("updated_at", Long.class))
@@ -145,26 +145,26 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public Flux<CommentDeep> findAllCommentDeep(@NonNull Pageable pageable) {
+    public Flux<CommentDeep> findAllDeep(@NonNull Pageable pageable) {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_POST_ID_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_DEEP_PAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC))
                     .bind(0, pageable.getPageSize())
                     .bind(1, pageable.getOffset());
         } else if (pageable.isPaged() && pageable.getSort().isUnsorted())
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_POST_ID_PAGED_UNORDERED)
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_DEEP_PAGED_UNORDERED)
                     .bind(0, pageable.getPageSize())
                     .bind(1, pageable.getOffset());
         else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             var order = pageable.getSort().stream().findFirst().orElseThrow();
             ges = template.getDatabaseClient()
-                    .sql(String.format(SQL_FIND_ALL_BY_POST_ID_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
+                    .sql(String.format(SQL_FIND_ALL_DEEP_UNPAGED_ORDERED, order.getProperty(), order.isAscending() ?
                             Sort.Direction.ASC : Sort.Direction.DESC));
         } else
-            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_POST_ID_UNPAGED_UNORDERED);
+            ges = template.getDatabaseClient().sql(SQL_FIND_ALL_DEEP_UNPAGED_UNORDERED);
         return ges.map(COMMENT_DEEP_MAPPER)
                 .all();
     }

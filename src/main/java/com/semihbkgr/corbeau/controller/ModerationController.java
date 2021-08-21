@@ -28,6 +28,7 @@ public class ModerationController {
 
     static final int POST_COUNT = 5;
     static final int IMAGE_COUNT = 5;
+    static final int COMMENT_COUNT = 10;
 
     private final ModeratorService moderatorService;
     private final RoleService roleService;
@@ -36,6 +37,7 @@ public class ModerationController {
     private final TagService tagService;
     private final ImageContentService imageContentService;
     private final ImageService imageService;
+    private final CommentService commentService;
 
     @GetMapping()
     public String moderation() {
@@ -202,7 +204,8 @@ public class ModerationController {
     }
 
     @GetMapping("/image")
-    public Mono<String> image(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr, final Model model) {
+    public Mono<String> image(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
+                              final Model model) {
         int index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/moderation/image?p=1");
         var imagesReactiveData = new ReactiveDataDriverContextVariable(imageService.findAll(PageRequest.of(
@@ -246,5 +249,24 @@ public class ModerationController {
                 .flatMap(imageService::save)
                 .then(Mono.just("redirect:/moderation/image"));
     }
+
+    @GetMapping("/comment")
+    public Mono<String> comment(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
+                                final Model model){
+        int index = ParameterUtils.parsePageToIndex(pageStr);
+        if (index == -1) return Mono.just("redirect:/moderation/comment?p=1");
+        var commentsReactiveData=new ReactiveDataDriverContextVariable(
+                commentService.findAllDeep(PageRequest.of(index,COMMENT_COUNT,Sort.by("updated_at").descending()))
+                ,1);
+        model.addAttribute("comments",commentsReactiveData);
+        return ReactiveSecurityContextHolder
+                .getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    model.addAttribute("name", authentication.getName());
+                    return "/moderation/comment";
+                });
+    }
+
 
 }

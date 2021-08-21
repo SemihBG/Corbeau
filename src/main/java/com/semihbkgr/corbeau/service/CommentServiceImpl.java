@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Flux<CommentDeep> findAllDeep(@NonNull Pageable pageable) {
-        return commentRepository.findAllCommentDeep(pageable);
+        return commentRepository.findAllDeep(pageable);
     }
 
 
