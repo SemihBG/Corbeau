@@ -14,6 +14,8 @@ import com.semihbkgr.corbeau.service.ImageService;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,8 +43,11 @@ public class ApiController {
     private final NameSurnameOfferComponent nameSurnameOfferComponent;
 
     @GetMapping("/comment/{post_id}")
-    public Flux<Comment> comment(@PathVariable("post_id") int postId) {
-        return commentService.findByPostId(postId);
+    public Flux<Comment> comment(@PathVariable("post_id") int postId,
+                                 @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr) {
+        var index = ParameterUtils.parsePageToIndex(pageStr);
+        if (index == -1) index=1;
+        return commentService.findByPostId(postId, PageRequest.of(index,5, Sort.by("updated_at").descending()));
     }
 
     @PostMapping("/comment")

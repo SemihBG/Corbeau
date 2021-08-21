@@ -19,6 +19,8 @@ public interface CommentRepository {
 
     Flux<CommentDeep> findAllCommentDeep(Pageable pageable);
 
+    Mono<Integer> deleteById(int id);
+
     Mono<Long> countByPostId(int postId);
 
 }

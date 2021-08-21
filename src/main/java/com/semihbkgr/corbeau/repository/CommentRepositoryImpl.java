@@ -170,6 +170,11 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public Mono<Integer> deleteById(int id) {
+        return template.delete(Query.query(Criteria.where("id").is(id)),Comment.class);
+    }
+
+    @Override
     public Mono<Long> countByPostId(int postId) {
         return template.count(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
     }
