@@ -4,17 +4,27 @@
 <head>
     <title>Corbeau Moderator Panel</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/efb096d4dc.js" crossorigin="anonymous"></script>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
+    <style>
+        body {
+            background: #222D32;
+        }
+
+        :root {
+            color-scheme: dark;
+        }
+    </style>
 </head>
-<body style="background: #222D32;">
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator Panel</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
+    <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
+        Moderator Panel</a>
+    <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navb">
@@ -40,19 +50,21 @@
         </ul>
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i  class="fas fa-user" style="font-size:18px;"></i></a>
+                <a class="nav-link" th:href="'/moderation/profile/'+${name}"><i class="fas fa-user"
+                                                                                style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell"  style="font-size:18px;"></i></a>
+                <a class="nav-link" href="/moderation/notification"><i class="fas fa-bell" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <form id="logout" method="post" action="/moderation/logout" style="visibility: hidden"></form>
-                <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
+                <form action="/moderation/logout" id="logout" method="post" style="visibility: hidden"></form>
+                <a class="nav-link " onclick="event.preventDefault();document.getElementById('logout').submit();"><i
+                        class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <form class="form-inline my-2 my-lg-0" action="/search" method="get">
-                    <input class="form-control mr-sm-2 text-info border-info" placeholder="Search"
-                           style="background-color: transparent" type="text" name="s" autocomplete="off">
+                <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                    <input autocomplete="off" class="form-control mr-sm-2 text-info border-info"
+                           name="s" placeholder="Search" style="background-color: transparent" type="text">
                     <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
                                                                                style="font-size: 18px;"></i></button>
                 </form>

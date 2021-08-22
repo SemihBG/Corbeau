@@ -28,12 +28,16 @@
         }
     </script>
     <style>
+        body {
+            background: #222D32;
+        }
+
         :root {
             color-scheme: dark;
         }
     </style>
 </head>
-<body style="background: #222D32;">
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
         Moderator
@@ -90,7 +94,8 @@
     <h2 class="text-center text-info">Post Save</h2>
     <form action="/moderation/post" method="post" style="margin-top: 3%;">
         <div class="form-group">
-            <input class="form-control text-info border-info" id="title" name="title" placeholder="Title" style="background-color: transparent"
+            <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
+                   style="background-color: transparent"
                    type="text">
         </div>
         <div class="form-group">
@@ -116,7 +121,8 @@
         </div>
         <button class="btn btn-outline-info" style="margin-top: 1%" type="submit">Save</button>
     </form>
-    <button class="btn btn-primary" data-target="#tags" data-toggle="collapse" style="margin-top: 25px;margin-bottom: 25px"
+    <button class="btn btn-primary" data-target="#tags" data-toggle="collapse"
+            style="margin-top: 25px;margin-bottom: 25px"
             type="button">Tags
     </button>
     <div class="collapse border border-info" id="tags" style="padding: 20px">

@@ -11,14 +11,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
     <style>
+        body {
+            background: #222D32;
+        }
+
         :root {
             color-scheme: dark;
         }
     </style>
 </head>
-<body style="background: #222D32;">
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand text-info" href="javascript:void(0)" style="text-decoration: none;"><i class="fas fa-crow" style="font-size: 18px;"></i> Moderator
+    <a class="navbar-brand text-info" href="javascript:void(0)" style="text-decoration: none;"><i class="fas fa-crow"
+                                                                                                  style="font-size: 18px;"></i>
+        Moderator
         Panel</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
@@ -58,9 +64,9 @@
                         class="fas fa-sign-out-alt" style="font-size:18px;"></i></a>
             </li>
             <li class="nav-item">
-                <form class="form-inline my-2 my-lg-0" action="/search" method="get">
-                    <input class="form-control mr-sm-2 text-info border-info" placeholder="Search"
-                           style="background-color: transparent" type="text" name="s" autocomplete="off">
+                <form action="/search" class="form-inline my-2 my-lg-0" method="get">
+                    <input autocomplete="off" class="form-control mr-sm-2 text-info border-info"
+                           name="s" placeholder="Search" style="background-color: transparent" type="text">
                     <button class="btn btn-info my-2 my-sm-0" type="button"><i class="fas fa-search"
                                                                                style="font-size: 18px;"></i></button>
                 </form>

@@ -11,15 +11,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/efb096d4dc.js"></script>
     <style>
-        :root {
-            color-scheme: dark;
+        body {
+            background: #222D32;
         }
+
         img {
             border: 1px solid black;
         }
+
+        :root {
+            color-scheme: dark;
+        }
     </style>
 </head>
-<body style="background: #222D32;">
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href="/"><i class="fas fa-crow" style="font-size: 18px;"></i> Corbeau</a>
     <button class="navbar-toggler navbar-toggler-right" data-target="#navb" data-toggle="collapse" type="button">
@@ -45,14 +50,16 @@
     </div>
 </nav>
 <div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%;">
-    <h2 th:text="${param.s}" class="text-info text-center"></h2>
+    <h2 class="text-info text-center" th:text="${param.s}"></h2>
     <div class="list-group">
         <a class="list-group-item list-group-item-action bg-dark" style="margin-top: 1%"
-           th:each="postTagCombination : ${postDeepTagListCombinations}" th:href="'/post/'+${postTagCombination.post.endpoint}">
+           th:each="postTagCombination : ${postDeepTagListCombinations}"
+           th:href="'/post/'+${postTagCombination.post.endpoint}">
             <div class="row">
                 <div class="col-sm-2">
                     <img alt="thumbnail" height="100"
-                         th:if="${postTagCombination.post.thumbnailEndpoint}!=null" th:src="'/api/image/content/'+${postTagCombination.post.thumbnailEndpoint}"
+                         th:if="${postTagCombination.post.thumbnailEndpoint}!=null"
+                         th:src="'/api/image/content/'+${postTagCombination.post.thumbnailEndpoint}"
                          width="150">
                     <img alt="thumbnail" height="100" src="/image/image-not-found.png"
                          th:unless="${postTagCombination.post.thumbnailEndpoint}!=null" width="150">
@@ -60,10 +67,14 @@
                 <div class="col-sm-10">
                     <h4 class="text-secondary" style="display: inline; float: right"
                         th:text="${#dates.format(postTagCombination.post.updatedAt, 'dd-MM-yyyy')}"></h4>
-                    <h3 class="text-secondary" style="display: inline" th:text="${postTagCombination.post.title}"></h3><br>
-                    <h5 class="text-secondary" style="display: inline" th:each="tag:${postTagCombination.tags}" th:text="${tag.name}"></h5>
-                    <p style="font-size: larger" th:if="${postTagCombination.post.description}!=null" th:text="${postTagCombination.post.description}"></p>
-                    <p style="font-size: larger" th:text="'(no description)'" th:unless="${postTagCombination.post.description}!=null"></p>
+                    <h3 class="text-secondary" style="display: inline" th:text="${postTagCombination.post.title}"></h3>
+                    <br>
+                    <h5 class="text-secondary" style="display: inline" th:each="tag:${postTagCombination.tags}"
+                        th:text="${tag.name}"></h5>
+                    <p style="font-size: larger" th:if="${postTagCombination.post.description}!=null"
+                       th:text="${postTagCombination.post.description}"></p>
+                    <p style="font-size: larger" th:text="'(no description)'"
+                       th:unless="${postTagCombination.post.description}!=null"></p>
                 </div>
             </div>
         </a>
