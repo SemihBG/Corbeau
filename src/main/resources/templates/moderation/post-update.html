@@ -37,7 +37,7 @@
 </head>
 <body>
 <script src="/js/prism.js"></script>
-<script>initialize();</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand text-info" href="javascript:void(0)"><i class="fas fa-crow" style="font-size: 18px;"></i>
         Moderator Panel</a>
@@ -91,34 +91,39 @@
 </nav>
 
 <div class="container" style="margin-top: 2.5%; margin-bottom: 2.5%;">
-    <div style="width: 50%">
-        <h2 class="text-center text-light" th:text="${post.title}"></h2>
-        <h4 class="text-light" th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></h4>
-        <h4 class="text-light" th:unless="${post.createdBy}!=${null}">None</h4>
-        <h4 class="text-light" th:if="${post.updatedBy}!=${null}" th:text="${post.updatedBy}"></h4>
-        <h4 class="text-light" th:unless="${post.updatedBy}!=${null}">None</h4>
-        <h4 class="text-light" th:if="${post.createdAt}>0"
-            th:text="${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></h4>
-        <h4 class="text-light" th:unless="${post.createdAt}>0">None</h4>
-        <h4 class="text-light" th:if="${post.createdAt}!=${post.updatedAt}"
-            th:text="${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></h4>
-        <h4 class="text-light" th:unless="${post.createdAt}!=${post.updatedAt}">None</h4>
-        <h4 class="text-light" th:text="${subject.name}"></h4>
-    </div>
     <div>
-        <h2 class="text-info text-center">Update</h2>
-
+        <h2 class="text-info text-center">Post Update</h2>
+        <div>
+            <p class="text-secondary" style="font-size: x-large" th:if="${post.createdBy}!=${null}"
+               th:text="'Created by: '+${post.getCreatedBy()}"></p>
+            <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdBy}!=${null}">Created by:
+                None</p>
+            <p class="text-secondary" style="font-size: x-large" th:if="${post.updatedBy}!=${null}"
+               th:text="'Updated by: '+${post.updatedBy}"></p>
+            <p class="text-secondary" style="font-size: x-large" th:unless="${post.updatedBy}!=${null}">Updated by:
+                None</p>
+            <p class="text-secondary" style="font-size: x-large"
+               th:if="${post.createdAt}>0" th:text="'Created at: '+${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></p>
+            <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdAt}>0">Created at: None</p>
+            <p class="text-secondary" style="font-size: x-large"
+               th:if="${post.createdAt}!=${post.updatedAt}" th:text="'Updated at: '+${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></p>
+            <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdAt}!=${post.updatedAt}">
+                Updated at: None</p>
+        </div>
         <form method="post" th:action="'/moderation/post/'+${post.id}">
             <div class="form-group">
+                <label class="text-info" for="title" style="font-size: 20px;">Title:</label>
                 <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
                        style="background-color: transparent" th:value="${post.title}" type="text">
             </div>
             <div class="form-group">
+                <label class="text-info" for="endpoint" style="font-size: 20px;">Endpoint:</label>
                 <input class="form-control text-info border-info" id="endpoint" name="endpoint"
                        placeholder="Endpoint"
                        style="background-color: transparent" th:value="${post.endpoint}" type="text">
             </div>
             <div class="form-group">
+                <label class="text-info" for="subject" style="font-size: 20px;">Subject:</label>
                 <select class="form-control text-info border-info" id="subjects" name="subjectId"
                         style="background-color: transparent;">
                     <option th:each="s : ${subjects}" th:selected="${s.id==subject.id}" th:text="${s.name}"
@@ -126,6 +131,7 @@
                 </select>
             </div>
             <div class="form-group">
+                <label class="text-info" for="content" style="font-size: 20px;">Content:</label>
                 <textarea class="form-control text-info border-info" id="content" name="content"
                           oninput="auto_grow(this)"
                           style="resize: none;overflow: hidden;min-height: 250px; background-color: transparent">[[${post.content}]]</textarea>
@@ -139,6 +145,50 @@
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
     </div>
+    <div>
+        <button class="btn btn-outline-warning" data-target="#tags" data-toggle="collapse"
+                style="margin-top: 25px;margin-bottom: 25px"
+                type="button">Tags
+        </button>
+        <div class="collapse border border-warning" id="tags" style="padding: 20px">
+            <h2 class="text-center text-warning">Tags</h2>
+            <div>
+                <span class="text-light">&lt;h1 class='content-title-primary'&gt;...&lt;/h1&gt;</span>
+                <h1 class="content-title-primary">Primary Title</h1>
+            </div>
+            <div>
+                <span class="text-light">&lt;h1 class='content-title-secondary'&gt;...&lt;/h1&gt;</span>
+                <h1 class="content-title-secondary">Secondary Title</h1>
+            </div>
+            <div>
+                <span class="text-light">&lt;p class='content-text-emphasized'&gt;...&lt;/p&gt;</span>
+                <p class="content-text-emphasized">Text Emphasized</p>
+            </div>
+            <div>
+                <span class="text-light">&lt;p class='content-text-trivial'&gt;...&lt;/p&gt;</span>
+                <p class="content-text-trivial">Text Trivial</p>
+            </div>
+            <div>
+                <span class="text-light">&lt;p class='content-text-quote'&gt;...&lt;/p&gt;</span>
+                <p class="content-text-quote">Text Quote</p>
+            </div>
+            <div>
+                <span class="text-light">&lt;p class='content-text-warining'&gt;...&lt;/p&gt;</span>
+                <p class="content-text-warning">Text Warning</p>
+            </div>
+            <div>
+                <span class="text-light">&lt;a class='content-link'&gt;...&lt;/a&gt;</span>
+                <a class="content-text-warning">Link</a>
+            </div>
+            <div>
+                <span class="text-light">&lt;a class='content-fragment'&gt;...&lt;/a&gt;</span>
+                <a class="content-text-warning">Fragment</a>
+            </div>
+            <div>
+                <span class="text-light">&lt;img class='content-scalable'/&gt;</span>
+            </div>
+        </div>
+    </div>
     <div style="margin-top: 2%">
         <a href=javascript:void(0) onclick="onReloadCliked(this)"
            style="background-color: transparent; text-decoration: none;"><i class="fas fa-sync text-info"
@@ -149,10 +199,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    auto_grow(document.getElementById('content'));
-</script>
-
+<script>initialize()</script>
 </body>
 </html>

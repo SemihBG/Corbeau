@@ -38,7 +38,7 @@ public class TagRepositoryImpl implements TagRepository {
                     "JOIN posts ON posts.id = post_id " +
                     "WHERE tag_id = tags.id " +
                     "AND activated = ?) as post_count " +
-                    "FROM tags";
+                    "FROM tags ORDER BY post_count DESC";
 
     static final String SQL_SELECT_TAG_BY_NAME_AND_POST_ACTIVATED_DEEP =
             "SELECT tags.id,tags.name,tags.created_by,tags.updated_by, " +
