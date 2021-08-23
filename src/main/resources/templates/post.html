@@ -64,9 +64,9 @@
             </li>
         </ul>
         <div>
-            <p class="text-right text-secondary" th:if="${post.createdAt}>0"
+            <p class="text-right text-secondary" th:if="${post.createdAt}>0" style="padding: 0; margin: 0;"
                th:text="'Created At: '+${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></p>
-            <p class="text-right text-secondary"
+            <p class="text-right text-secondary" style="padding: 0; margin: 0;"
                th:if="${post.createdAt}!=${post.updatedAt}"
                th:text="'Updated At: '+${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></p>
         </div>
