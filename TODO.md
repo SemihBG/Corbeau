@@ -1,6 +1,4 @@
 ## TODO
-
-
 - Subject and tag order
 - Delete api
 - Wrong subject, post, tag error handling
@@ -11,11 +9,8 @@
 - Review projection models
 - Redirect attribute
 - Better delete url
-- Page panel update
-
 
 ## further Update
-
 - Redis cache
 - Enable to add new moderator account
 - Check priveleges by moderator's role
