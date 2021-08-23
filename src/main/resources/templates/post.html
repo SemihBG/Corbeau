@@ -74,15 +74,16 @@
     </div>
     <div style="margin-top: 5%;">
         <h2 class="text-light">Comments</h2>
+        <div class="list-group" id="comment-div" style="margin-top: 1%; margin-bottom: 1%;">
+        </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:id="comment-load" th:if="${commentCount}>0">
-            <p class="text-secondary" style="display: inline; font-size: 20px;" th:text="'Count: '+${commentCount}"></p>
-            <button class="btn btn-outline-info" th:onclick="'loadComments('+${commentCount}+')'" type="submit">Load
-            </button>
+            <p th:if="${commentCount}==1" class="text-secondary" style="font-size: 20px;" th:text="'There is one comment'"></p>
+            <p th:unless="${commentCount}==1" class="text-secondary" style="font-size: 20px;" th:text="'There are '+${commentCount}+' comments'"></p>
+            <button class="btn btn-outline-info" th:onclick="'loadComments('+${commentCount}+')'" type="submit" style="display: inline;margin-right: 20px;" id="load-button">Load</button>
+            <p id="loaded-count" style="display: none;font-size: 20px;" class="text-secondary"></p>
         </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:unless="${commentCount}>0">
             <p class="text-secondary" style="font-size: x-large">There is no comment</p>
-        </div>
-        <div class="list-group" id="comment-div" style="margin-top: 1%; margin-bottom: 1%;">
         </div>
         <div style="margin-top: 2.5%; margin-bottom: 2.5%;">
             <form action="/api/comment" id="send-comment" method="post"

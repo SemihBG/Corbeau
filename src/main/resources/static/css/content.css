@@ -41,7 +41,7 @@ a.content-fragment{
     text-decoration: none;
     color: lightblue;
 }
-img{
+img.content-scalable{
     cursor: zoom-in;
     max-width: 50%;
 }

@@ -5,6 +5,7 @@ function addComment(comment, addFirst) {
     commentP.classList.add("list-group-item");
     commentP.classList.add("list-group-item-action");
     commentP.classList.add("bg-dark");
+    commentP.style.marginTop="1%";
     const imageImg = document.createElement("img");
     imageImg.id = "image-" + comment.name;
     imageImg.src = "/api/image/random/" + comment.name;
@@ -27,7 +28,7 @@ function addComment(comment, addFirst) {
     surnameP.style.fontSize = "19px";
     surnameP.style.marginLeft = "10px";
     const timeP = document.createElement("p");
-    timeP.innerHTML = (new Date(comment.createdAt)).toLocaleString("en-US", {timeZoneName: "short"});
+    timeP.innerHTML = (new Date(comment.createdAt)).toLocaleString("en-US", {hour:'numeric', minute:'numeric' , year: 'numeric', month: 'numeric', day: 'numeric'});
     timeP.classList.add("text-light");
     timeP.style.float = "right";
     timeP.style.display = "inline";
@@ -65,7 +66,7 @@ const CONTENT_MIN_LENGTH = 4;
 const CONTENT_MAX_LENGTH = 256;
 
 var loadCount=0;
-var loadComment=0;
+var loadedCommentCount=0;
 
 
 function sendComment() {
@@ -175,11 +176,13 @@ function loadComments(count) {
             const comments = JSON.parse(JSON.stringify(data));
             comments.forEach((comment) => {
                 addComment(comment, false);
-                loadComment++;
+                loadedCommentCount++;
             });
             loadCount++;
-            if(count==loadComment)
-                document.getElementById("comment-load").style.display = "none";
+            if(count==loadedCommentCount)
+                document.getElementById("load-button").style.display = "none";
+            document.getElementById("loaded-count").style.display="inline";
+            document.getElementById("loaded-count").innerHTML=loadedCommentCount+" loaded";
         },
         error: function (data) {
             alert(data.responseText);
@@ -200,7 +203,7 @@ function initialize() {
 
     window.addEventListener("hashchange", shiftWindow);
 
-    $('img').addClass('img-enlargeable').click(function() {
+    $('img.content-scalable').addClass('img-enlargeable').click(function() {
         var src = $(this).attr('src');
         var modal;
 
