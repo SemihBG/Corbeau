@@ -5,6 +5,7 @@ import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.Tag;
 import com.semihbkgr.corbeau.service.*;
+import com.semihbkgr.corbeau.util.PageUtils;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -260,9 +261,11 @@ public class ModerationController {
                 commentService.findAllDeep(PageRequest.of(index,COMMENT_COUNT,Sort.by("updated_at").descending()))
                 ,1);
         model.addAttribute("comments",commentsReactiveData);
-        return ReactiveSecurityContextHolder
-                .getContext()
-                .map(SecurityContext::getAuthentication)
+        return commentService.count()
+                .flatMap(count->{
+                    PageUtils.addPabeAttributedToModel(model,count,index,COMMENT_COUNT);
+                    return ReactiveSecurityContextHolder.getContext();
+                }).map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
                     return "/moderation/comment";

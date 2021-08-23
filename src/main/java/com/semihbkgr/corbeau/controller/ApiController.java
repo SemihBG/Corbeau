@@ -47,7 +47,7 @@ public class ApiController {
                                  @RequestParam(value = "p",required = false,defaultValue = "1") String pageStr) {
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) index=1;
-        return commentService.findByPostId(postId, PageRequest.of(index,5, Sort.by("updated_at").descending()));
+        return commentService.findByPostId(postId, PageRequest.of(index,5, Sort.by("created_at").descending()));
     }
 
     @PostMapping("/comment")

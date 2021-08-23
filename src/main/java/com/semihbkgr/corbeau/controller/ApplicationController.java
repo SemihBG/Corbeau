@@ -8,6 +8,7 @@ import com.semihbkgr.corbeau.service.CommentService;
 import com.semihbkgr.corbeau.service.PostService;
 import com.semihbkgr.corbeau.service.SubjectService;
 import com.semihbkgr.corbeau.service.TagService;
+import com.semihbkgr.corbeau.util.PageUtils;
 import com.semihbkgr.corbeau.util.ParameterUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -68,7 +69,7 @@ public class ApplicationController {
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
-                    addPabeAttributedToModel(model,count,index, POST_PAGE_SIZE);
+                     PageUtils.addPabeAttributedToModel(model,count,index, POST_PAGE_SIZE);
                     return subjectService.findAll().collectList();
                 })
                 .map(subjectList -> {
@@ -86,7 +87,7 @@ public class ApplicationController {
         return tagService.findByNameAndPostActivatedDeep(tagName,true)
                 .doOnNext(tagDeep-> {
                     model.addAttribute("tag",tagDeep);
-                    addPabeAttributedToModel(model, tagDeep.getPostCount(), index, POST_PAGE_SIZE);
+                    PageUtils.addPabeAttributedToModel(model, tagDeep.getPostCount(), index, POST_PAGE_SIZE);
                     var postDeepTagListCombinationsReactiveData=new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
                                                 PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
@@ -148,16 +149,6 @@ public class ApplicationController {
                     model.addAttribute("subjects", subjectList);
                     return "search";
                 });
-    }
-
-    private void addPabeAttributedToModel(Model model,long count,int pageIndex,int pageSize){
-        var pageCount = (int) Math.ceil((double) count / pageSize);
-        model.addAttribute("count", count);
-        model.addAttribute("count", count);
-        model.addAttribute("page", pageIndex + 1);
-        model.addAttribute("pageCount", pageCount);
-        model.addAttribute("hasPrevious", pageIndex > 0);
-        model.addAttribute("hasNext", pageIndex + 1 < pageCount);
     }
 
 }

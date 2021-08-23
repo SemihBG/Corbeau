@@ -51,6 +51,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllDeep(pageable);
     }
 
+    @Override
+    public Mono<Long> count() {
+        return commentRepository.count();
+    }
+
 
     @Override
     public Mono<Long> countByPostId(int postId) throws IllegalValueException {

@@ -23,6 +23,8 @@ public interface CommentRepository {
 
     Mono<Integer> deleteById(int id);
 
+    Mono<Long> count();
+
     Mono<Long> countByPostId(int postId);
 
 }

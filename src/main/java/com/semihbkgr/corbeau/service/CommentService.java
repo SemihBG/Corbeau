@@ -17,6 +17,8 @@ public interface CommentService {
 
     Flux<CommentDeep> findAllDeep(Pageable pageable);
 
+    Mono<Long> count();
+
     Mono<Long> countByPostId(int postId) throws IllegalValueException;
 
     Mono<Void> deleteById(int id) throws IllegalValueException;

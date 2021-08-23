@@ -49,17 +49,16 @@
     <form action="/moderation/login" id="login" method="post" onsubmit="event.preventDefault();checkFormValidation();">
         <div class="form-group">
             <label class="text-info" for="name" style="font-size: 20px;">Name:</label>
-            <input autocomplete=off class="form-control border-info text-info" id="name" name="username"
+            <input class="form-control border-info text-info" id="name" name="username"
                    style="background-color: transparent;"
-                   th:value="${@environment.getProperty('moderation.prime.name')}"
+                   autocomplete="off"
                    type="text">
             <p class="text-warning" id="name-warn" style="display: none"></p>
         </div>
         <div class="form-group">
             <label class="text-info" for="password" style="font-size: 20px;">Password:</label>
-            <input autocomplete=off class="form-control border-info text-info" id="password" name="password"
+            <input autocomplete="off" class="form-control border-info text-info" id="password" name="password"
                    style="background-color: transparent;"
-                   th:value="${@environment.getProperty('moderation.prime.password')}"
                    type="password">
             <p class="text-warning" id="password-warn" style="display: none"></p>
         </div>

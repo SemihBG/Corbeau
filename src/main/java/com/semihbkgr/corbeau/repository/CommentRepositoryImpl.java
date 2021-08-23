@@ -180,6 +180,11 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public Mono<Long> count() {
+        return template.count(Query.query(Criteria.empty()),Comment.class);
+    }
+
+    @Override
     public Mono<Long> countByPostId(int postId) {
         return template.count(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
     }
