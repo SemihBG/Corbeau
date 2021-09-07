@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS db.posts
     thumbnail_endpoint VARCHAR(64)              DEFAULT NULL,
     description        VARCHAR(256)             DEFAULT NULL,
     created_by         VARCHAR(32),
-    updated_by         VARCHAR(32),
+    updated_by         VARCHAR(32) ,
     created_at         BIGINT UNSIGNED NOT NULL DEFAULT 0,
     updated_at         BIGINT UNSIGNED NOT NULL DEFAULT 0,
     UNIQUE KEY title_subject (title, subject_id),

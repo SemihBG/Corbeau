@@ -40,24 +40,14 @@ logging:
 #data:
 #  populator: populator.sql
 #  cleaner: cleaner.sql
-#
-#moderation:
-#  prime:
-#    enable: true
-#    name: admin
-#    password: password
-#    role: prime
-#  roles: prime,writer,editor,support
-
-###Use this properties if you are not working on data###
 
 moderation:
   prime:
-    enable: false
-  roles:
-    enabled: false
-
-#########################################################
+    enable: true
+    name: admin
+    password: password
+    role: prime
+  roles: prime,writer,editor,support
 
 image:
   rootDirectory: images

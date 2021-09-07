@@ -84,6 +84,7 @@
         <tr>
             <th>Title</th>
             <th>Subject</th>
+            <th>Activated</th>
             <th>CreatedBy</th>
             <th>UpdatedBy</th>
             <th>CreatedAt</th>
@@ -95,6 +96,7 @@
             <td style="display: none;" th:text="${post.endpoint}"></td>
             <td th:text="${post.title}"></td>
             <td th:text="${post.subjectName}"></td>
+            <td th:text="${post.activated}"></td>
             <td th:if="${post.createdBy}!=${null}" th:text="${post.getCreatedBy()}"></td>
             <td th:unless="${post.createdBy}!=${null}">None</td>
             <td th:if="${post.updatedBy}!=${null}" th:text="${post.updatedBy}"></td>
