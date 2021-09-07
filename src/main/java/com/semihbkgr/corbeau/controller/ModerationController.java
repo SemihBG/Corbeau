@@ -5,6 +5,7 @@ import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.Tag;
+import com.semihbkgr.corbeau.model.request.PostUpdate;
 import com.semihbkgr.corbeau.service.*;
 import com.semihbkgr.corbeau.util.PageUtils;
 import com.semihbkgr.corbeau.util.ParameterUtils;
@@ -184,15 +185,20 @@ public class ModerationController {
                     return ReactiveSecurityContextHolder.getContext();
                 })
                 .map(SecurityContext::getAuthentication)
-                .map(authentication -> {
+                .flatMapMany(authentication -> {
                     model.addAttribute("name", authentication.getName());
+                    return tagService.findAll();
+                })
+                .collectList()
+                .map(tagList->{
+                    model.addAttribute("tags",tagList);
                     return "/moderation/post-update";
                 });
     }
 
     @PostMapping("/post")
-    public Mono<String> postSaveProcess(@Valid @ModelAttribute Post post, final Model model) {
-        return postService.save(post)
+    public Mono<String> postSaveProcess(@Valid @ModelAttribute PostUpdate postUpdate, final Model model) {
+        return postService.save(postUpdate)
                 .map(savedPost -> {
                     model.addAttribute("post", savedPost);
                     return "redirect:/moderation/post/" + savedPost.getEndpoint();

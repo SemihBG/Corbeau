@@ -106,7 +106,8 @@
                th:if="${post.createdAt}>0" th:text="'Created at: '+${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></p>
             <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdAt}>0">Created at: None</p>
             <p class="text-secondary" style="font-size: x-large"
-               th:if="${post.createdAt}!=${post.updatedAt}" th:text="'Updated at: '+${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></p>
+               th:if="${post.createdAt}!=${post.updatedAt}"
+               th:text="'Updated at: '+${#dates.format(post.updatedAt, 'dd-MM-yyyy')}"></p>
             <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdAt}!=${post.updatedAt}">
                 Updated at: None</p>
         </div>
@@ -130,6 +131,11 @@
                             th:value="${s.id}"></option>
                 </select>
             </div>
+            <dib>
+                <label for="tags">Tags</label>
+                <input class="text-light" th:each="tag:${tags}" th:field="*{tags}" th:text="${tag.name}" th:value="${tag.id}"
+                       type="checkbox">
+            </dib>
             <div class="form-group">
                 <label class="text-info" for="content" style="font-size: 20px;">Content:</label>
                 <textarea class="form-control text-info border-info" id="content" name="content"

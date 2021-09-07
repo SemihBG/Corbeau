@@ -118,7 +118,9 @@ public class ApplicationController {
                     model.addAttribute("post", post);
                     return tagService.findAllByPostId(post.getId())
                             .collectList()
-                            .map(tagList->model.addAttribute("tags",tagList))
+                            .doOnNext(tagList->model.addAttribute("tags",tagList))
+                            .flatMap(ignore->subjectService.findById(post.getId()))
+                            .doOnNext(subject-> model.addAttribute("subject",subject))
                             .then(commentService.countByPostId(post.getId()));
                 })
                 .flatMap(commentCount -> {
