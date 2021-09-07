@@ -76,7 +76,8 @@
     <h1 class="text-center text-light">Menu</h1>
     <div>
         <h3 class="text-info">Status</h3>
-        <h4 class="text-light" th:text="'Comment Activated: '+${appStatus.isCommentActivated()}"></h4>
+        <h4 th:if="${appStatus.isCommentActivated()}" class="text-light">Comments Activated</h4>
+        <h4 th:unless="${appStatus.isCommentActivated()}" class="text-light">Comments Inactivated</h4>
     </div>
 </div>
 </body>

@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.component.AppStatus;
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.projection.combination.PostDeepTagList;
@@ -33,6 +34,7 @@ public class ApplicationController {
     private final TagService tagService;
     private final CommentService commentService;
     private final NameSurnameOfferComponent nameSurnameOfferComponent;
+    private final AppStatus appStatus;
 
     @GetMapping
     public Mono<String> menu(final Model model) {
@@ -126,6 +128,7 @@ public class ApplicationController {
                 .map(pair -> {
                     model.addAttribute("offerName", pair.getFirst());
                     model.addAttribute("offerSurname", pair.getSecond());
+                    model.addAttribute("appStatus",appStatus);
                     return "post";
                 });
     }

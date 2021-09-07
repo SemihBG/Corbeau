@@ -12,7 +12,7 @@ public class AppStatus {
 
     private volatile boolean commentActivated;
 
-    public AppStatus(@Value("${app-status.comment.enabled:#{false}}") boolean commentActivated) {
+    public AppStatus(@Value("${app-status.comment.activated:#{false}}") boolean commentActivated) {
         this.commentActivated = commentActivated;
         log.info("AppStatus has been initialized, CommentEnabled: {}", commentActivated);
     }

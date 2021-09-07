@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--suppress HtmlUnknownTarget, ThymeleafVariablesResolveInspection, HtmlFormInputWithoutLabel, JSUnresolvedVariable -->
+<!--suppress ALL -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${'Corbeau '+post.title}"></title>
@@ -23,7 +23,6 @@
         }
     </style>
 </head>
-<body>
 <body onload="load()" style="background: #222D32;">
 <script src="/js/prism.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -64,7 +63,7 @@
             </li>
         </ul>
         <div>
-            <p class="text-right text-secondary" th:if="${post.createdAt}>0" style="padding: 0; margin: 0;"
+            <p class="text-right text-secondary" style="padding: 0; margin: 0;" th:if="${post.createdAt}>0"
                th:text="'Created At: '+${#dates.format(post.createdAt, 'dd-MM-yyyy')}"></p>
             <p class="text-right text-secondary" style="padding: 0; margin: 0;"
                th:if="${post.createdAt}!=${post.updatedAt}"
@@ -77,15 +76,19 @@
         <div class="list-group" id="comment-div" style="margin-top: 1%; margin-bottom: 1%;">
         </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:id="comment-load" th:if="${commentCount}>0">
-            <p th:if="${commentCount}==1" class="text-secondary" style="font-size: 20px;" th:text="'There is one comment'"></p>
-            <p th:unless="${commentCount}==1" class="text-secondary" style="font-size: 20px;" th:text="'There are '+${commentCount}+' comments'"></p>
-            <button class="btn btn-outline-info" th:onclick="'loadComments('+${commentCount}+')'" type="submit" style="display: inline;margin-right: 20px;" id="load-button">Load</button>
-            <p id="loaded-count" style="display: none;font-size: 20px;" class="text-secondary"></p>
+            <p class="text-secondary" style="font-size: 20px;" th:if="${commentCount}==1"
+               th:text="'There is 1 comment'"></p>
+            <p class="text-secondary" style="font-size: 20px;" th:text="'There are '+${commentCount}+' comments'"
+               th:unless="${commentCount}==1"></p>
+            <button class="btn btn-outline-info" id="load-button" style="display: inline;margin-right: 20px;"
+                    th:onclick="'loadComments('+${commentCount}+')'" type="submit">Load
+            </button>
+            <p class="text-secondary" id="loaded-count" style="display: none;font-size: 20px;"></p>
         </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:unless="${commentCount}>0">
             <p class="text-secondary" style="font-size: x-large">There is no comment</p>
         </div>
-        <div style="margin-top: 2.5%; margin-bottom: 2.5%;">
+        <div style="margin-top: 2.5%; margin-bottom: 2.5%;" th:if="${appStatus.isCommentActivated()}">
             <form action="/api/comment" id="send-comment" method="post"
                   onsubmit="event.preventDefault();sendComment()">
                 <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
@@ -116,10 +119,47 @@
                               style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
                     <p class="text-warning" id="content-warn" style="display: none"></p>
                 </div>
-                <button class="btn btn-outline-info" type="submit">Send</button>
+                <button class="btn btn-outline-info" th:if="${appStatus.isCommentActivated()}" type="submit">Send
+                </button>
                 <div>
                     <p class="text-warning" id="comment-warn" style="display: none"></p>
                 </div>
+            </form>
+        </div>
+        <div style="margin-top: 2.5%; margin-bottom: 2.5%;" th:unless="${appStatus.isCommentActivated()}">
+            <p class="text-warning" style="font-size: x-large">Comments are disabled</p>
+            <form action="/api/comment" id="send-comment" method="post"
+                  onsubmit="event.preventDefault();sendComment()" class="disabled">
+                <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
+                <div class="form-group">
+                    <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
+                    <input class="form-control text-info border-info disabled" id="name" name="name"
+                           style="background-color: transparent"
+                           th:placeholder="${offerName}" type="text" disabled>
+                    <p class="text-warning" id="name-warn" style="display: none"></p>
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
+                    <input class="form-control text-info border-info disabled" id="surname" name="surname"
+                           style="background-color: transparent"
+                           th:placeholder="${offerSurname}" type="text" disabled>
+                    <p class="text-warning" id="surname-warn" style="display: none"></p>
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
+                    <input class="form-control text-info border-info disabled" id="email" name="email"
+                           style="background-color: transparent"
+                           type="text" disabled>
+                    <p class="text-warning" id="email-warn" style="display: none"></p>
+                </div>
+                <div class="form-group">
+                    <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
+                    <textarea class="form-control text-info border-info disabled" id="content" name="content"
+                              style="background-color: transparent; min-height: 100px; max-height: 250px;" disabled></textarea>
+                    <p class="text-warning" id="content-warn" style="display: none"></p>
+                </div>
+                <button class="btn btn-outline-info disabled" type="submit" disabled>Send
+                </button>
             </form>
         </div>
     </div>

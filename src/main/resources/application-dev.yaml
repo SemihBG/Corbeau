@@ -73,3 +73,7 @@ validation:
     source:
       path: classpath:messages
       encoding: UTF-8
+
+app-status:
+  comment:
+    activated: true

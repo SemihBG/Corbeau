@@ -1,6 +1,7 @@
 package com.semihbkgr.corbeau.controller;
 
 
+import com.semihbkgr.corbeau.component.AppStatus;
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.component.RandomImageGenerator;
 import com.semihbkgr.corbeau.error.ArtifactException;
@@ -41,6 +42,7 @@ public class ApiController {
     private final ImageContentService imageContentService;
     private final RandomImageGenerator randomImageGenerator;
     private final NameSurnameOfferComponent nameSurnameOfferComponent;
+    private final AppStatus appStatus;
 
     @GetMapping("/comment/{post_id}")
     public Flux<Comment> comment(@PathVariable("post_id") int postId,
@@ -52,6 +54,8 @@ public class ApiController {
 
     @PostMapping("/comment")
     public Mono<Comment> commentProcess(@Valid @ModelAttribute Comment comment) {
+        if(!appStatus.isCommentActivated())
+            return Mono.error(new IllegalStateException("Comments are inactivated"));
         return commentService.save(comment);
     }
 

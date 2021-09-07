@@ -84,6 +84,11 @@
       "name": "validation.message.source.encoding",
       "type": "java.lang.String",
       "description": "Description for validation.message.source.encoding."
+    },
+    {
+      "name": "app-status.comment.activated",
+      "type": "java.lang.String",
+      "description": "Description for app-status.comment.activated."
     }
   ]
 }
