@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.controller;
 
+import com.semihbkgr.corbeau.component.AppStatus;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.Post;
 import com.semihbkgr.corbeau.model.Subject;
@@ -40,6 +41,7 @@ public class ModerationController {
     private final ImageContentService imageContentService;
     private final ImageService imageService;
     private final CommentService commentService;
+    private final AppStatus appStatus;
 
     @GetMapping()
     public String moderation() {
@@ -57,6 +59,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
+                    model.addAttribute("appStatus",appStatus);
                     return "/moderation/menu";
                 });
     }
@@ -268,9 +271,17 @@ public class ModerationController {
                 }).map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
+                    model.addAttribute("appStatus",appStatus);
                     return "/moderation/comment";
                 });
     }
+
+    @PostMapping("/comment")
+    public String commentStatusUpdate(@ModelAttribute AppStatus.CommentStatusUpdateModel commentStatusUpdateModel){
+        appStatus.updateStatus(commentStatusUpdateModel);
+        return "redirect:/moderation/comment";
+    }
+
 
     @PostMapping("/comment/{id}")
     public Mono<String> commentUpdate(@PathVariable("id") int id, @ModelAttribute Comment comment){
@@ -283,5 +294,7 @@ public class ModerationController {
         return commentService.deleteById(id)
                 .thenReturn("redirect:/moderation/comment");
     }
+
+
 
 }

@@ -134,9 +134,9 @@
         <h2 class="text-info" style="padding-top: 10px;">Comment Status</h2>
         <form method="post" action="/moderation/comment">
             <div class="form-group form-check">
-                <input class="form-check-input" id="acitivated" name="activated"
+                <input class="form-check-input" id="activated" name="activated" th:checked="${appStatus.isCommentActivated()}"
                        style="background-color: transparent;" type="checkbox"/>
-                <label class="form-check-label text-info" for="acitivated">Activated </label>
+                <label class="form-check-label text-info" for="activated">Activated </label>
             </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
