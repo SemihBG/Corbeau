@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService {
                     savedPost.setEndpoint(post.getEndpoint());
                     return savedPost;
                 })
-                .flatMap(postRepository::save);
+                .flatMap(postRepository::update);
     }
 
     @Override

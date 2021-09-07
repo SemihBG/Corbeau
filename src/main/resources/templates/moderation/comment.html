@@ -104,7 +104,7 @@
         </tbody>
     </table>
     <div class="container bg-dark" style="padding: 3%; margin: 3% 0 3% 0; ">
-        <form action="/moderation/comment/{id}" id="update" method="post">
+        <form action="/moderation/comment/{id}" id="update" method="post" style="display: inline; padding-right: 10px">
             <div class="form-group">
                 <label class="text-light" for="update-name">Name</label>
                 <input autocomplete=off class="form-control border-info text-light" id="update-name"
@@ -128,8 +128,17 @@
             </div>
             <button class="btn btn-outline-info disabled" disabled id="update-button" type="submit">Update</button>
         </form>
-        <form action="/moderation/comment/{id}" id="delete" method="post" style="margin-top: 25px">
+        <form action="/moderation/comment/{id}" id="delete" method="post" style="margin-top: 25px; display: inline">
             <button class="btn btn-outline-danger disabled" disabled id="delete-button" type="submit">Delete</button>
+        </form>
+        <h2 class="text-info" style="padding-top: 10px;">Comment Status</h2>
+        <form method="post" action="/moderation/comment">
+            <div class="form-group form-check">
+                <input class="form-check-input" id="acitivated" name="activated"
+                       style="background-color: transparent;" type="checkbox"/>
+                <label class="form-check-label text-info" for="acitivated">Activated </label>
+            </div>
+            <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
     </div>
     <div class="text-center" style="margin-top: 3%; margin-bottom: 5%" th:if="${count>0}">
