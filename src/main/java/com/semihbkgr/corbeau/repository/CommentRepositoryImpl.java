@@ -189,6 +189,11 @@ public class CommentRepositoryImpl implements CommentRepository {
         return template.count(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
     }
 
+    @Override
+    public Mono<Integer> deleteAllByPostId(int postId) {
+        return template.delete(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
+    }
+
     private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException {
         var order = sort.stream()
                 .findFirst()

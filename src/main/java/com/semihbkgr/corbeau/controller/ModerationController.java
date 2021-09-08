@@ -224,6 +224,7 @@ public class ModerationController {
     @PostMapping("/post/delete/{id}")
     public Mono<String> postDeleteProcess(@PathVariable("id") int id) {
         return postService.updateTagPostJoin(id,Collections.emptyList())
+                .then(commentService.deleteAllByPostId(id))
                 .then(postService.deletePost(id))
                 .thenReturn("redirect:/moderation/post");
     }

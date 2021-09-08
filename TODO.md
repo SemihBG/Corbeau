@@ -2,17 +2,10 @@
 
 ## MVP Features
 - Assign tags to posts +
-- Subject and tag order
-- Delete api
-- Wrong subject, post, tag error handling
-- Unactivated post error handling
-- Moderation menu page
-- Review database queries
-- Review projection models
-- Redirect attribute
-- Better delete url
-- Activate inactive for making a comment 
+- Activate inactive for making a comment +
 - Track comment count and login attempt made from same ip in short period of time
+- Post and subject delete api +
+- Wrong subject, post, tag error handling
 
 ## Further Update
 - Redis cache
@@ -24,3 +17,10 @@
 - Send mail as notification
 - Page request count and analysis
 - Optimize post tag update
+- Subject and tag order
+- Redirect attribute
+- Better delete url
+- Unactivated post error handling
+- Moderation menu page
+- Review database queries
+- Review projection models

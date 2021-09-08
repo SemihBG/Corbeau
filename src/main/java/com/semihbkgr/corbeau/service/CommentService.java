@@ -23,4 +23,6 @@ public interface CommentService {
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
 
+    Mono<Integer> deleteAllByPostId(int postId) throws IllegalValueException;
+
 }

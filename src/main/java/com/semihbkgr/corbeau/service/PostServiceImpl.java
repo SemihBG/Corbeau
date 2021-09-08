@@ -100,6 +100,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Mono<Integer> deletePost(int id) throws IllegalValueException {
+        if (id <= 0)
+            throw new IllegalValueException("id must be positive value", PostRepository.TABLE_NAME, "id", id);
         return postRepository.deleteByPostId(id);
     }
 

@@ -4,7 +4,6 @@ import com.semihbkgr.corbeau.error.IllegalValueException;
 import com.semihbkgr.corbeau.model.Comment;
 import com.semihbkgr.corbeau.model.projection.CommentDeep;
 import com.semihbkgr.corbeau.repository.CommentRepository;
-import com.semihbkgr.corbeau.repository.SubjectRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +29,12 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(id)
                 .switchIfEmpty(Mono.error(() ->
                         new IllegalValueException("Comment not available by given id", CommentRepository.TABLE_NAME, "id", id)))
-                .flatMap(savedComment->{
-                   savedComment.setName(comment.getName());
-                   savedComment.setSurname(comment.getSurname());
-                   savedComment.setEmail(comment.getEmail());
-                   savedComment.setContent(comment.getContent());
-                   return commentRepository.update(savedComment);
+                .flatMap(savedComment -> {
+                    savedComment.setName(comment.getName());
+                    savedComment.setSurname(comment.getSurname());
+                    savedComment.setEmail(comment.getEmail());
+                    savedComment.setContent(comment.getContent());
+                    return commentRepository.update(savedComment);
                 });
     }
 
@@ -69,6 +68,13 @@ public class CommentServiceImpl implements CommentService {
         if (id <= 0)
             throw new IllegalValueException("id must be positive value", CommentRepository.TABLE_NAME, "id", id);
         return commentRepository.deleteById(id).then();
+    }
+
+    @Override
+    public Mono<Integer> deleteAllByPostId(int postId) throws IllegalValueException {
+        if (postId <= 0)
+            throw new IllegalValueException("postId must be positive value", CommentRepository.TABLE_NAME, "post_id", postId);
+        return commentRepository.deleteAllByPostId(postId);
     }
 
 }
