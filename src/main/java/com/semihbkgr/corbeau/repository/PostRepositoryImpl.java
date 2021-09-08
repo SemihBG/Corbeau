@@ -381,7 +381,12 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Mono<Void> addTagsToPost(int postId, List<Integer> tagsId) {
+    public Mono<Integer> deleteByPostId(int id) {
+        return template.delete(query(where("id").is(id)),Post.class);
+    }
+
+    @Override
+    public Mono<Void> updateTagPostJoin(int postId, List<Integer> tagsId) {
         return template.getDatabaseClient()
                 .sql(SQL_POST_TAG_JOIN_DELETE_ALL_BY_POST_ID)
                 .bind(0, postId)

@@ -216,10 +216,19 @@ public class ModerationController {
         return postService.update(id, postUpdate)
                 .flatMap(updatedPost -> {
                     model.addAttribute("post", updatedPost);
-                    return postService.addTagsToPost(id,postUpdate.getTags()!=null?postUpdate.getTags(): Collections.emptyList())
+                    return postService.updateTagPostJoin(id,postUpdate.getTags()!=null?postUpdate.getTags(): Collections.emptyList())
                             .thenReturn("redirect:/moderation/post/" + updatedPost.getEndpoint());
                 });
     }
+
+    @PostMapping("/post/delete/{id}")
+    public Mono<String> postDeleteProcess(@PathVariable("id") int id) {
+        return postService.updateTagPostJoin(id,Collections.emptyList())
+                .then(postService.deletePost(id))
+                .thenReturn("redirect:/moderation/post");
+    }
+
+
 
     @GetMapping("/image")
     public Mono<String> image(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,

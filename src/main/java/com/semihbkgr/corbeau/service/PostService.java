@@ -34,6 +34,8 @@ public interface PostService {
 
     Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated) throws IllegalValueException ;
 
-    Mono<Void> addTagsToPost(int postId, List<Integer> tagsId);
+    Mono<Integer> deletePost(int id) throws IllegalValueException;
+
+    Mono<Void> updateTagPostJoin(int postId, List<Integer> tagsId);
 
 }

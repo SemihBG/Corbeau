@@ -39,6 +39,8 @@ public interface PostRepository {
 
     Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
 
-    Mono<Void> addTagsToPost(int postId, List<Integer> tagsId);
+    Mono<Integer> deleteByPostId(int id);
+
+    Mono<Void> updateTagPostJoin(int postId, List<Integer> tagsId);
 
 }

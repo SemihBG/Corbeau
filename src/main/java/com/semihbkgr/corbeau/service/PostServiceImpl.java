@@ -99,8 +99,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Mono<Void> addTagsToPost(int postId, @NonNull List<Integer> tagsId) {
-        return postRepository.addTagsToPost(postId,tagsId);
+    public Mono<Integer> deletePost(int id) throws IllegalValueException {
+        return postRepository.deleteByPostId(id);
+    }
+
+    @Override
+    public Mono<Void> updateTagPostJoin(int postId, @NonNull List<Integer> tagsId) {
+        return postRepository.updateTagPostJoin(postId,tagsId);
     }
 
 }

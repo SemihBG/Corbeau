@@ -111,7 +111,7 @@
             <p class="text-secondary" style="font-size: x-large" th:unless="${post.createdAt}!=${post.updatedAt}">
                 Updated at: None</p>
         </div>
-        <form method="post" th:action="'/moderation/post/'+${post.id}">
+        <form method="post" th:action="'/moderation/post/'+${post.id}" style="display: inline">
             <div class="text-light" style="font-size: x-large">
                 <p class="text-info" style="font-size: large">Tags</p>
                 <input th:each="tag:${allTags}" th:text="${tag.name}" th:value="${tag.id}"
@@ -149,6 +149,9 @@
                 <label class="form-check-label text-info" for="activated">Activated </label>
             </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
+        </form>
+        <form method="post" th:action="'/moderation/post/delete/'+${post.id}" style="display: inline; margin-left: 25px">
+            <button class="btn btn-outline-danger" type="submit">Delete</button>
         </form>
     </div>
     <div>
@@ -200,7 +203,6 @@
            style="background-color: transparent; text-decoration: none;"><i class="fas fa-sync text-info"
                                                                             style="font-size: 40px;"></i></a>
         <div class="border-info" style="border-style: solid">
-            <h1 class=" text-center text-info" id="display-title" th:text="${post.title}"></h1>
             <div class="content-text" id="display-content" th:utext="${post.content}"></div>
         </div>
     </div>
