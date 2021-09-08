@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.function.BiFunction;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
@@ -167,6 +168,12 @@ public class PostRepositoryImpl implements PostRepository {
     static final String SQL_COUNT_BY_POST_ID_AND_ACTIVATED =
             "SELECT COUNT(*) FROM tags_posts_join JOIN posts ON posts.id=post_id WHERE tag_id=? AND posts.activated=?";
 
+    static final String SQL_POST_TAG_JOIN_DELETE_ALL_BY_POST_ID =
+            "DELETE FROM tags_posts_join WHERE post_id = ?";
+
+    static final String SQL_POST_TAG_JOIN_ADD_POST_ID_AND_TAG_ID =
+            "INSERT INTO tags_posts_join (post_id,tag_id) VALUE (?,?)";
+
     static final BiFunction<Row, RowMetadata, PostDeep> POST_DEEP_MAPPER =
             (row, rowMetadata) ->
                     PostDeep.builder()
@@ -251,7 +258,7 @@ public class PostRepositoryImpl implements PostRepository {
         DatabaseClient.GenericExecuteSpec ges;
         if (pageable.isPaged() && pageable.getSort().isSorted()) {
             ges = template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED,pageable.getSort()))
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_ORDERED, pageable.getSort()))
                     .bind(0, activated)
                     .bind(1, pageable.getPageSize())
                     .bind(2, pageable.getOffset());
@@ -263,7 +270,7 @@ public class PostRepositoryImpl implements PostRepository {
                     .bind(2, pageable.getOffset());
         } else if (pageable.isUnpaged() && pageable.getSort().isSorted()) {
             ges = template.getDatabaseClient()
-                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED,pageable.getSort()))
+                    .sql(formatOrderedQuery(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_ORDERED, pageable.getSort()))
                     .bind(0, activated);
         } else {
             ges = template.getDatabaseClient().sql(SQL_FIND_ALL_BY_ACTIVATED_DEEP_UNPAGED_UNORDERED)
@@ -345,7 +352,6 @@ public class PostRepositoryImpl implements PostRepository {
                 .all();
     }
 
-
     @Override
     public Mono<Long> count() {
         return template.count(query(CriteriaDefinition.empty()), Post.class);
@@ -372,6 +378,20 @@ public class PostRepositoryImpl implements PostRepository {
         return template.count(query(
                 where("subject_id").is(subjectId).and(where("activated").is(activated))
         ), Post.class);
+    }
+
+    @Override
+    public Mono<Void> addTagsToPost(int postId, List<Integer> tagsId) {
+        return template.getDatabaseClient()
+                .sql(SQL_POST_TAG_JOIN_DELETE_ALL_BY_POST_ID)
+                .bind(0, postId)
+                .then()
+                .thenMany(Flux.range(0,tagsId.size()))
+                .flatMap(i-> template.getDatabaseClient().sql("INSERT INTO tags_posts_join (tag_id,post_id) VALUES (?,?)")
+                        .bind(0,tagsId.get(i))
+                        .bind(1,postId)
+                        .then())
+                .then();
     }
 
     private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException {

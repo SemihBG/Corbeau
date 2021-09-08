@@ -23,6 +23,7 @@ import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.util.Collections;
 
 @SuppressWarnings("DuplicatedCode")
 @Controller
@@ -178,7 +179,12 @@ public class ModerationController {
         return postService.findByEndpoint(endpoint)
                 .flatMap(post -> {
                     model.addAttribute("post", post);
-                    return subjectService.findById(post.getSubjectId());
+                    return tagService.findAllByPostId(post.getId())
+                            .collectList()
+                            .flatMap(tagList->{
+                                model.addAttribute("tags",tagList);
+                                return subjectService.findById(post.getSubjectId());
+                            });
                 })
                 .flatMap(subject -> {
                     model.addAttribute("subject", subject);
@@ -191,14 +197,14 @@ public class ModerationController {
                 })
                 .collectList()
                 .map(tagList->{
-                    model.addAttribute("tags",tagList);
+                    model.addAttribute("allTags",tagList);
                     return "/moderation/post-update";
                 });
     }
 
     @PostMapping("/post")
-    public Mono<String> postSaveProcess(@Valid @ModelAttribute PostUpdate postUpdate, final Model model) {
-        return postService.save(postUpdate)
+    public Mono<String> postSaveProcess(@Valid @ModelAttribute Post post, final Model model) {
+        return postService.save(post)
                 .map(savedPost -> {
                     model.addAttribute("post", savedPost);
                     return "redirect:/moderation/post/" + savedPost.getEndpoint();
@@ -206,11 +212,12 @@ public class ModerationController {
     }
 
     @PostMapping("/post/{id}")
-    public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute Post post, final Model model) {
-        return postService.update(id, post)
-                .map(updatedPost -> {
+    public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute PostUpdate postUpdate, final Model model) {
+        return postService.update(id, postUpdate)
+                .flatMap(updatedPost -> {
                     model.addAttribute("post", updatedPost);
-                    return "redirect:/moderation/post/" + post.getEndpoint();
+                    return postService.addTagsToPost(id,postUpdate.getTags()!=null?postUpdate.getTags(): Collections.emptyList())
+                            .thenReturn("redirect:/moderation/post/" + updatedPost.getEndpoint());
                 });
     }
 

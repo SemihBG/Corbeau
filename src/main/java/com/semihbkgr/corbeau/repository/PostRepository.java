@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 public interface PostRepository {
 
     String TABLE_NAME="posts";
@@ -36,5 +38,7 @@ public interface PostRepository {
     Mono<Long> countByTagIdAndActivated(int tagId, boolean activated);
 
     Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated);
+
+    Mono<Void> addTagsToPost(int postId, List<Integer> tagsId);
 
 }

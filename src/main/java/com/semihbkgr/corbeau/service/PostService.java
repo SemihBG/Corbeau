@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 public interface PostService {
 
     Mono<Post> save(Post post);
@@ -31,5 +33,7 @@ public interface PostService {
     Mono<Long> countBySubjectId(int subjectId) throws IllegalValueException ;
 
     Mono<Long> countBySubjectIdAndActivated(int subjectId,boolean activated) throws IllegalValueException ;
+
+    Mono<Void> addTagsToPost(int postId, List<Integer> tagsId);
 
 }

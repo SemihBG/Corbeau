@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +96,11 @@ public class PostServiceImpl implements PostService {
         if (subjectId <= 0)
             throw new IllegalValueException("subject_id must be positive value", PostRepository.TABLE_NAME, "subject_id", subjectId);
         return postRepository.countBySubjectIdAndActivated(subjectId, activated);
+    }
+
+    @Override
+    public Mono<Void> addTagsToPost(int postId, @NonNull List<Integer> tagsId) {
+        return postRepository.addTagsToPost(postId,tagsId);
     }
 
 }
