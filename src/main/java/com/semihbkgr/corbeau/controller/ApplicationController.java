@@ -38,8 +38,8 @@ public class ApplicationController {
 
     @GetMapping
     public Mono<String> menu(final Model model) {
-        var tagsReactiveData=new ReactiveDataDriverContextVariable(tagService.findAllDeep(), 1);
-        model.addAttribute("tags",tagsReactiveData);
+        var tagsReactiveData = new ReactiveDataDriverContextVariable(tagService.findAllDeep(), 1);
+        model.addAttribute("tags", tagsReactiveData);
         return subjectService.findAll()
                 .collectList()
                 .map(subjectList -> {
@@ -63,15 +63,15 @@ public class ApplicationController {
                                     PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending())
                             ).flatMapSequential(postInfo ->
                                     tagService.findAllByPostId(postInfo.getId())
-                                    .collectList()
-                                    .map(list->new PostInfoTagList(postInfo,list)))
+                                            .collectList()
+                                            .map(list -> new PostInfoTagList(postInfo, list)))
                             , 1
                     );
                     model.addAttribute("postInfoTagListCombinations", postsInfoTagListCombinationsReactiveData);
                     return postService.countBySubjectIdAndActivated(subjectDeep.getId(), true);
                 })
                 .flatMap(count -> {
-                     PageUtils.addPabeAttributedToModel(model,count,index, POST_PAGE_SIZE);
+                    PageUtils.addPabeAttributedToModel(model, count, index, POST_PAGE_SIZE);
                     return subjectService.findAll().collectList();
                 })
                 .map(subjectList -> {
@@ -81,24 +81,24 @@ public class ApplicationController {
     }
 
     @GetMapping("/tag/{tag_name}")
-    public Mono<String> tag(@PathVariable("tag_name")String tagName,
-                            @RequestParam(value = "p",required = false,defaultValue = "1") String  pageStr,
-                            Model model){
+    public Mono<String> tag(@PathVariable("tag_name") String tagName,
+                            @RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
+                            Model model) {
         var index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/tag/" + tagName + "?p=" + 1);
-        return tagService.findByNameAndPostActivatedDeep(tagName,true)
-                .doOnNext(tagDeep-> {
-                    model.addAttribute("tag",tagDeep);
+        return tagService.findByNameAndPostActivatedDeep(tagName, true)
+                .doOnNext(tagDeep -> {
+                    model.addAttribute("tag", tagDeep);
                     PageUtils.addPabeAttributedToModel(model, tagDeep.getPostCount(), index, POST_PAGE_SIZE);
-                    var postDeepTagListCombinationsReactiveData=new ReactiveDataDriverContextVariable(
+                    var postDeepTagListCombinationsReactiveData = new ReactiveDataDriverContextVariable(
                             postService.findAllByTagIdAndActivatedDeep(tagDeep.getId(), true,
-                                                PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
-                            .flatMapSequential(postDeep->
-                                    tagService.findAllByPostId(postDeep.getId())
-                                    .collectList()
-                                    .map(list->new PostDeepTagList(postDeep,list)))
+                                    PageRequest.of(index, POST_PAGE_SIZE, Sort.by("updated_at").descending()))
+                                    .flatMapSequential(postDeep ->
+                                            tagService.findAllByPostId(postDeep.getId())
+                                                    .collectList()
+                                                    .map(list -> new PostDeepTagList(postDeep, list)))
                             , 1);
-                    model.addAttribute("postDeepTagListCombinations",postDeepTagListCombinationsReactiveData);
+                    model.addAttribute("postDeepTagListCombinations", postDeepTagListCombinationsReactiveData);
                 })
                 .thenMany(subjectService.findAll())
                 .collectList()
@@ -118,10 +118,14 @@ public class ApplicationController {
                     model.addAttribute("post", post);
                     return tagService.findAllByPostId(post.getId())
                             .collectList()
-                            .doOnNext(tagList->model.addAttribute("tags",tagList))
-                            .flatMap(ignore->subjectService.findById(post.getId()))
-                            .doOnNext(subject-> model.addAttribute("subject",subject))
-                            .then(commentService.countByPostId(post.getId()));
+                            .flatMap(tagList -> {
+                                model.addAttribute("tags", tagList);
+                                return subjectService.findById(post.getSubjectId());
+                            })
+                            .flatMap(subject -> {
+                                model.addAttribute("subject", subject);
+                                return commentService.countByPostId(post.getId());
+                            });
                 })
                 .flatMap(commentCount -> {
                     model.addAttribute("commentCount", commentCount);
@@ -130,7 +134,7 @@ public class ApplicationController {
                 .map(pair -> {
                     model.addAttribute("offerName", pair.getFirst());
                     model.addAttribute("offerSurname", pair.getSecond());
-                    model.addAttribute("appStatus",appStatus);
+                    model.addAttribute("appStatus", appStatus);
                     return "post";
                 });
     }
@@ -140,14 +144,14 @@ public class ApplicationController {
                                Model model) {
         if (s == null) return Mono.just("redirect: /");
         var postDeepTagListCombinationReactiveData = new ReactiveDataDriverContextVariable(
-                postService.searchByTitleAndActivatedDeep(s,true)
-                .flatMapSequential(postDeep ->
-                    tagService.findAllByPostId(postDeep.getId())
-                            .collectList()
-                            .map(list->new PostDeepTagList(postDeep,list))
-                )
+                postService.searchByTitleAndActivatedDeep(s, true)
+                        .flatMapSequential(postDeep ->
+                                tagService.findAllByPostId(postDeep.getId())
+                                        .collectList()
+                                        .map(list -> new PostDeepTagList(postDeep, list))
+                        )
                 , 1);
-        model.addAttribute("postDeepTagListCombinations",postDeepTagListCombinationReactiveData);
+        model.addAttribute("postDeepTagListCombinations", postDeepTagListCombinationReactiveData);
         return subjectService.findAll()
                 .collectList()
                 .map(subjectList -> {

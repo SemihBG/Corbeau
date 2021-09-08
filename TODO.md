@@ -1,7 +1,7 @@
 # TODO
 
 ## MVP Features
-- Assign tags to posts
+- Assign tags to posts +
 - Subject and tag order
 - Delete api
 - Wrong subject, post, tag error handling
@@ -23,3 +23,4 @@
 - Moderator notifications
 - Send mail as notification
 - Page request count and analysis
+- Optimize post tag update

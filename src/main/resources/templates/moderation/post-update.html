@@ -112,6 +112,11 @@
                 Updated at: None</p>
         </div>
         <form method="post" th:action="'/moderation/post/'+${post.id}">
+            <div class="text-light" style="font-size: x-large">
+                <p class="text-info" style="font-size: large">Tags</p>
+                <input th:each="tag:${allTags}" th:text="${tag.name}" th:value="${tag.id}"
+                       type="checkbox" name="tags" style="margin-left: 30px; margin-right: 10px" th:checked="${#lists.contains(tags,tag)}">
+            </div>
             <div class="form-group">
                 <label class="text-info" for="title" style="font-size: 20px;">Title:</label>
                 <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
@@ -125,17 +130,12 @@
             </div>
             <div class="form-group">
                 <label class="text-info" for="subject" style="font-size: 20px;">Subject:</label>
-                <select class="form-control text-info border-info" id="subjects" name="subjectId"
+                <select class="form-control text-info border-info" id="subject" name="subjectId"
                         style="background-color: transparent;">
                     <option th:each="s : ${subjects}" th:selected="${s.id==subject.id}" th:text="${s.name}"
                             th:value="${s.id}"></option>
                 </select>
             </div>
-            <dib>
-                <label for="tags">Tags</label>
-                <input class="text-light" th:each="tag:${tags}" th:field="*{tags}" th:text="${tag.name}" th:value="${tag.id}"
-                       type="checkbox">
-            </dib>
             <div class="form-group">
                 <label class="text-info" for="content" style="font-size: 20px;">Content:</label>
                 <textarea class="form-control text-info border-info" id="content" name="content"
