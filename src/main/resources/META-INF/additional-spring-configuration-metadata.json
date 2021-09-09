@@ -89,6 +89,16 @@
       "name": "app-status.comment.activated",
       "type": "java.lang.String",
       "description": "Description for app-status.comment.activated."
+    },
+    {
+      "name": "hazelcast.trace.comment.map-name",
+      "type": "java.lang.String",
+      "description": "Description for hazelcast.trace.comment.map-name."
+    },
+    {
+      "name": "hazelcast.trace.login.map-name",
+      "type": "java.lang.String",
+      "description": "Description for hazelcast.trace.login.map-name."
     }
   ]
 }

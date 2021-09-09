@@ -12,10 +12,14 @@ import lombok.NoArgsConstructor;
 public class ClientRequest {
 
     private String clientIpAddr;
-    private String requestUrl;
-    private String requestMethod;
+    private String requestName;
     private int requestCount;
     private long firstRequestTimeMs;
     private long lastRequestTimeMs;
+
+    public ClientRequest increaseRequestCount(){
+        requestCount++;
+        return this;
+    }
 
 }

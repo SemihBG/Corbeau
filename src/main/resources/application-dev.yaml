@@ -77,3 +77,11 @@ validation:
 app-status:
   comment:
     activated: true
+
+
+hazelcast:
+  trace:
+    comment:
+      map-name: comment-map
+    login:
+      map-name: login-map
