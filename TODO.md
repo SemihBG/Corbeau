@@ -7,7 +7,7 @@
 - Post and subject delete api +
 - Wrong subject, post, tag error handling
 - Post update thumbnail +
-- Post update description
+- Post update description +
 - Image delete
 
 ## Further Update
