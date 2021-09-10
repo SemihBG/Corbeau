@@ -8,28 +8,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentTraceService implements RequestTraceService{
+public class LoginTraceService implements RequestTraceService{
 
-    private final IMap<String, ClientRequest> commentTraceMap;
+    private final IMap<String, ClientRequest> loginTraceMap;
 
     @Autowired
-    public CommentTraceService(@Qualifier("commentRequestTraceMap") IMap<String, ClientRequest> commentTraceMap) {
-        this.commentTraceMap = commentTraceMap;
+    public LoginTraceService(@Qualifier("loginRequestTraceMap") IMap<String, ClientRequest> loginTraceMap) {
+        this.loginTraceMap = loginTraceMap;
     }
 
     @Override
     public ClientRequest increaseAndUpdate(@NonNull String clientIpAddr) {
         var currentTimeMs = System.currentTimeMillis();
-        var clientRequest = commentTraceMap.get(clientIpAddr);
+        var clientRequest = loginTraceMap.get(clientIpAddr);
         if (clientRequest == null)
             clientRequest = ClientRequest.builder()
                     .clientIpAddr(clientIpAddr)
                     .firstRequestTimeMs(currentTimeMs)
                     .lastRequestTimeMs(currentTimeMs)
-                    .requestName(RequestTraceService.COMMENT_REQUEST_NAME)
+                    .requestName(RequestTraceService.LOGIN_REQUEST_NAME)
                     .requestCount(0)
                     .build();
-        return commentTraceMap.put(clientIpAddr, clientRequest.increaseRequestCount());
+        return loginTraceMap.put(clientIpAddr, clientRequest.increaseRequestCount());
     }
 
 }
