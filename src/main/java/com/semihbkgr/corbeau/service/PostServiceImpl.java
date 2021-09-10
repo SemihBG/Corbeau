@@ -40,6 +40,7 @@ public class PostServiceImpl implements PostService {
                     savedPost.setSubjectId(post.getSubjectId());
                     savedPost.setActivated(post.isActivated());
                     savedPost.setEndpoint(post.getEndpoint());
+                    savedPost.setThumbnailEndpoint(post.getThumbnailEndpoint());
                     return savedPost;
                 })
                 .flatMap(postRepository::update);
