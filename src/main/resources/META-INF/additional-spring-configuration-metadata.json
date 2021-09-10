@@ -99,6 +99,16 @@
       "name": "hazelcast.trace.login.map-name",
       "type": "java.lang.String",
       "description": "Description for hazelcast.trace.login.map-name."
+    },
+    {
+      "name": "image.rootDirectory",
+      "type": "java.lang.String",
+      "description": "Description for image.rootDirectory."
+    },
+    {
+      "name": "image.path.notFound",
+      "type": "java.lang.String",
+      "description": "Description for image.path.notFound."
     }
   ]
 }

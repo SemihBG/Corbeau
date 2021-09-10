@@ -22,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.client.HttpClientErrorException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -66,7 +65,13 @@ public class ApiController {
 
     @GetMapping(value = "/image/content/{full-name}", produces = MediaType.IMAGE_JPEG_VALUE)
     public Flux<DataBuffer> imageContent(@PathVariable("full-name") String fullName) {
-        return imageContentService.findByName(fullName);
+        return imageService.findByFullName(fullName)
+                .defaultIfEmpty(Image.EMPTY_IMAGE)
+                .flatMapMany(image->{
+                    if(image.getId()!=0)
+                        return imageContentService.findByName(fullName);
+                    return imageContentService.imageNotFound();
+                });
     }
 
     @GetMapping("/offer")

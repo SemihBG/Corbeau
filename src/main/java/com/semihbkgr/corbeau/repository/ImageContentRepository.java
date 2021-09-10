@@ -11,6 +11,8 @@ public interface ImageContentRepository {
 
     Flux<DataBuffer> findByName(String name);
 
+    Flux<DataBuffer> imageNotFound();
+
     Mono<Boolean> exists(String name);
 
     Mono<Void> delete(String name);

@@ -64,6 +64,9 @@ image:
       rootDirectory: images
   random:
     size: 8
+  path:
+    notFound: src/main/resources/static/image/image-not-found.png
+
 
 name-surname-offer:
   pairs: Harry Potter,Severus Snape,Ron Weasley,Hermione Grange r,Draco Malfoy,Albus Dumbledore,Forrest Gump,Lord Voldemort,Sirius Black
@@ -85,3 +88,4 @@ hazelcast:
       map-name: comment-map
     login:
       map-name: login-map
+

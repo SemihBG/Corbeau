@@ -92,6 +92,11 @@ public class ImageContentServiceImpl implements ImageContentService {
     }
 
     @Override
+    public Flux<DataBuffer> imageNotFound() {
+        return imageContentRepository.imageNotFound();
+    }
+
+    @Override
     public Mono<Void> delete(@NonNull String fullName) {
         return imageContentRepository
                 .exists(fullName)

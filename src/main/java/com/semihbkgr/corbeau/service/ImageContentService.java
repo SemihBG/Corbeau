@@ -14,6 +14,8 @@ public interface ImageContentService {
 
     Flux<DataBuffer> findByName(String name);
 
+    Flux<DataBuffer> imageNotFound();
+
     Mono<Void> delete(String fullName);
 
 }
