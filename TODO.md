@@ -9,6 +9,7 @@
 - Post update thumbnail +
 - Post update description +
 - Image delete
+- Image content imageNotFound
 
 ## Further Update
 - Redis cache

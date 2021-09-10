@@ -12,9 +12,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class TimeAuditable {
 
     @CreatedDate
-    private long createdAt;
+    protected long createdAt;
 
     @LastModifiedDate
-    private long updatedAt;
+    protected long updatedAt;
 
 }

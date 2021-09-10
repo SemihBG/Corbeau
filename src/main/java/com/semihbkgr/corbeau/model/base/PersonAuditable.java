@@ -12,9 +12,9 @@ import org.springframework.data.annotation.LastModifiedBy;
 public class PersonAuditable {
 
     @CreatedBy
-    private String createdBy;
+    protected String createdBy;
 
     @LastModifiedBy
-    private String updatedBy;
+    protected String updatedBy;
 
 }

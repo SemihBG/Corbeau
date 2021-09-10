@@ -14,15 +14,15 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class AllAuditable {
 
     @CreatedBy
-    private String createdBy;
+    protected String createdBy;
 
     @LastModifiedBy
-    private String updatedBy;
+    protected String updatedBy;
 
     @CreatedDate
-    private long createdAt;
+    protected long createdAt;
 
     @LastModifiedDate
-    private long updatedAt;
+    protected long updatedAt;
 
 }
