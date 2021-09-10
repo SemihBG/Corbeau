@@ -123,16 +123,22 @@
                        style="background-color: transparent" th:value="${post.title}" type="text">
             </div>
             <div class="form-group">
+                <label class="text-info" for="endpoint" style="font-size: 20px;">Endpoint:</label>
+                <input class="form-control text-info border-info" id="endpoint" name="endpoint"
+                       placeholder="Endpoint"
+                       style="background-color: transparent" th:value="${post.endpoint}" type="text">
+            </div>
+            <div class="form-group">
                 <label class="text-info" for="thumbnailEndpoint" style="font-size: 20px;">Thumbnail Endpoint:</label>
                 <input class="form-control text-info border-info" id="thumbnailEndpoint" name="thumbnailEndpoint"
                        placeholder="Thumbnail Endpoint"
                        style="background-color: transparent" th:value="${post.thumbnailEndpoint}" type="text">
             </div>
             <div class="form-group">
-                <label class="text-info" for="endpoint" style="font-size: 20px;">Endpoint:</label>
-                <input class="form-control text-info border-info" id="endpoint" name="endpoint"
-                       placeholder="Endpoint"
-                       style="background-color: transparent" th:value="${post.endpoint}" type="text">
+                <label class="text-info" for="description" style="font-size: 20px;">Description:</label>
+                <input class="form-control text-info border-info" id="description" name="description"
+                       placeholder="Description"
+                       style="background-color: transparent" th:value="${post.description}" type="text">
             </div>
             <div class="form-group">
                 <label class="text-info" for="subject" style="font-size: 20px;">Subject:</label>
