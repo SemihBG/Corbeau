@@ -87,9 +87,9 @@
             <th>Resolution</th>
             <th>Size</th>
             <th>CreatedBy</th>
-            <th>UpdatedBy</th>
             <th>CreatedAt</th>
-            <th>UpdatedAt</th>
+            <th>View</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -100,13 +100,16 @@
             <td th:text="${image.size}"></td>
             <td th:if="${image.createdBy}!=${null}" th:text="${image.getCreatedBy()}"></td>
             <td th:unless="${image.createdBy}!=${null}">None</td>
-            <td th:if="${image.updatedBy}!=${null}" th:text="${image.updatedBy}"></td>
-            <td th:unless="${image.updatedBy}!=${null}">None</td>
             <td th:if="${image.createdAt}>0" th:text="${#dates.format(image.createdAt, 'dd-MM-yyyy')}"></td>
             <td th:unless="${image.createdAt}>0">None</td>
-            <td th:if="${image.createdAt}!=${image.updatedAt}"
-                th:text="${#dates.format(image.updatedAt, 'dd-MM-yyyy')}"></td>
-            <td th:unless="${image.createdAt}!=${image.updatedAt}">None</td>
+            <td><a target="_blank" th:href="'/api/image/content/'+${image.name}+'.'+${image.extension}"><i
+                    class="fas fa-eye text-light"></i></a></td>
+            <td>
+                <form method="post" th:action="'/moderation/image/delete/'+${image.name}+'.'+${image.extension}">
+                    <button style="background-color: transparent; border: none"><i
+                            class="fas fa-trash-alt text-light"></i></button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

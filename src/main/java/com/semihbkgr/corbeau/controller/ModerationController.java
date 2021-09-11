@@ -278,6 +278,13 @@ public class ModerationController {
                 .then(Mono.just("redirect:/moderation/image"));
     }
 
+    @PostMapping("/image/delete/{full-name}")
+    public Mono<String> imageDeleteProcess(@PathVariable("full-name")String fullName) {
+        return imageService.deleteByFullName(fullName)
+                .then(imageContentService.delete(fullName))
+                .then(Mono.just("redirect:/moderation/image"));
+    }
+
     @GetMapping("/comment")
     public Mono<String> comment(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
                                 final Model model){

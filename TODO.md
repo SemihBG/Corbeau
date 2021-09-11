@@ -8,8 +8,9 @@
 - Wrong subject, post, tag error handling
 - Post update thumbnail +
 - Post update description +
-- Image delete
-- Image content imageNotFound
+- Image delete +
+- Image content imageNotFound +
+- Moderation uniq value duplication error handling
 
 ## Further Update
 - Redis cache
@@ -28,3 +29,4 @@
 - Moderation menu page
 - Review database queries
 - Review projection models
+- Keep sync image files and table
