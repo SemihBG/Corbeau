@@ -105,7 +105,7 @@ public class ApplicationController {
                 .map(subjectList -> {
                     model.addAttribute("subjects", subjectList);
                     return "tag";
-                });
+                }).onErrorReturn("redirect:/subject");
     }
 
     @GetMapping("/post/{endpoint}")
