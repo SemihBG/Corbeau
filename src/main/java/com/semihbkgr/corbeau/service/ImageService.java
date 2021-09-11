@@ -19,4 +19,7 @@ public interface ImageService {
     Mono<Long> count();
 
     Mono<Void> deleteById(int id) throws IllegalValueException;
+
+    Mono<Void> deleteByFullName(String fullName);
+
 }

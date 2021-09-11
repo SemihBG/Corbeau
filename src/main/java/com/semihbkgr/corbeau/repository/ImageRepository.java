@@ -14,4 +14,6 @@ public interface ImageRepository extends R2dbcRepository<Image, Integer> {
 
     Mono<Image> findOneByNameAndExtension(String name, String extension);
 
+    Mono<Void> deleteByNameAndExtension(String name,String extension);
+
 }

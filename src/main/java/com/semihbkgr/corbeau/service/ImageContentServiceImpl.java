@@ -100,7 +100,7 @@ public class ImageContentServiceImpl implements ImageContentService {
     public Mono<Void> delete(@NonNull String fullName) {
         return imageContentRepository
                 .exists(fullName)
-                .filter(exists -> !exists)
+                .filter(exists -> exists)
                 .switchIfEmpty(Mono.error(IllegalArgumentException::new))
                 .then(imageContentRepository.delete(fullName));
     }

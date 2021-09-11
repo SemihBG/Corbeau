@@ -64,4 +64,10 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.deleteById(id);
     }
 
+    @Override
+    public Mono<Void> deleteByFullName(String fullName) {
+        var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
+        return imageRepository.deleteByNameAndExtension(nameExtPair.getFirst(),nameExtPair.getSecond());
+    }
+
 }
