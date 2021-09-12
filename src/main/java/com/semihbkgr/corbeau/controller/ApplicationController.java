@@ -3,6 +3,7 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.component.AppStatus;
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
+import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.projection.combination.PostDeepTagList;
 import com.semihbkgr.corbeau.model.projection.combination.PostInfoTagList;
 import com.semihbkgr.corbeau.service.CommentService;
@@ -77,7 +78,9 @@ public class ApplicationController {
                 .map(subjectList -> {
                     model.addAttribute("subjects", subjectList);
                     return "subject";
-                });
+                })
+                .defaultIfEmpty("redirect:/")
+                .onErrorReturn("redirect:/");
     }
 
     @GetMapping("/tag/{tag_name}")
@@ -105,7 +108,9 @@ public class ApplicationController {
                 .map(subjectList -> {
                     model.addAttribute("subjects", subjectList);
                     return "tag";
-                }).onErrorReturn("redirect:/subject");
+                })
+                .defaultIfEmpty("redirect:/")
+                .onErrorReturn("redirect:/");
     }
 
     @GetMapping("/post/{endpoint}")
@@ -136,7 +141,9 @@ public class ApplicationController {
                     model.addAttribute("offerSurname", pair.getSecond());
                     model.addAttribute("appStatus", appStatus);
                     return "post";
-                });
+                })
+                .defaultIfEmpty("redirect:/")
+                .onErrorReturn("redirect:/");
     }
 
     @GetMapping("/search")
