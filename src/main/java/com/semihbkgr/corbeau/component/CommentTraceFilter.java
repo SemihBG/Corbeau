@@ -2,7 +2,6 @@ package com.semihbkgr.corbeau.component;
 
 import com.semihbkgr.corbeau.service.RequestTraceService;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
