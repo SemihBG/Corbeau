@@ -24,7 +24,7 @@ public class CommentTraceFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        if(!serverWebExchange.getRequest().getURI().toString().startsWith("/moderation/login"))
+        if (!serverWebExchange.getRequest().getURI().toString().startsWith("/moderation/login"))
             return webFilterChain.filter(serverWebExchange);
         InetSocketAddress clientRemoteAddress = serverWebExchange.getRequest().getRemoteAddress();
         if (clientRemoteAddress == null)

@@ -4,7 +4,7 @@ import org.springframework.ui.Model;
 
 public class PageUtils {
 
-    public static  void addPabeAttributedToModel(Model model, long count, int pageIndex, int pageSize){
+    public static void addPabeAttributedToModel(Model model, long count, int pageIndex, int pageSize) {
         var pageCount = (int) Math.ceil((double) count / pageSize);
         model.addAttribute("count", count);
         model.addAttribute("count", count);

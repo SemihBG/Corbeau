@@ -42,7 +42,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Mono<TagDeep> findByNameAndPostActivatedDeep(@NonNull String name, boolean activated) {
-        return tagRepository.findByNameAndPostActivatedDeep(name,activated);
+        return tagRepository.findByNameAndPostActivatedDeep(name, activated);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Flux<Tag> findAllByPostId(int postId) throws IllegalValueException{
+    public Flux<Tag> findAllByPostId(int postId) throws IllegalValueException {
         if (postId <= 0)
             throw new IllegalValueException("postId must be positive value", TagRepository.TABLE_NAME, "post_id", postId);
         return tagRepository.findAllByPostId(postId);
@@ -68,7 +68,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Mono<Integer> deleteById(int id)  throws IllegalValueException{
+    public Mono<Integer> deleteById(int id) throws IllegalValueException {
         if (id <= 0)
             throw new IllegalValueException("id must be positive value", TagRepository.TABLE_NAME, "id", id);
         return tagRepository.deleteById(id);

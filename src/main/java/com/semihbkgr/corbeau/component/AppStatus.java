@@ -1,7 +1,7 @@
 package com.semihbkgr.corbeau.component;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,8 @@ public class AppStatus {
     public void updateStatus(@NonNull StatusUpdateModel statusUpdateModel) {
         if (statusUpdateModel instanceof CommentStatusUpdateModel) {
             CommentStatusUpdateModel commentStatusUpdateModel = (CommentStatusUpdateModel) statusUpdateModel;
-            commentActivated=commentStatusUpdateModel.activated;
-            log.info("Comment status updated successfully, CommentActive: {}",commentActivated);
+            commentActivated = commentStatusUpdateModel.activated;
+            log.info("Comment status updated successfully, CommentActive: {}", commentActivated);
         } else {
             throw new IllegalArgumentException("UpdateStatusModel parameter instance class cannot be handled");
         }

@@ -61,7 +61,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    model.addAttribute("appStatus",appStatus);
+                    model.addAttribute("appStatus", appStatus);
                     return "/moderation/menu";
                 });
     }
@@ -126,14 +126,14 @@ public class ModerationController {
     }
 
     @PostMapping("/tag")
-    public Mono<String> tagSave(@ModelAttribute Tag tag){
+    public Mono<String> tagSave(@ModelAttribute Tag tag) {
         return tagService.save(tag)
                 .thenReturn("redirect:/moderation/tag");
     }
 
     @PostMapping("/tag/{id}")
-    public Mono<String> tagUpdate(@PathVariable("id") int id,@ModelAttribute Tag tag){
-        return tagService.update(id,tag)
+    public Mono<String> tagUpdate(@PathVariable("id") int id, @ModelAttribute Tag tag) {
+        return tagService.update(id, tag)
                 .thenReturn("redirect:/moderation/tag");
     }
 
@@ -181,8 +181,8 @@ public class ModerationController {
                     model.addAttribute("post", post);
                     return tagService.findAllByPostId(post.getId())
                             .collectList()
-                            .flatMap(tagList->{
-                                model.addAttribute("tags",tagList);
+                            .flatMap(tagList -> {
+                                model.addAttribute("tags", tagList);
                                 return subjectService.findById(post.getSubjectId());
                             });
                 })
@@ -196,8 +196,8 @@ public class ModerationController {
                     return tagService.findAll();
                 })
                 .collectList()
-                .map(tagList->{
-                    model.addAttribute("allTags",tagList);
+                .map(tagList -> {
+                    model.addAttribute("allTags", tagList);
                     return "/moderation/post-update";
                 });
     }
@@ -216,19 +216,18 @@ public class ModerationController {
         return postService.update(id, postUpdate)
                 .flatMap(updatedPost -> {
                     model.addAttribute("post", updatedPost);
-                    return postService.updateTagPostJoin(id,postUpdate.getTags()!=null?postUpdate.getTags(): Collections.emptyList())
+                    return postService.updateTagPostJoin(id, postUpdate.getTags() != null ? postUpdate.getTags() : Collections.emptyList())
                             .thenReturn("redirect:/moderation/post/" + updatedPost.getEndpoint());
                 });
     }
 
     @PostMapping("/post/delete/{id}")
     public Mono<String> postDeleteProcess(@PathVariable("id") int id) {
-        return postService.updateTagPostJoin(id,Collections.emptyList())
+        return postService.updateTagPostJoin(id, Collections.emptyList())
                 .then(commentService.deleteAllByPostId(id))
                 .then(postService.deletePost(id))
                 .thenReturn("redirect:/moderation/post");
     }
-
 
 
     @GetMapping("/image")
@@ -279,7 +278,7 @@ public class ModerationController {
     }
 
     @PostMapping("/image/delete/{full-name}")
-    public Mono<String> imageDeleteProcess(@PathVariable("full-name")String fullName) {
+    public Mono<String> imageDeleteProcess(@PathVariable("full-name") String fullName) {
         return imageService.deleteByFullName(fullName)
                 .then(imageContentService.delete(fullName))
                 .then(Mono.just("redirect:/moderation/image"));
@@ -287,44 +286,43 @@ public class ModerationController {
 
     @GetMapping("/comment")
     public Mono<String> comment(@RequestParam(value = "p", required = false, defaultValue = "1") String pageStr,
-                                final Model model){
+                                final Model model) {
         int index = ParameterUtils.parsePageToIndex(pageStr);
         if (index == -1) return Mono.just("redirect:/moderation/comment?p=1");
-        var commentsReactiveData=new ReactiveDataDriverContextVariable(
-                commentService.findAllDeep(PageRequest.of(index,COMMENT_COUNT,Sort.by("updated_at").descending()))
-                ,1);
-        model.addAttribute("comments",commentsReactiveData);
+        var commentsReactiveData = new ReactiveDataDriverContextVariable(
+                commentService.findAllDeep(PageRequest.of(index, COMMENT_COUNT, Sort.by("updated_at").descending()))
+                , 1);
+        model.addAttribute("comments", commentsReactiveData);
         return commentService.count()
-                .flatMap(count->{
-                    PageUtils.addPabeAttributedToModel(model,count,index,COMMENT_COUNT);
+                .flatMap(count -> {
+                    PageUtils.addPabeAttributedToModel(model, count, index, COMMENT_COUNT);
                     return ReactiveSecurityContextHolder.getContext();
                 }).map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    model.addAttribute("appStatus",appStatus);
+                    model.addAttribute("appStatus", appStatus);
                     return "/moderation/comment";
                 });
     }
 
     @PostMapping("/comment")
-    public String commentStatusUpdate(@ModelAttribute AppStatus.CommentStatusUpdateModel commentStatusUpdateModel){
+    public String commentStatusUpdate(@ModelAttribute AppStatus.CommentStatusUpdateModel commentStatusUpdateModel) {
         appStatus.updateStatus(commentStatusUpdateModel);
         return "redirect:/moderation/comment";
     }
 
 
     @PostMapping("/comment/{id}")
-    public Mono<String> commentUpdate(@PathVariable("id") int id, @ModelAttribute Comment comment){
-        return commentService.update(id,comment)
+    public Mono<String> commentUpdate(@PathVariable("id") int id, @ModelAttribute Comment comment) {
+        return commentService.update(id, comment)
                 .thenReturn("redirect:/moderation/comment");
     }
 
     @PostMapping("/comment/delete/{id}")
-    public Mono<String> commentUpdate(@PathVariable("id") int id){
+    public Mono<String> commentUpdate(@PathVariable("id") int id) {
         return commentService.deleteById(id)
                 .thenReturn("redirect:/moderation/comment");
     }
-
 
 
 }

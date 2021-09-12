@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 public interface TagRepository {
 
-    String TABLE_NAME="tags";
+    String TABLE_NAME = "tags";
 
     Mono<Tag> save(Tag tag);
 

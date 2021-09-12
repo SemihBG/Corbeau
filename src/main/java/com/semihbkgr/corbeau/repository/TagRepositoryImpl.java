@@ -31,7 +31,7 @@ public class TagRepositoryImpl implements TagRepository {
                     "(SELECT COUNT(*) FROM db.tags_posts_join WHERE tag_id=id) as post_count " +
                     "FROM db.tags";
 
-    static final String SQL_SELECT_ALL_TAG_BY_ACTIVATED_DEEP=
+    static final String SQL_SELECT_ALL_TAG_BY_ACTIVATED_DEEP =
             "SELECT tags.id,tags.name,tags.created_by,tags.updated_by, " +
                     "tags.created_at, tags.updated_at, " +
                     "(SELECT COUNT(*) FROM tags_posts_join " +
@@ -76,8 +76,8 @@ public class TagRepositoryImpl implements TagRepository {
     public Mono<TagDeep> findByNameAndPostActivatedDeep(String name, boolean activated) {
         return template.getDatabaseClient()
                 .sql(SQL_SELECT_TAG_BY_NAME_AND_POST_ACTIVATED_DEEP)
-                .bind(0,activated)
-                .bind(1,name)
+                .bind(0, activated)
+                .bind(1, name)
                 .map(TAG_DEEP_MAPPER)
                 .all()
                 .single();
@@ -90,7 +90,7 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public Mono<Tag> findByName(@NonNull String name) {
-        return template.selectOne(Query.query(Criteria.where("name").is(name)),Tag.class);
+        return template.selectOne(Query.query(Criteria.where("name").is(name)), Tag.class);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class TagRepositoryImpl implements TagRepository {
     public Flux<TagDeep> findAllByActivatedDeep(boolean activated) {
         return template.getDatabaseClient()
                 .sql(SQL_SELECT_ALL_TAG_BY_ACTIVATED_DEEP)
-                .bind(0,activated)
+                .bind(0, activated)
                 .map(TAG_DEEP_MAPPER)
                 .all();
     }

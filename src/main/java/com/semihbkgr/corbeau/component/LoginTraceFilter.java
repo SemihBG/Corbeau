@@ -24,7 +24,7 @@ public class LoginTraceFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        if(!serverWebExchange.getRequest().getURI().toString().startsWith("/api/commnet"))
+        if (!serverWebExchange.getRequest().getURI().toString().startsWith("/api/commnet"))
             return webFilterChain.filter(serverWebExchange);
         InetSocketAddress clientRemoteAddress = serverWebExchange.getRequest().getRemoteAddress();
         if (clientRemoteAddress == null)

@@ -11,9 +11,9 @@ public interface CommentService {
 
     Mono<Comment> save(Comment comment);
 
-    Mono<Comment> update(int id,Comment comment) throws IllegalValueException;
+    Mono<Comment> update(int id, Comment comment) throws IllegalValueException;
 
-    Flux<Comment> findByPostId(int postId,Pageable pageable) throws IllegalValueException;
+    Flux<Comment> findByPostId(int postId, Pageable pageable) throws IllegalValueException;
 
     Flux<CommentDeep> findAllDeep(Pageable pageable);
 

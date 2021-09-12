@@ -20,7 +20,7 @@ public class RandomImageGenerator {
 
     static final int DEFAULT_GENERATION_SIZE = 8;
     static final int DEFAULT_SCALE_BY = 8;
-    static final int MIN_DRAWN_SQUARE_COUNT=4;
+    static final int MIN_DRAWN_SQUARE_COUNT = 4;
 
     private final int size;
     private final DefaultDataBufferFactory dataBufferFactory;
@@ -37,22 +37,21 @@ public class RandomImageGenerator {
             Mono.error(new IllegalArgumentException());
         return Mono.create(monoSink -> {
             try {
-                var r=new Random((long) seed.length()* seed.length() * seed.chars().sum());
+                var r = new Random((long) seed.length() * seed.length() * seed.chars().sum());
                 final float hue = r.nextFloat();
                 final float saturation = (r.nextInt(2000) + 1000) / 10000f;
                 final float luminance = 0.9f;
                 final Color color = Color.getHSBColor(hue, saturation, luminance);
                 var targetSize = size * scaleBy;
                 var bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_4BYTE_ABGR);
-                var drawnSquareCount=0;
-                while(drawnSquareCount<MIN_DRAWN_SQUARE_COUNT)
+                var drawnSquareCount = 0;
+                while (drawnSquareCount < MIN_DRAWN_SQUARE_COUNT)
                     for (var i = 0; i < size / 2; i++)
                         for (var j = 0; j < size; j++)
-                            if (r.nextFloat()<.17f){
+                            if (r.nextFloat() < .17f) {
                                 bufferedImage.setRGB(i, j, color.getRGB());
                                 drawnSquareCount++;
-                            }
-                            else
+                            } else
                                 bufferedImage.setRGB(i, j, 0xff000000);
                 for (var i = size / 2; i < size; i++)
                     for (var j = 0; j < size; j++)

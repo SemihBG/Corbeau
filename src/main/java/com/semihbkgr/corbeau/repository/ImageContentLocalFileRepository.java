@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,11 +31,11 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
     @Autowired
     public ImageContentLocalFileRepository(@Value("${image.repository.local.rootDirectory}") String rootDirectory,
                                            @Value("${image.removeIfExists:#{null}}") Boolean removeIfExists,
-                                           @Value("${image.path.notFound}")String imageNotFoundImagePath) {
+                                           @Value("${image.path.notFound}") String imageNotFoundImagePath) {
         this.rootDirectory = rootDirectory;
         this.rootDirectoryPath = Path.of(rootDirectory);
         this.removeIfExists = removeIfExists != null ? removeIfExists : false;
-        this.imageNotFoundImagePath=imageNotFoundImagePath;
+        this.imageNotFoundImagePath = imageNotFoundImagePath;
     }
 
     @PostConstruct
@@ -64,12 +63,12 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
                         , deletedFileCount.get(), failedFileCount.get());
             }
         }
-        log.info("ImageNotFoundImagePath: {}",imageNotFoundImagePath);
-        var imageNotFoundPath=Path.of(imageNotFoundImagePath);
-        if(Files.exists(imageNotFoundPath)){
-            this.imageNotFoundDataBufferFlux =DataBufferUtils.read(imageNotFoundPath, new DefaultDataBufferFactory(), 4096);
-        }else
-            throw new IllegalArgumentException("No Image found by given path, ImageNotFoundImagePath: "+imageNotFoundImagePath);
+        log.info("ImageNotFoundImagePath: {}", imageNotFoundImagePath);
+        var imageNotFoundPath = Path.of(imageNotFoundImagePath);
+        if (Files.exists(imageNotFoundPath)) {
+            this.imageNotFoundDataBufferFlux = DataBufferUtils.read(imageNotFoundPath, new DefaultDataBufferFactory(), 4096);
+        } else
+            throw new IllegalArgumentException("No Image found by given path, ImageNotFoundImagePath: " + imageNotFoundImagePath);
     }
 
     @Override

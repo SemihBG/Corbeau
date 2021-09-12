@@ -1,18 +1,5 @@
 # TODO
 
-## MVP Features
-- Assign tags to posts +
-- Activate inactive for making a comment +
-- Track comment count and login attempt made from same ip in short period of time
-- Post and subject delete api +
-- Wrong subject, post, tag error handling +
-- Post update thumbnail +
-- Post update description +
-- Image delete +
-- Image content imageNotFound +
-- Moderation uniq value duplication error handling
-
-## Further Update
 - Redis cache
 - Enable to add new moderator account
 - Check priveleges by moderator's role

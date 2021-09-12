@@ -43,8 +43,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
                             .createdAt(row.get("created_at", Long.class))
                             .updatedAt(row.get("updated_at", Long.class))
                             .postCount(row.get("post_count", Long.class))
-                            .build()
-            ;
+                            .build();
 
     private final R2dbcEntityTemplate template;
 

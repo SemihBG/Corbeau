@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentTraceService implements RequestTraceService{
+public class CommentTraceService implements RequestTraceService {
 
     private final IMap<String, ClientRequest> commentTraceMap;
 

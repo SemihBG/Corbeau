@@ -3,7 +3,6 @@ package com.semihbkgr.corbeau.controller;
 import com.semihbkgr.corbeau.component.AppStatus;
 import com.semihbkgr.corbeau.component.NameSurnameOfferComponent;
 import com.semihbkgr.corbeau.model.Post;
-import com.semihbkgr.corbeau.model.Subject;
 import com.semihbkgr.corbeau.model.projection.combination.PostDeepTagList;
 import com.semihbkgr.corbeau.model.projection.combination.PostInfoTagList;
 import com.semihbkgr.corbeau.service.CommentService;

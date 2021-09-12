@@ -26,8 +26,8 @@ public class ValidationConfig {
                 messageSourcePath : DEFAULT_MESSAGE_SOURCE_PATH;
         this.messageSourceEncoding = messageSourceEncoding != null ?
                 messageSourceEncoding : DEFAULT_MESSAGE_SOURCE_ENCODEING;
-        log.info("Message Source Path: {}",messageSourcePath);
-        log.info("Message Source Encoding: {}",messageSourceEncoding);
+        log.info("Message Source Path: {}", messageSourcePath);
+        log.info("Message Source Encoding: {}", messageSourceEncoding);
     }
 
     @Bean

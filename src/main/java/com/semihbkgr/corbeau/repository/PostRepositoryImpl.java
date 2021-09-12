@@ -382,7 +382,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Mono<Integer> deleteByPostId(int id) {
-        return template.delete(query(where("id").is(id)),Post.class);
+        return template.delete(query(where("id").is(id)), Post.class);
     }
 
     @Override
@@ -391,10 +391,10 @@ public class PostRepositoryImpl implements PostRepository {
                 .sql(SQL_POST_TAG_JOIN_DELETE_ALL_BY_POST_ID)
                 .bind(0, postId)
                 .then()
-                .thenMany(Flux.range(0,tagsId.size()))
-                .flatMap(i-> template.getDatabaseClient().sql("INSERT INTO tags_posts_join (tag_id,post_id) VALUES (?,?)")
-                        .bind(0,tagsId.get(i))
-                        .bind(1,postId)
+                .thenMany(Flux.range(0, tagsId.size()))
+                .flatMap(i -> template.getDatabaseClient().sql("INSERT INTO tags_posts_join (tag_id,post_id) VALUES (?,?)")
+                        .bind(0, tagsId.get(i))
+                        .bind(1, postId)
                         .then())
                 .then();
     }

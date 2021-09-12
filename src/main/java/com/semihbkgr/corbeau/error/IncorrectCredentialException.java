@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IncorrectCredentialException extends RuntimeException{
+public class IncorrectCredentialException extends RuntimeException {
 
     private List<Credential> incorrectCredentialList;
 
@@ -16,22 +16,22 @@ public class IncorrectCredentialException extends RuntimeException{
         this.incorrectCredentialList = incorrectCredentialList;
     }
 
-    public void addIncorrectCredential(@NonNull Credential credential){
-        if(incorrectCredentialList==null)
-           this.incorrectCredentialList=new ArrayList<>();
+    public void addIncorrectCredential(@NonNull Credential credential) {
+        if (incorrectCredentialList == null)
+            this.incorrectCredentialList = new ArrayList<>();
         incorrectCredentialList.add(credential);
     }
 
-    public void addIncorrectCredential(@NonNull String name,@NonNull String value){
+    public void addIncorrectCredential(@NonNull String name, @NonNull String value) {
         addIncorrectCredential(Credential.builder().name(name).value(value).build());
     }
 
-    public boolean hasIncorrectCredential(){
-        return this.incorrectCredentialList!=null;
+    public boolean hasIncorrectCredential() {
+        return this.incorrectCredentialList != null;
     }
 
-    public void throwIfHasIncorrectCredential() throws IncorrectCredentialException{
-        if(hasIncorrectCredential())
+    public void throwIfHasIncorrectCredential() throws IncorrectCredentialException {
+        if (hasIncorrectCredential())
             throw this;
     }
 
@@ -39,7 +39,7 @@ public class IncorrectCredentialException extends RuntimeException{
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class Credential{
+    public static class Credential {
         private String name;
         private String value;
     }

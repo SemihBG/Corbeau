@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 
 public interface ImageContentService {
 
-    Mono<Image> save(String name,Mono<FilePart> filePartMono);
+    Mono<Image> save(String name, Mono<FilePart> filePartMono);
 
-    Mono<Image> update(String fullName,String newName, Mono<FilePart> filePartMono);
+    Mono<Image> update(String fullName, String newName, Mono<FilePart> filePartMono);
 
     Flux<DataBuffer> findByName(String name);
 

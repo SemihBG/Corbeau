@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange()
-                .pathMatchers("/moderation/login","/moderation").permitAll()
+                .pathMatchers("/moderation/login", "/moderation").permitAll()
                 .pathMatchers("/moderation/**").authenticated()
                 .anyExchange().permitAll()
                 .and()

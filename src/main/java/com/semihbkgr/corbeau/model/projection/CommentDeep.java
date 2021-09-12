@@ -17,8 +17,8 @@ public class CommentDeep {
     private String email;
     private String content;
     private int postId;
-    private long  createdAt;
-    private long  updatedAt;
+    private long createdAt;
+    private long updatedAt;
     private String postTitle;
 
 }

@@ -109,7 +109,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Mono<Void> updateTagPostJoin(int postId, @NonNull List<Integer> tagsId) {
-        return postRepository.updateTagPostJoin(postId,tagsId);
+        return postRepository.updateTagPostJoin(postId, tagsId);
     }
 
 }

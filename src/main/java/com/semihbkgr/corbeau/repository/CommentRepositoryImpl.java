@@ -75,8 +75,8 @@ public class CommentRepositoryImpl implements CommentRepository {
                     "JOIN posts on comments.post_id = posts.id";
 
     static final BiFunction<Row, RowMetadata, Comment> COMMENT_MAPPER =
-            (row, rowMetadata) ->{
-                var comment= Comment.builder()
+            (row, rowMetadata) -> {
+                var comment = Comment.builder()
                         .id(row.get("id", Integer.class))
                         .name(row.get("name", String.class))
                         .surname(row.get("surname", String.class))
@@ -89,19 +89,19 @@ public class CommentRepositoryImpl implements CommentRepository {
                 return comment;
             };
 
-    static final BiFunction<Row, RowMetadata, CommentDeep> COMMENT_DEEP_MAPPER=
+    static final BiFunction<Row, RowMetadata, CommentDeep> COMMENT_DEEP_MAPPER =
             (row, rowMetadata) ->
-                CommentDeep.builder()
-                        .id(row.get("id", Integer.class))
-                        .name(row.get("name", String.class))
-                        .surname(row.get("surname", String.class))
-                        .email(row.get("email", String.class))
-                        .content(row.get("content", String.class))
-                        .postId(row.get("post_id", Integer.class))
-                        .createdAt(row.get("created_at", Long.class))
-                        .updatedAt(row.get("updated_at", Long.class))
-                        .postTitle(row.get("post_title",String.class))
-                        .build();
+                    CommentDeep.builder()
+                            .id(row.get("id", Integer.class))
+                            .name(row.get("name", String.class))
+                            .surname(row.get("surname", String.class))
+                            .email(row.get("email", String.class))
+                            .content(row.get("content", String.class))
+                            .postId(row.get("post_id", Integer.class))
+                            .createdAt(row.get("created_at", Long.class))
+                            .updatedAt(row.get("updated_at", Long.class))
+                            .postTitle(row.get("post_title", String.class))
+                            .build();
 
     private final R2dbcEntityTemplate template;
 
@@ -117,7 +117,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Mono<Comment> findById(int id) {
-        return template.selectOne(Query.query(Criteria.where("id").is(id)),Comment.class);
+        return template.selectOne(Query.query(Criteria.where("id").is(id)), Comment.class);
     }
 
     @Override
@@ -176,22 +176,22 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Mono<Integer> deleteById(int id) {
-        return template.delete(Query.query(Criteria.where("id").is(id)),Comment.class);
+        return template.delete(Query.query(Criteria.where("id").is(id)), Comment.class);
     }
 
     @Override
     public Mono<Long> count() {
-        return template.count(Query.query(Criteria.empty()),Comment.class);
+        return template.count(Query.query(Criteria.empty()), Comment.class);
     }
 
     @Override
     public Mono<Long> countByPostId(int postId) {
-        return template.count(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
+        return template.count(Query.query(Criteria.where("post_id").is(postId)), Comment.class);
     }
 
     @Override
     public Mono<Integer> deleteAllByPostId(int postId) {
-        return template.delete(Query.query(Criteria.where("post_id").is(postId)),Comment.class);
+        return template.delete(Query.query(Criteria.where("post_id").is(postId)), Comment.class);
     }
 
     private String formatOrderedQuery(String query, Sort sort) throws IllegalArgumentException {
