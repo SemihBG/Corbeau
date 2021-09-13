@@ -29,7 +29,9 @@ public class CommentTraceService implements RequestTraceService {
                     .requestName(RequestTraceService.COMMENT_REQUEST_NAME)
                     .requestCount(0)
                     .build();
-        return commentTraceMap.put(clientIpAddr, clientRequest.increaseRequestCount());
+        clientRequest.increaseRequestCount();
+        commentTraceMap.putAsync(clientIpAddr, clientRequest);
+        return clientRequest;
     }
 
 }

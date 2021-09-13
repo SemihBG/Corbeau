@@ -29,7 +29,9 @@ public class LoginTraceService implements RequestTraceService{
                     .requestName(RequestTraceService.LOGIN_REQUEST_NAME)
                     .requestCount(0)
                     .build();
-        return loginTraceMap.put(clientIpAddr, clientRequest.increaseRequestCount());
+        clientRequest.increaseRequestCount();
+        loginTraceMap.putAsync(clientIpAddr, clientRequest);
+        return clientRequest;
     }
 
 }

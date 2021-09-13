@@ -19,10 +19,9 @@ public class ClientRequest implements Serializable {
     private long firstRequestTimeMs;
     private long lastRequestTimeMs;
 
-    public ClientRequest increaseRequestCount() {
+    public void increaseRequestCount() {
         this.lastRequestTimeMs = System.currentTimeMillis();
         this.requestCount++;
-        return this;
     }
 
 }

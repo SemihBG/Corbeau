@@ -4,6 +4,7 @@ import com.semihbkgr.corbeau.service.RequestTraceService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -24,7 +25,7 @@ public class CommentTraceFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        if (!serverWebExchange.getRequest().getURI().toString().startsWith("/moderation/login"))
+        if (!serverWebExchange.getRequest().getPath().toString().startsWith("/api/comment") || serverWebExchange.getRequest().getMethod() != HttpMethod.POST)
             return webFilterChain.filter(serverWebExchange);
         InetSocketAddress clientRemoteAddress = serverWebExchange.getRequest().getRemoteAddress();
         if (clientRemoteAddress == null)
@@ -33,7 +34,7 @@ public class CommentTraceFilter implements WebFilter {
         if (clientIpAddr == null)
             return Mono.error(new IllegalStateException("Client ip address is null"));
         var clientRequest = commentTraceRepository.increaseAndUpdate(clientIpAddr);
-        if (clientRequest.getRequestCount() < 5)
+        if (clientRequest.getRequestCount() <= 5)
             return webFilterChain.filter(serverWebExchange);
         else return Mono.empty();
     }
