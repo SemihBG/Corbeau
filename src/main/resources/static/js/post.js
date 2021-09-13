@@ -1,12 +1,15 @@
 // noinspection DuplicatedCode
 
 function addComment(comment, addFirst) {
-    if(comment.hasOwnProperty("clientRequest")) return;
+    if (!comment.hasOwnProperty("name") ||
+        !comment.hasOwnProperty("surname") ||
+        !comment.hasOwnProperty("email") ||
+        !comment.hasOwnProperty("content")) return;
     const commentP = document.createElement("a");
     commentP.classList.add("list-group-item");
     commentP.classList.add("list-group-item-action");
     commentP.classList.add("bg-dark");
-    commentP.style.marginTop="1%";
+    commentP.style.marginTop = "1%";
     const imageImg = document.createElement("img");
     imageImg.id = "image-" + comment.name;
     imageImg.src = "/api/image/random/" + comment.name;
@@ -29,7 +32,13 @@ function addComment(comment, addFirst) {
     surnameP.style.fontSize = "19px";
     surnameP.style.marginLeft = "10px";
     const timeP = document.createElement("p");
-    timeP.innerHTML = (new Date(comment.createdAt)).toLocaleString("en-US", {hour:'numeric', minute:'numeric' , year: 'numeric', month: 'numeric', day: 'numeric'});
+    timeP.innerHTML = (new Date(comment.createdAt)).toLocaleString("en-US", {
+        hour: 'numeric',
+        minute: 'numeric',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    });
     timeP.classList.add("text-light");
     timeP.style.float = "right";
     timeP.style.display = "inline";
@@ -66,14 +75,14 @@ const EMAIL_MAX_LENGTH = 64;
 const CONTENT_MIN_LENGTH = 4;
 const CONTENT_MAX_LENGTH = 256;
 
-var loadCount=0;
-var loadedCommentCount=0;
+var loadCount = 0;
+var loadedCommentCount = 0;
 
 
 function sendComment() {
 
-    const commentWarn=document.getElementById("comment-warn");
-    commentWarn.style.display="none";
+    const commentWarn = document.getElementById("comment-warn");
+    commentWarn.style.display = "none";
 
     //display none all warn
     const nameWarn = document.getElementById("name-warn");
@@ -160,9 +169,9 @@ function sendComment() {
         },
         error: function (data) {
             const errorResonse = JSON.parse(JSON.stringify(data.responseJSON));
-            commentWarn.style.display="block";
-            errorResonse.fieldErrors.forEach((fieldError)=>{
-                commentWarn.innerHTML+=commentWarn.innerHTML+fieldError.message;
+            commentWarn.style.display = "block";
+            errorResonse.fieldErrors.forEach((fieldError) => {
+                commentWarn.innerHTML += commentWarn.innerHTML + fieldError.message;
             })
         }
     });
@@ -172,7 +181,7 @@ function sendComment() {
 function loadComments(count) {
     $.ajax({
         type: "GET",
-        url: "/api/comment/" + document.getElementById("post-id").value+"?p="+(loadCount+1),
+        url: "/api/comment/" + document.getElementById("post-id").value + "?p=" + (loadCount + 1),
         success: function (data) {
             const comments = JSON.parse(JSON.stringify(data));
             comments.forEach((comment) => {
@@ -180,10 +189,10 @@ function loadComments(count) {
                 loadedCommentCount++;
             });
             loadCount++;
-            if(count==loadedCommentCount)
+            if (count == loadedCommentCount)
                 document.getElementById("load-button").style.display = "none";
-            document.getElementById("loaded-count").style.display="inline";
-            document.getElementById("loaded-count").innerHTML=loadedCommentCount+" loaded";
+            document.getElementById("loaded-count").style.display = "inline";
+            document.getElementById("loaded-count").innerHTML = loadedCommentCount + " loaded";
         },
         error: function (data) {
             alert(data.responseText);
@@ -204,7 +213,7 @@ function initialize() {
 
     window.addEventListener("hashchange", shiftWindow);
 
-    $('img.content-scalable').addClass('img-enlargeable').click(function() {
+    $('img.content-scalable').addClass('img-enlargeable').click(function () {
         var src = $(this).attr('src');
         var modal;
 
@@ -212,6 +221,7 @@ function initialize() {
             modal.remove();
             $('body').off('keyup.modal-close');
         }
+
         modal = $('<div>').css({
             background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
             backgroundSize: 'contain',
@@ -222,11 +232,11 @@ function initialize() {
             top: '0',
             left: '0',
             cursor: 'zoom-out'
-        }).click(function() {
+        }).click(function () {
             removeModal();
         }).appendTo('body');
         //handling ESC
-        $('body').on('keyup.modal-close', function(e) {
+        $('body').on('keyup.modal-close', function (e) {
             if (e.key === 'Escape') {
                 removeModal();
             }
