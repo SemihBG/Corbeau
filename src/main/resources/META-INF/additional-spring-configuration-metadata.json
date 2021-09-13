@@ -109,6 +109,16 @@
       "name": "image.path.notFound",
       "type": "java.lang.String",
       "description": "Description for image.path.notFound."
+    },
+    {
+      "name": "server.error.include-method",
+      "type": "java.lang.String",
+      "description": "Description for server.error.include-method."
+    },
+    {
+      "name": "server.error.include-excepiton-object",
+      "type": "java.lang.String",
+      "description": "Description for server.error.include-excepiton-object."
     }
   ]
 }

@@ -1,11 +1,13 @@
 server:
   error:
-    include-binding-errors: always
+    include-binding-errors: on_param
     include-exception: true
-    include-message: always
-    include-stacktrace: always
+    include-message: on_param
+    include-stacktrace: on_param
     include-headers: true
     include-cookies: true
+    include-method: true
+    include-excepiton-object: true
 
 spring:
   r2dbc:
