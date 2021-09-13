@@ -28,8 +28,8 @@ public class TagRepositoryImpl implements TagRepository {
     static final String SQL_SELECT_ALL_TAG_DEEP =
             "SELECT tags.id, tags.name, tags.created_by, tags.updated_by, " +
                     "tags.created_at,tags.updated_at, " +
-                    "(SELECT COUNT(*) FROM db.tags_posts_join WHERE tag_id=id) as post_count " +
-                    "FROM db.tags";
+                    "(SELECT COUNT(*) FROM tags_posts_join WHERE tag_id=id) as post_count " +
+                    "FROM tags";
 
     static final String SQL_SELECT_ALL_TAG_BY_ACTIVATED_DEEP =
             "SELECT tags.id,tags.name,tags.created_by,tags.updated_by, " +

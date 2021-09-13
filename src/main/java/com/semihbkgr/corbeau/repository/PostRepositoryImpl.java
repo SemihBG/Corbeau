@@ -66,7 +66,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "LIMIT ? OFFSET ?";
 
     static final String SQL_FIND_ALL_BY_ACTIVATED_DEEP_PAGED_UNORDERED =
-            "SELECT posts.id, db.posts.title, posts.subject_id, posts.endpoint, " +
+            "SELECT posts.id, posts.title, posts.subject_id, posts.endpoint, " +
                     "posts.thumbnail_endpoint, posts.description, subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
                     "FROM posts LEFT JOIN subjects ON posts.subject_id=subjects.id " +
@@ -160,7 +160,7 @@ public class PostRepositoryImpl implements PostRepository {
                     "posts.thumbnail_endpoint, posts.description, " +
                     "subjects.name as subject_name, " +
                     "posts.created_by, posts.updated_by, posts.created_at, posts.updated_at " +
-                    "FROM db.posts " +
+                    "FROM posts " +
                     "JOIN subjects ON subjects.id=subject_id " +
                     "WHERE activated=? AND MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE)>0.1";
 
