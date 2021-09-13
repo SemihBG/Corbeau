@@ -1,6 +1,7 @@
 // noinspection DuplicatedCode
 
 function addComment(comment, addFirst) {
+    if(comment.hasOwnProperty("clientRequest")) return;
     const commentP = document.createElement("a");
     commentP.classList.add("list-group-item");
     commentP.classList.add("list-group-item-action");

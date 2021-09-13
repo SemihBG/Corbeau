@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.component;
 
+import com.semihbkgr.corbeau.error.RequestTraceException;
 import com.semihbkgr.corbeau.service.RequestTraceService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.Ordered;
@@ -36,7 +37,7 @@ public class CommentTraceFilter implements WebFilter {
         var clientRequest = commentTraceRepository.increaseAndUpdate(clientIpAddr);
         if (clientRequest.getRequestCount() <= 5)
             return webFilterChain.filter(serverWebExchange);
-        else return Mono.empty();
+        else return Mono.error(new RequestTraceException(clientRequest,"/api/comment","POST"));
     }
 
 }

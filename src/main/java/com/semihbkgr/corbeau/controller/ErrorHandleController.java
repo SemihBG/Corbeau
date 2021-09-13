@@ -1,6 +1,7 @@
 package com.semihbkgr.corbeau.controller;
 
 import com.semihbkgr.corbeau.error.ArtifactException;
+import com.semihbkgr.corbeau.error.RequestTraceException;
 import com.semihbkgr.corbeau.error.response.ArtifactExceptionResponse;
 import com.semihbkgr.corbeau.error.response.FiledErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,12 @@ public class ErrorHandleController {
     @ResponseBody
     public ArtifactExceptionResponse handleArtifactException(ArtifactException e, Model model) {
         return ArtifactExceptionResponse.wrap(e);
+    }
+
+    @ExceptionHandler(RequestTraceException.class)
+    @ResponseBody
+    public Exception asd(RequestTraceException exception){
+        return exception;
     }
 
 }

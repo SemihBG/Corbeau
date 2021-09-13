@@ -1,5 +1,6 @@
 package com.semihbkgr.corbeau.component;
 
+import com.semihbkgr.corbeau.error.RequestTraceException;
 import com.semihbkgr.corbeau.service.RequestTraceService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.Ordered;
@@ -31,12 +32,11 @@ public class LoginTraceFilter implements WebFilter {
         if (clientRemoteAddress == null)
             return Mono.error(new IllegalStateException("Client remote address is null"));
         String clientIpAddr = clientRemoteAddress.getHostString();
-        System.out.println("login");
         if (clientIpAddr == null) return Mono.error(new IllegalStateException("Client ip address is null"));
         var clientRequest = loginTraceRepository.increaseAndUpdate(clientIpAddr);
-        if (clientRequest.getRequestCount() < 5)
+        if (clientRequest.getRequestCount() <= 5)
             return webFilterChain.filter(serverWebExchange);
-        else return Mono.empty();
+        else return Mono.error(new RequestTraceException(clientRequest,"/moderation/login","POST"));
     }
 
 }
