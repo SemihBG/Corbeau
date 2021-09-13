@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class RolesRecorder implements CommandLineRunner {
 
     public static final String[] DEFAULT_ROLES = new String[]{"prime"};
-    public static final boolean DEFAULT_ENABLED = true;
+    public static final boolean DEFAULT_ENABLED = false;
 
     private final String[] roles;
     private final boolean enabled;

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class PrimeModeratorRecorder implements CommandLineRunner {
 
-    public static final boolean DEFAULT_PRIME_MODERATOR_ENABLE = true;
+    public static final boolean DEFAULT_PRIME_MODERATOR_ENABLE = false;
     public static final String DEFAULT_PRIME_MODERATOR_NAME = "name";
     public static final String DEFAULT_PRIME_MODERATOR_PASSWORD = "password";
     public static final String DEFAULT_PRIME_MODERATOR_EMAIL = "moderator@gmail.com";
