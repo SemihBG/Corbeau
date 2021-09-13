@@ -35,3 +35,4 @@ build/
 images
 testdb.mv.db
 testdb.trace.db
+src/main/resources/application-pro.yaml

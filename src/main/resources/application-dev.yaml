@@ -1,4 +1,6 @@
 server:
+  address: 0.0.0.0
+  port: 9000
   error:
     include-binding-errors: on_param
     include-exception: true
@@ -19,14 +21,6 @@ spring:
       max-size: 50
       max-idle-time: 30m
       validation-query: SELECT 1
-  redis:
-    host: ${redis-hostname:localhost}
-    port: ${redis-port:6379}
-    timeout: 1H
-  cache:
-    type: redis
-    redis:
-      cache-null-values: true
   thymeleaf:
     reactive:
       max-chunk-size: 8192
@@ -35,10 +29,8 @@ logging:
   level:
     root: info
 
-
 #remove data populator if not working of data
 #It is because populator sql execution is increasing start up time.
-
 #data:
 #  populator: populator.sql
 #  cleaner: cleaner.sql
@@ -69,7 +61,6 @@ image:
   path:
     notFound: src/main/resources/static/image/image-not-found.png
 
-
 name-surname-offer:
   pairs: Harry Potter,Severus Snape,Ron Weasley,Hermione Grange r,Draco Malfoy,Albus Dumbledore,Forrest Gump,Lord Voldemort,Sirius Black
 
@@ -83,11 +74,9 @@ app-status:
   comment:
     activated: true
 
-
 hazelcast:
   trace:
     comment:
       map-name: comment-map
     login:
       map-name: login-map
-
