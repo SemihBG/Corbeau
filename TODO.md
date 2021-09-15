@@ -17,3 +17,6 @@
 - Review database queries
 - Review projection models
 - Keep sync image files and table
+- Comment load ui bug fixing
+- Better background image
+- Resource path schema
