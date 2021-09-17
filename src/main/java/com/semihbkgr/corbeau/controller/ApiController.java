@@ -66,7 +66,7 @@ public class ApiController {
     @GetMapping(value = "/image/content/{full-name}", produces = MediaType.IMAGE_JPEG_VALUE)
     public Flux<DataBuffer> imageContent(@PathVariable("full-name") String fullName) {
         return imageService.findByFullName(fullName)
-                .defaultIfEmpty(Image.EMPTY_IMAGE)
+                .onErrorReturn(Image.EMPTY_IMAGE)
                 .flatMapMany(image -> {
                     if (image.getId() != 0)
                         return imageContentService.findByName(fullName);

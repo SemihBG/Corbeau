@@ -42,8 +42,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Mono<Image> findByFullName(@NonNull String fullName) {
-        var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
-        return imageRepository.findOneByNameAndExtension(nameExtPair.getFirst(), nameExtPair.getSecond());
+        try{
+            var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
+            return imageRepository.findOneByNameAndExtension(nameExtPair.getFirst(), nameExtPair.getSecond());
+        }catch (IllegalArgumentException e){
+            return Mono.error(e);
+        }
     }
 
     @Override
@@ -66,8 +70,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Mono<Void> deleteByFullName(String fullName) {
-        var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
-        return imageRepository.deleteByNameAndExtension(nameExtPair.getFirst(), nameExtPair.getSecond());
+        try{
+            var nameExtPair = ParameterUtils.extractNameAndExtension(fullName);
+            return imageRepository.deleteByNameAndExtension(nameExtPair.getFirst(), nameExtPair.getSecond());
+        }catch (IllegalArgumentException e){
+            return Mono.error(e);
+        }
     }
 
 }

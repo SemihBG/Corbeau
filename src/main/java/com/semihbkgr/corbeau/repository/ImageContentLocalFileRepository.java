@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -64,12 +65,10 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
             }
         }
         log.info("ImageNotFoundImagePath: {}", imageNotFoundImagePath);
-        var imageNotFoundPath = Path.of(imageNotFoundImagePath);
-        if (Files.exists(imageNotFoundPath)) {
-            this.imageNotFoundDataBufferFlux = DataBufferUtils.read(imageNotFoundPath, new DefaultDataBufferFactory(), 4096);
-        } else
-            throw new IllegalArgumentException("No Image found by given path, ImageNotFoundImagePath: " + imageNotFoundImagePath);
+        this.imageNotFoundDataBufferFlux = DataBufferUtils.read(new ClassPathResource(imageNotFoundImagePath), new DefaultDataBufferFactory(), 4096);
+
     }
+
 
     @Override
     public Mono<Void> save(@NonNull String name, @NonNull FilePart filePart) {

@@ -20,3 +20,4 @@
 - Comment load ui bug fixing
 - Better background image
 - Resource path schema
+- Change image local stragete to aws s3

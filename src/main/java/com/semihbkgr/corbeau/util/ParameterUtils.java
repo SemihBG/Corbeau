@@ -33,9 +33,12 @@ public class ParameterUtils {
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 
-    public static Pair<String, String> extractNameAndExtension(String fileName) {
-        var index = fileName.lastIndexOf('.');
-        return Pair.of(fileName.substring(0, index), fileName.substring(index + 1));
+    public static Pair<String, String> extractNameAndExtension(String fileName) throws IllegalArgumentException {
+        if (fileName.contains(".")) {
+            var index = fileName.lastIndexOf('.');
+            return Pair.of(fileName.substring(0, index), fileName.substring(index + 1));
+        }
+        throw new IllegalArgumentException("cannot extract extension from filename");
     }
 
 }
