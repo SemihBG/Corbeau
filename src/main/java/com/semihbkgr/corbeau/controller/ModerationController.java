@@ -52,7 +52,7 @@ public class ModerationController {
 
     @GetMapping("/login")
     public String login() {
-        return "/moderation/login";
+        return "moderation/login";
     }
 
     @GetMapping("/menu")
@@ -62,7 +62,7 @@ public class ModerationController {
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
                     model.addAttribute("appStatus", appStatus);
-                    return "/moderation/menu";
+                    return "moderation/menu";
                 });
     }
 
@@ -83,7 +83,7 @@ public class ModerationController {
                 .map(ModeratorDetailsService.ModeratorDetails.class::cast)
                 .map(moderatorDetails -> {
                     model.addAttribute("me", moderatorDetails.getUsername().equals(name));
-                    return "/moderation/profile";
+                    return "moderation/profile";
                 });
     }
 
@@ -95,7 +95,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/subject";
+                    return "moderation/subject";
                 });
     }
 
@@ -121,7 +121,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/tag";
+                    return "moderation/tag";
                 });
     }
 
@@ -156,7 +156,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/post";
+                    return "moderation/post";
                 });
     }
 
@@ -168,7 +168,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/post-save";
+                    return "moderation/post-save";
                 });
     }
 
@@ -198,7 +198,7 @@ public class ModerationController {
                 .collectList()
                 .map(tagList -> {
                     model.addAttribute("allTags", tagList);
-                    return "/moderation/post-update";
+                    return "moderation/post-update";
                 });
     }
 
@@ -253,7 +253,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/image";
+                    return "moderation/image";
                 });
     }
 
@@ -264,7 +264,7 @@ public class ModerationController {
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
-                    return "/moderation/image-save";
+                    return "moderation/image-save";
                 });
     }
 
@@ -301,7 +301,7 @@ public class ModerationController {
                 .map(authentication -> {
                     model.addAttribute("name", authentication.getName());
                     model.addAttribute("appStatus", appStatus);
-                    return "/moderation/comment";
+                    return "moderation/comment";
                 });
     }
 

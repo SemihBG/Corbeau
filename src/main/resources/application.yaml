@@ -1,5 +1,7 @@
 spring:
   application:
     name: Corbeau
+    admin:
+      enabled: false
   profiles:
     active: pro
