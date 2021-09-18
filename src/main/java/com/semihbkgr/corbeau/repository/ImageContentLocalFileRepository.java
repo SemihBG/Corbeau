@@ -66,7 +66,6 @@ public class ImageContentLocalFileRepository implements ImageContentRepository {
         }
         log.info("ImageNotFoundImagePath: {}", imageNotFoundImagePath);
         this.imageNotFoundDataBufferFlux = DataBufferUtils.read(new ClassPathResource(imageNotFoundImagePath), new DefaultDataBufferFactory(), 4096);
-
     }
 
 

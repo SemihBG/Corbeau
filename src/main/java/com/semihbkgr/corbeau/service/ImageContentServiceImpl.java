@@ -87,8 +87,8 @@ public class ImageContentServiceImpl implements ImageContentService {
         return imageContentRepository
                 .exists(name)
                 .filter(exists -> exists)
-                .switchIfEmpty(Mono.error(IllegalArgumentException::new))
-                .thenMany(imageContentRepository.findByName(name));
+                .flatMapMany(e-> imageContentRepository.findByName(name))
+                .switchIfEmpty(imageNotFound());
     }
 
     @Override

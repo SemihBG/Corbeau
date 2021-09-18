@@ -67,6 +67,7 @@ public class ApiController {
     public Flux<DataBuffer> imageContent(@PathVariable("full-name") String fullName) {
         return imageService.findByFullName(fullName)
                 .onErrorReturn(Image.EMPTY_IMAGE)
+                .defaultIfEmpty(Image.EMPTY_IMAGE)
                 .flatMapMany(image -> {
                     if (image.getId() != 0)
                         return imageContentService.findByName(fullName);
