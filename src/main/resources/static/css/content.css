@@ -1,18 +1,18 @@
 div.content-text{
-    color: #c4c2c2;
+    color: #6f6868;
     font-family: Verdana, sans-serif font set;
     font-size: 1.5em;
     padding-top: 20px;
 }
 h1.content-title-primary{
-    color: #e0dede;
+    color: #362e2e;
     opacity: 1;
     font-size: 2.3em;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 h1.content-title-secondary{
-    color: #e0dede;
+    color: #362e2e;
     opacity: 1;
     font-size: 2em;
     padding-top: 15px;
@@ -20,26 +20,26 @@ h1.content-title-secondary{
 }
 p.content-text-emphasized{
     display: inline;
-    color: #f1ea8d;
+    color: #d0ca65;
 }
 p.content-text-trivial{
     display: inline;
-    color: #898585;
+    color: #767676;
 }
 p.content-text-quote{
     display: inline;
-    color: #a39e58;
+    color: #874e5c;
 }
 p.content-text-warning{
     display: inline;
-    color: #b15a5a;
+    color: #f36262;
 }
 a.content-link{
     text-decoration: none;
 }
 a.content-fragment{
     text-decoration: none;
-    color: lightblue;
+    color: #49656f;
 }
 img.content-scalable{
     cursor: zoom-in;
