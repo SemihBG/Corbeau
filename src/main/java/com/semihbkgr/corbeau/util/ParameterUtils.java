@@ -38,7 +38,7 @@ public class ParameterUtils {
             var index = fileName.lastIndexOf('.');
             return Pair.of(fileName.substring(0, index), fileName.substring(index + 1));
         }
-        throw new IllegalArgumentException("cannot extract extension from filename");
+        throw new IllegalArgumentException("cannot extract extension from filename, filename: "+fileName);
     }
 
 }

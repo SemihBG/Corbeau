@@ -204,6 +204,10 @@ public class ModerationController {
 
     @PostMapping("/post")
     public Mono<String> postSaveProcess(@Valid @ModelAttribute Post post, final Model model) {
+        if(post.getThumbnailEndpoint()!=null && post.getThumbnailEndpoint().isBlank())
+            post.setThumbnailEndpoint(null);
+        if(post.getDescription()!=null && post.getDescription().isBlank())
+            post.setDescription(null);
         return postService.save(post)
                 .map(savedPost -> {
                     model.addAttribute("post", savedPost);
@@ -213,6 +217,10 @@ public class ModerationController {
 
     @PostMapping("/post/{id}")
     public Mono<String> postUpdateProcess(@PathVariable("id") int id, @ModelAttribute PostUpdate postUpdate, final Model model) {
+        if(postUpdate.getThumbnailEndpoint()!=null && postUpdate.getThumbnailEndpoint().isBlank())
+            postUpdate.setThumbnailEndpoint(null);
+        if(postUpdate.getDescription()!=null && postUpdate.getDescription().isBlank())
+            postUpdate.setDescription(null);
         return postService.update(id, postUpdate)
                 .flatMap(updatedPost -> {
                     model.addAttribute("post", updatedPost);

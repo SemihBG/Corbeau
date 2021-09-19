@@ -60,7 +60,8 @@ public class ApiController {
 
     @GetMapping("/image/{full-name}")
     public Mono<Image> image(@PathVariable("full-name") String fullName) {
-        return imageService.findByFullName(fullName);
+        return imageService.findByFullName(fullName)
+                .onErrorReturn(Image.EMPTY_IMAGE);
     }
 
     @GetMapping(value = "/image/content/{full-name}", produces = MediaType.IMAGE_JPEG_VALUE)
