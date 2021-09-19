@@ -145,30 +145,30 @@
                        type="checkbox">
             </div>
             <div class="form-group">
-                <label class="text-info" for="title" style="font-size: 20px;">Title:</label>
+                <label class="text-info" for="title" style="font-size: 20px;">Title</label>
                 <input class="form-control text-info border-info" id="title" name="title" placeholder="Title"
                        style="background-color: transparent" th:value="${post.title}" type="text">
             </div>
             <div class="form-group">
-                <label class="text-info" for="endpoint" style="font-size: 20px;">Endpoint:</label>
+                <label class="text-info" for="endpoint" style="font-size: 20px;">Endpoint</label>
                 <input class="form-control text-info border-info" id="endpoint" name="endpoint"
                        placeholder="Endpoint"
                        style="background-color: transparent" th:value="${post.endpoint}" type="text">
             </div>
             <div class="form-group">
-                <label class="text-info" for="thumbnailEndpoint" style="font-size: 20px;">Thumbnail Endpoint:</label>
+                <label class="text-info" for="thumbnailEndpoint" style="font-size: 20px;">Thumbnail Endpoint</label>
                 <input class="form-control text-info border-info" id="thumbnailEndpoint" name="thumbnailEndpoint"
                        placeholder="Thumbnail Endpoint"
                        style="background-color: transparent" th:value="${post.thumbnailEndpoint}" type="text">
             </div>
             <div class="form-group">
-                <label class="text-info" for="description" style="font-size: 20px;">Description:</label>
+                <label class="text-info" for="description" style="font-size: 20px;">Description</label>
                 <input class="form-control text-info border-info" id="description" name="description"
                        placeholder="Description"
                        style="background-color: transparent" th:value="${post.description}" type="text">
             </div>
             <div class="form-group">
-                <label class="text-info" for="subject" style="font-size: 20px;">Subject:</label>
+                <label class="text-info" for="subject" style="font-size: 20px;">Subject</label>
                 <select class="form-control text-info border-info" id="subject" name="subjectId"
                         style="background-color: transparent;">
                     <option th:each="s : ${subjects}" th:selected="${s.id==subject.id}" th:text="${s.name}"
@@ -176,7 +176,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="text-info" for="content" style="font-size: 20px;">Content:</label>
+                <label class="text-info" for="content" style="font-size: 20px;">Content</label>
                 <textarea class="form-control text-info border-info" id="content" name="content"
                           oninput="auto_grow(this)"
                           style="resize: none;overflow: hidden;min-height: 250px; background-color: transparent">[[${post.content}]]</textarea>
@@ -185,7 +185,7 @@
                 <input class="form-check-input" id="activated" name="activated"
                        style="background-color: transparent;"
                        th:checked="${post.activated}" type="checkbox"/>
-                <label class="form-check-label text-info" for="activated">Activated </label>
+                <label class="form-check-label text-info" for="activated">Activated</label>
             </div>
             <button class="btn btn-outline-info" type="submit">Update</button>
         </form>
