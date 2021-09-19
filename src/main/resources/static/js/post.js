@@ -1,36 +1,41 @@
 // noinspection DuplicatedCode
 
 function addComment(comment, addFirst) {
-    if (!comment.hasOwnProperty("name") ||
+    if (!comment.hasOwnProperty("id") ||
+        !comment.hasOwnProperty("name") ||
         !comment.hasOwnProperty("surname") ||
         !comment.hasOwnProperty("email") ||
         !comment.hasOwnProperty("content")) return;
+    if(loadedCommentArray.includes(comment.id))
+        return;
+    loadedCommentCount++
+    if (allCommentCount <= loadedCommentCount)
+        document.getElementById("load-button").style.display = "none";
+    loadedCommentArray.push(comment.id)
     const commentP = document.createElement("a");
     commentP.classList.add("list-group-item");
     commentP.classList.add("list-group-item-action");
-    commentP.classList.add("bg-dark");
+    commentP.style.border = "solid #cde3fa 2px";
+    commentP.style.background = "#dde8f3";
     commentP.style.marginTop = "1%";
     const imageImg = document.createElement("img");
     imageImg.id = "image-" + comment.name;
-    imageImg.src = "/api/image/random/" + comment.name;
+    imageImg.src = "/api/image/random/" + comment.name+"-"+comment.surname;
     imageImg.width = 50;
     imageImg.height = 50;
-    imageImg.style.border = "3px solid #17a2b8";
+    imageImg.style.border = "solid #cde3fa 2px";
     imageImg.style.display = "inline-block";
     const infoDiv = document.createElement("div");
     infoDiv.style.display = "inline";
-    const nameP = document.createElement("p");
-    nameP.innerHTML = comment.name;
-    nameP.classList.add("text-light");
-    nameP.style.display = "inline";
-    nameP.style.fontSize = "19px";
-    nameP.style.marginLeft = "10px";
-    const surnameP = document.createElement("p");
-    surnameP.innerHTML = comment.surname;
-    surnameP.classList.add("text-light");
-    surnameP.style.display = "inline";
-    surnameP.style.fontSize = "19px";
-    surnameP.style.marginLeft = "10px";
+    const fullnameP = document.createElement("p");
+    fullnameP.innerHTML = comment.name + " " + comment.surname;
+    fullnameP.style.display = "inline";
+    fullnameP.style.fontSize = "x-large";
+    fullnameP.style.marginLeft = "1%";
+    const emailP = document.createElement("p");
+    emailP.innerHTML = comment.email;
+    emailP.style.fontSize = "large";
+    emailP.style.marginLeft = "1%";
     const timeP = document.createElement("p");
     timeP.innerHTML = (new Date(comment.createdAt)).toLocaleString("en-US", {
         hour: 'numeric',
@@ -39,19 +44,16 @@ function addComment(comment, addFirst) {
         month: 'numeric',
         day: 'numeric'
     });
-    timeP.classList.add("text-light");
     timeP.style.float = "right";
     timeP.style.display = "inline";
-    const emailP = document.createElement("p");
-    emailP.innerHTML = comment.email;
-    emailP.classList.add("text-light");
-    emailP.style.fontSize = "15px";
-    emailP.style.marginLeft = "10px";
     const contentP = document.createElement("p");
     contentP.innerHTML = comment.content;
-    contentP.classList.add("text-light");
-    infoDiv.appendChild(nameP);
-    infoDiv.appendChild(surnameP);
+    contentP.style.marginTop="2.5%"
+    contentP.style.marginLeft="1%"
+    contentP.style.marginRight="1%"
+    contentP.style.marginBottom="2.5%"
+    contentP.style.fontWeight="lighter"
+    infoDiv.appendChild(fullnameP);
     infoDiv.appendChild(timeP);
     infoDiv.appendChild(emailP);
     commentP.appendChild(imageImg);
@@ -75,9 +77,11 @@ const EMAIL_MAX_LENGTH = 64;
 const CONTENT_MIN_LENGTH = 4;
 const CONTENT_MAX_LENGTH = 256;
 
-var loadCount = 0;
+var loadCount=0;
 var loadedCommentCount = 0;
+var allCommentCount = 0;
 
+const loadedCommentArray=[];
 
 function sendComment() {
 
@@ -166,6 +170,8 @@ function sendComment() {
         success: function (data) {
             const comment = JSON.parse(JSON.stringify(data));
             addComment(comment, true);
+            allCommentCount++
+            updateAllCommentCount(allCommentCount)
         },
         error: function (data) {
             const errorResonse = JSON.parse(JSON.stringify(data.responseJSON));
@@ -178,7 +184,7 @@ function sendComment() {
 
 }
 
-function loadComments(count) {
+function loadComments() {
     $.ajax({
         type: "GET",
         url: "/api/comment/" + document.getElementById("post-id").value + "?p=" + (loadCount + 1),
@@ -186,11 +192,8 @@ function loadComments(count) {
             const comments = JSON.parse(JSON.stringify(data));
             comments.forEach((comment) => {
                 addComment(comment, false);
-                loadedCommentCount++;
             });
             loadCount++;
-            if (count == loadedCommentCount)
-                document.getElementById("load-button").style.display = "none";
             document.getElementById("loaded-count").style.display = "inline";
             document.getElementById("loaded-count").innerHTML = loadedCommentCount + " loaded";
         },
@@ -209,10 +212,10 @@ function load() {
     if (window.location.hash) shiftWindow();
 }
 
-function initialize() {
+function initialize(commnetCount) {
 
     window.addEventListener("hashchange", shiftWindow);
-
+    allCommentCount=commnetCount
     $('img.content-scalable').addClass('img-enlargeable').click(function () {
         var src = $(this).attr('src');
         var modal;
@@ -247,3 +250,6 @@ function initialize() {
 }
 
 
+function updateAllCommentCount(commentCount){
+    document.getElementById("allCommentCount").innerHTML="All comments: "+commentCount
+}

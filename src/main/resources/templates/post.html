@@ -64,14 +64,12 @@
         <div class="list-group" id="comment-div" style="margin-top: 1%; margin-bottom: 1%;">
         </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:id="comment-load" th:if="${commentCount}>0">
-            <p class="text-secondary" style="font-size: 20px;" th:if="${commentCount}==1"
-               th:text="'There is 1 comment'"></p>
-            <p class="text-secondary" style="font-size: 20px;" th:text="'There are '+${commentCount}+' comments'"
-               th:unless="${commentCount}==1"></p>
-            <button class="btn btn-outline-info" id="load-button" style="display: inline;margin-right: 20px;"
-                    th:onclick="'loadComments('+${commentCount}+')'" type="submit">Load
+            <p class="text-secondary" style="font-size: medium;margin: 0" id="allCommentCount" th:text="'All comments: '+${commentCount}"></p>
+            <p class="text-secondary" id="loaded-count" style="display: none;font-size: medium;margin: 0"></p>
+            <br>
+            <button class="btn btn-outline-info" id="load-button" style="margin-top: 2%;"
+                    onclick="loadComments()" type="submit">Load
             </button>
-            <p class="text-secondary" id="loaded-count" style="display: none;font-size: 20px;"></p>
         </div>
         <div style="margin-top: 1%; margin-bottom: 1%;" th:unless="${commentCount}>0">
             <p class="text-secondary" style="font-size: x-large">There is no comment</p>
@@ -94,20 +92,20 @@
                            th:placeholder="${offerSurname}" type="text">
                     <p class="text-warning" id="surname-warn" style="display: none"></p>
                 </div>
-                <div class="form-group" style="width: 90%">
+                <div class="form-group" style="width: 100%">
                     <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
                     <input class="form-control text-info border-info" id="email" name="email"
-                           style="background-color: transparent;width: 95%"
+                           style="background-color: transparent;width: 97.5%"
                            type="text">
                     <p class="text-warning" id="email-warn" style="display: none"></p>
                 </div>
-                <div class="form-group" style="width: 90%">
+                <div class="form-group" style="width: 100%">
                     <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
                     <textarea class="form-control text-info border-info" id="content" name="content"
-                              style="background-color: transparent; min-height: 100px; max-height: 250px;width: 95%"></textarea>
+                              style="background-color: transparent; min-height: 100px; max-height: 250px;width: 97.5%"></textarea>
                     <p class="text-warning" id="content-warn" style="display: none"></p>
                 </div>
-                <div class="form-group" style="width: 90%">
+                <div class="form-group" style="width: 100%">
                     <button class="btn btn-outline-info" th:if="${appStatus.isCommentActivated()}" type="submit" style="margin-top: 1%">Send
                     </button>
                 </div>
@@ -118,43 +116,47 @@
         </div>
         <div style="margin-top: 2.5%; margin-bottom: 2.5%;" th:unless="${appStatus.isCommentActivated()}">
             <p class="text-warning" style="font-size: x-large">Comments are disabled</p>
-            <form action="/api/comment" class="disabled" id="send-comment"
-                  method="post" onsubmit="event.preventDefault();sendComment()">
+            <form action="/api/comment" id="send-comment" method="post"
+                  onsubmit="event.preventDefault();sendComment()" class="form-inline disabled">
                 <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
-                <div class="form-group">
+                <div class="form-group" style="width: 50%;">
                     <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="name"
-                           name="name"
-                           style="background-color: transparent" th:placeholder="${offerName}" type="text">
+                    <input class="form-control text-info border-info disabled" disabled id="name" name="name"
+                           style="background-color: transparent;width: 95%"
+                           th:placeholder="${offerName}" type="text">
                     <p class="text-warning" id="name-warn" style="display: none"></p>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="width: 50%">
                     <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="surname"
-                           name="surname"
-                           style="background-color: transparent" th:placeholder="${offerSurname}" type="text">
+                    <input class="form-control text-info border-info disabled" disabled id="surname" name="surname"
+                           style="background-color: transparent;width: 95%"
+                           th:placeholder="${offerSurname}" type="text">
                     <p class="text-warning" id="surname-warn" style="display: none"></p>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="width: 100%">
                     <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="email"
-                           name="email"
-                           style="background-color: transparent" type="text">
+                    <input class="form-control text-info border-info disabled" disabled id="email" name="email"
+                           style="background-color: transparent;width: 97.5%"
+                           type="text">
                     <p class="text-warning" id="email-warn" style="display: none"></p>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="width: 100%">
                     <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
-                    <textarea class="form-control text-info border-info disabled" disabled id="content"
-                              name="content"
-                              style="background-color: transparent; min-height: 100px; max-height: 250px;"></textarea>
+                    <textarea class="form-control text-info border-info disabled" disabled id="content" name="content"
+                              style="background-color: transparent; min-height: 100px; max-height: 250px;width: 97.5%"></textarea>
                     <p class="text-warning" id="content-warn" style="display: none"></p>
                 </div>
-                <button class="btn btn-outline-info disabled" disabled type="submit">Send
-                </button>
+                <div class="form-group" style="width: 100%">
+                    <button class="btn btn-outline-info disabled" disabled th:if="${appStatus.isCommentActivated()}" type="submit" style="margin-top: 1%">Send
+                    </button>
+                </div>
+                <div>
+                    <p class="text-warning" id="comment-warn" style="display: none"></p>
+                </div>
             </form>
         </div>
     </div>
 </div>
-<script>initialize()</script>
+<script th:text="'initialize('+${commentCount}+')'"></script>
 </body>
 </html>
