@@ -26,24 +26,24 @@ public class RequestTraceScheduleComponent {
         this.loginRequestTraceMap = loginRequestTraceMap;
     }
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelay = 30_000)
     @Async
     public void removeExpiredCommentTraces(){
         var currentTimeMs=System.currentTimeMillis();
         commentRequestTraceMap.entrySet()
                 .parallelStream()
-                .filter(entry-> currentTimeMs-entry.getValue().getFirstRequestTimeMs()>=30_000)
+                .filter(entry-> currentTimeMs-entry.getValue().getFirstRequestTimeMs()>=300_000)
                 .map(Map.Entry::getKey)
                 .forEach(commentRequestTraceMap::remove);
     }
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelay = 30_000)
     @Async
     public void removeExpiredLoginTraces(){
         var currentTimeMs=System.currentTimeMillis();
         loginRequestTraceMap.entrySet()
                 .parallelStream()
-                .filter(entry-> currentTimeMs-entry.getValue().getFirstRequestTimeMs()>=30_000)
+                .filter(entry-> currentTimeMs-entry.getValue().getFirstRequestTimeMs()>=300_000)
                 .map(Map.Entry::getKey)
                 .forEach(loginRequestTraceMap::remove);
     }

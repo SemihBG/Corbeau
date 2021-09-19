@@ -1,5 +1,5 @@
-const TAG_NAME_MIN_LENGTH = 5;
-const TAG_NAME_MAX_LENGTH = 25;
+const TAG_NAME_MIN_LENGTH = 2;
+const TAG_NAME_MAX_LENGTH = 32;
 const TAG_NAME_REGEX = new RegExp(/^[0-9a-z_]+$/i);
 const TAG_UPDATE_ROOT_URL = "/moderation/tag";
 

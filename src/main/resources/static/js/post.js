@@ -6,7 +6,7 @@ function addComment(comment, addFirst) {
         !comment.hasOwnProperty("surname") ||
         !comment.hasOwnProperty("email") ||
         !comment.hasOwnProperty("content")) return;
-    if(loadedCommentArray.includes(comment.id))
+    if (loadedCommentArray.includes(comment.id))
         return;
     loadedCommentCount++
     if (allCommentCount <= loadedCommentCount)
@@ -20,7 +20,7 @@ function addComment(comment, addFirst) {
     commentP.style.marginTop = "1%";
     const imageImg = document.createElement("img");
     imageImg.id = "image-" + comment.name;
-    imageImg.src = "/api/image/random/" + comment.name+"-"+comment.surname;
+    imageImg.src = "/api/image/random/" + comment.name + "-" + comment.surname;
     imageImg.width = 50;
     imageImg.height = 50;
     imageImg.style.border = "solid #cde3fa 2px";
@@ -48,11 +48,11 @@ function addComment(comment, addFirst) {
     timeP.style.display = "inline";
     const contentP = document.createElement("p");
     contentP.innerHTML = comment.content;
-    contentP.style.marginTop="2.5%"
-    contentP.style.marginLeft="1%"
-    contentP.style.marginRight="1%"
-    contentP.style.marginBottom="2.5%"
-    contentP.style.fontWeight="lighter"
+    contentP.style.marginTop = "2.5%"
+    contentP.style.marginLeft = "1%"
+    contentP.style.marginRight = "1%"
+    contentP.style.marginBottom = "2.5%"
+    contentP.style.fontWeight = "lighter"
     infoDiv.appendChild(fullnameP);
     infoDiv.appendChild(timeP);
     infoDiv.appendChild(emailP);
@@ -68,20 +68,20 @@ function addComment(comment, addFirst) {
 const nameRegex = RegExp(/^[A-Za-z]+$/);
 const surnameRegex = RegExp(/^[A-Za-z]+$/);
 const emailRegex = RegExp(/\S+@\S+\.\S+/);
-const NAME_MIN_LENGTH = 4;
+const NAME_MIN_LENGTH = 3;
 const NAME_MAX_LENGTH = 32;
-const SURNAME_MIN_LENGTH = 4;
+const SURNAME_MIN_LENGTH = 3;
 const SURNAME_MAX_LENGTH = 32;
-const EMAIL_MIN_LENGTH = 4;
+const EMAIL_MIN_LENGTH = 6;
 const EMAIL_MAX_LENGTH = 64;
 const CONTENT_MIN_LENGTH = 4;
 const CONTENT_MAX_LENGTH = 256;
 
-var loadCount=0;
+var loadCount = 0;
 var loadedCommentCount = 0;
 var allCommentCount = 0;
 
-const loadedCommentArray=[];
+const loadedCommentArray = [];
 
 function sendComment() {
 
@@ -107,13 +107,13 @@ function sendComment() {
     const content = document.getElementById("content").value.trim();
     const postId = document.getElementById("post-id").value.trim();
 
-    //-values validation
+    //validation of values
     let allValid = true;
 
     //check name validation
     if (name.length < NAME_MIN_LENGTH || name.length > NAME_MAX_LENGTH) {
         nameWarn.innerHTML = "Name must be between " +
-            NAME_MIN_LENGTH + " - " + NAME_MAX_LENGTH;
+            NAME_MIN_LENGTH + " - " + NAME_MAX_LENGTH + " length";
         nameWarn.style.display = "block";
         allValid = false;
     } else if (!nameRegex.test(name)) {
@@ -125,7 +125,7 @@ function sendComment() {
     //check surname validation
     if (surname.length < SURNAME_MIN_LENGTH || surname.length > SURNAME_MAX_LENGTH) {
         surnameWarn.innerHTML = "Surame must be between " +
-            SURNAME_MIN_LENGTH + " - " + SURNAME_MAX_LENGTH;
+            SURNAME_MIN_LENGTH + " - " + SURNAME_MAX_LENGTH + "length";
         surnameWarn.style.display = "block";
         allValid = false;
     } else if (!surnameRegex.test(surname)) {
@@ -137,7 +137,7 @@ function sendComment() {
     //check email validation
     if (email.length < EMAIL_MIN_LENGTH || email.length > EMAIL_MAX_LENGTH) {
         emailWarn.innerHTML = "Email must be between " +
-            EMAIL_MIN_LENGTH + " - " + EMAIL_MAX_LENGTH;
+            EMAIL_MIN_LENGTH + " - " + EMAIL_MAX_LENGTH + " length";
         emailWarn.style.display = "block";
         allValid = false;
     } else if (!emailRegex.test(email)) {
@@ -149,12 +149,17 @@ function sendComment() {
     //check content validation
     if (content.length < CONTENT_MIN_LENGTH || content.length > CONTENT_MAX_LENGTH) {
         contentWarn.innerHTML = "Content must be between " +
-            CONTENT_MIN_LENGTH + " - " + CONTENT_MAX_LENGTH;
+            CONTENT_MIN_LENGTH + " - " + CONTENT_MAX_LENGTH + " length";
         contentWarn.style.display = "block";
         allValid = false;
     }
 
     if (!allValid) return;
+
+    document.getElementById("name").value = "";
+    document.getElementById("surname").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("content").value = "";
 
     //send post to server
     $.ajax({
@@ -174,11 +179,8 @@ function sendComment() {
             updateAllCommentCount(allCommentCount)
         },
         error: function (data) {
-            const errorResonse = JSON.parse(JSON.stringify(data.responseJSON));
-            commentWarn.style.display = "block";
-            errorResonse.fieldErrors.forEach((fieldError) => {
-                commentWarn.innerHTML += commentWarn.innerHTML + fieldError.message;
-            })
+            commentWarn.innerHTML="Too much comment requests";
+            commentWarn.style.display="block"
         }
     });
 
@@ -215,7 +217,7 @@ function load() {
 function initialize(commnetCount) {
 
     window.addEventListener("hashchange", shiftWindow);
-    allCommentCount=commnetCount
+    allCommentCount = commnetCount
     $('img.content-scalable').addClass('img-enlargeable').click(function () {
         var src = $(this).attr('src');
         var modal;
@@ -250,6 +252,6 @@ function initialize(commnetCount) {
 }
 
 
-function updateAllCommentCount(commentCount){
-    document.getElementById("allCommentCount").innerHTML="All comments: "+commentCount
+function updateAllCommentCount(commentCount) {
+    document.getElementById("allCommentCount").innerHTML = "All comments: " + commentCount
 }

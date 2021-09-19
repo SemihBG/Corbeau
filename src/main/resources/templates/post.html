@@ -79,34 +79,34 @@
                   onsubmit="event.preventDefault();sendComment()" class="form-inline">
                 <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
                 <div class="form-group" style="width: 50%;">
-                    <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
-                    <input class="form-control text-info border-info" id="name" name="name"
+                    <label class="text-secondary" for="name" style="font-size: 19px;">Name:</label>
+                    <input class="form-control text-dark border-info" id="name" name="name"
                            style="background-color: transparent;width: 95%"
                            th:placeholder="${offerName}" type="text">
-                    <p class="text-warning" id="name-warn" style="display: none"></p>
+                    <p class="text-secondary" id="name-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 50%">
-                    <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
-                    <input class="form-control text-info border-info" id="surname" name="surname"
+                    <label class="text-secondary" for="surname" style="font-size: 19px;">Surname:</label>
+                    <input class="form-control text-dark border-info" id="surname" name="surname"
                            style="background-color: transparent;width: 95%"
                            th:placeholder="${offerSurname}" type="text">
-                    <p class="text-warning" id="surname-warn" style="display: none"></p>
+                    <p class="text-secondary" id="surname-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
-                    <input class="form-control text-info border-info" id="email" name="email"
+                    <label class="text-secondary" for="email" style="font-size: 19px;">Email:</label>
+                    <input class="form-control text-dark border-info" id="email" name="email"
                            style="background-color: transparent;width: 97.5%"
                            type="text">
-                    <p class="text-warning" id="email-warn" style="display: none"></p>
+                    <p class="text-secondary" id="email-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
-                    <textarea class="form-control text-info border-info" id="content" name="content"
+                    <label class="text-secondary" for="content" style="font-size: 19px;">Content:</label>
+                    <textarea class="form-control text-dark border-info" id="content" name="content"
                               style="background-color: transparent; min-height: 100px; max-height: 250px;width: 97.5%"></textarea>
-                    <p class="text-warning" id="content-warn" style="display: none"></p>
+                    <p class="text-secondary" id="content-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <button class="btn btn-outline-info" th:if="${appStatus.isCommentActivated()}" type="submit" style="margin-top: 1%">Send
+                    <button class="btn btn-outline-info" type="submit" style="margin-top: 1%">Send
                     </button>
                 </div>
                 <div>
@@ -115,43 +115,43 @@
             </form>
         </div>
         <div style="margin-top: 2.5%; margin-bottom: 2.5%;" th:unless="${appStatus.isCommentActivated()}">
-            <p class="text-warning" style="font-size: x-large">Comments are disabled</p>
+            <p class="text-secondary" style="font-size: x-large">Comments are disabled</p>
             <form action="/api/comment" id="send-comment" method="post"
                   onsubmit="event.preventDefault();sendComment()" class="form-inline disabled">
                 <input id="post-id" name="postId" style="display: none;" th:value="${post.id}" type="text">
                 <div class="form-group" style="width: 50%;">
-                    <label class="text-info" for="name" style="font-size: 19px;">Name:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="name" name="name"
+                    <label class="text-secondary" for="name" style="font-size: 19px;">Name:</label>
+                    <input class="form-control text-dark border-info disabled" disabled id="name" name="name"
                            style="background-color: transparent;width: 95%"
                            th:placeholder="${offerName}" type="text">
-                    <p class="text-warning" id="name-warn" style="display: none"></p>
+                    <p class="text-secondary" id="name-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 50%">
-                    <label class="text-info" for="surname" style="font-size: 19px;">Surname:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="surname" name="surname"
+                    <label class="text-secondary" for="surname" style="font-size: 19px;">Surname:</label>
+                    <input class="form-control text-dark border-info disabled" disabled id="surname" name="surname"
                            style="background-color: transparent;width: 95%"
                            th:placeholder="${offerSurname}" type="text">
-                    <p class="text-warning" id="surname-warn" style="display: none"></p>
+                    <p class="text-secondary" id="surname-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <label class="text-info" for="email" style="font-size: 19px;">Email:</label>
-                    <input class="form-control text-info border-info disabled" disabled id="email" name="email"
+                    <label class="text-secondary" for="email" style="font-size: 19px;">Email:</label>
+                    <input class="form-control text-dark border-info disabled" disabled id="email" name="email"
                            style="background-color: transparent;width: 97.5%"
                            type="text">
-                    <p class="text-warning" id="email-warn" style="display: none"></p>
+                    <p class="text-secondary" id="email-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <label class="text-info" for="content" style="font-size: 19px;">Content:</label>
-                    <textarea class="form-control text-info border-info disabled" disabled id="content" name="content"
+                    <label class="text-secondary" for="content" style="font-size: 19px;">Content:</label>
+                    <textarea class="form-control text-dark border-info disabled" disabled id="content" name="content"
                               style="background-color: transparent; min-height: 100px; max-height: 250px;width: 97.5%"></textarea>
-                    <p class="text-warning" id="content-warn" style="display: none"></p>
+                    <p class="text-secondary" id="content-warn" style="display: none"></p>
                 </div>
                 <div class="form-group" style="width: 100%">
-                    <button class="btn btn-outline-info disabled" disabled th:if="${appStatus.isCommentActivated()}" type="submit" style="margin-top: 1%">Send
+                    <button class="btn btn-outline-info disabled" disabled type="submit" style="margin-top: 1%">Send
                     </button>
                 </div>
                 <div>
-                    <p class="text-warning" id="comment-warn" style="display: none"></p>
+                    <p class="text-secondary" id="comment-warn" style="display: none"></p>
                 </div>
             </form>
         </div>

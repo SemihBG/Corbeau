@@ -1,5 +1,5 @@
-const SUBJECT_NAME_MIN_LENGTH = 5;
-const SUBJECT_NAME_MAX_LENGTH = 25;
+const SUBJECT_NAME_MIN_LENGTH = 2;
+const SUBJECT_NAME_MAX_LENGTH = 32;
 const SUBJECT_NAME_REGEX = new RegExp(/^[0-9a-z_]+$/i);
 const SUBJECT_UPDATE_ROOT_URL = "/moderation/subject";
 
