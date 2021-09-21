@@ -4,4 +4,4 @@ spring:
     admin:
       enabled: false
   profiles:
-    active: pro
+    active: dev

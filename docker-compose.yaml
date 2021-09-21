@@ -15,19 +15,19 @@ services:
       - corbeau
     ports:
       - "3306:3306"
-#  server:
-#    image: corbeau
-#    container_name: corbeau
-#    ports:
-#      - "9000:9000"
-#    environment:
-#      mysql-host: 'mysql'
-#      mysql-port: '3306'
-#      server.port: '9000'
-#    depends_on:
-#      - database
-#    networks:
-#      - corbeau
+  server:
+    image: corbeau
+    container_name: corbeau
+    ports:
+      - "9000:9000"
+    environment:
+      mysql-host: 'mysql'
+      mysql-port: '3306'
+      server.port: '9000'
+    depends_on:
+      - database
+    networks:
+      - corbeau
 networks:
   corbeau:
     driver: bridge
